@@ -30,6 +30,7 @@ const modalStyles = makeStyles((theme: Theme) =>
       position: "fixed",
       top: "12px",
       right: "12px",
+      pointerEvents: "none",
     },
     imageWrapper: {
       width: "30%",
