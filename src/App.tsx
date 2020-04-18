@@ -53,12 +53,12 @@ function App() {
       </AppBar>
       {list.map((list, i)=>{
         return (
-          <Paper key={i} onClick={()=>{
+          <div key={i} onClick={()=>{
             console.log("okclick");
             setProfileModal(list);
           }}>
             <ProfileListCard {...list} />
-          </Paper>
+          </div>
         );
       })}
       <Modal 
