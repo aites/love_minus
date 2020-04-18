@@ -30,7 +30,7 @@ function ProfileListCard(prof: ListProfileInterface) {
   return (
     <Paper style={{margin:10}}>
       <Box display="flex">
-        <Box><img className={classes.image} alt="complex" src={prof.imageUrl}/></Box>
+        <Box><img className={classes.image} src={prof.imageUrl}/></Box>
         <Box flexGrow={1}>
           <Typography gutterBottom variant="subtitle1">
             {prof.name}

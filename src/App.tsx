@@ -1,11 +1,10 @@
 import React from 'react';
-import logo from './logo.svg';
 import {AppBar, Toolbar, Paper, Typography, Button, Modal, Fade} from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import {Menu as MenuIcon} from '@material-ui/icons';
 import './App.css';
-import ProfileListCard, { ListProfileInterface } from './object/ProfileListCard';
-import ProfileModal from './object/ProfileModal';
+import {BrowserRouter as Router,Link,Route,Switch,} from 'react-router-dom';
+import TimeLine from './page/TimeLine';
+import MailBox from './page/MailBox';
 
 const theme = createMuiTheme({
   palette: {
@@ -31,46 +30,27 @@ const theme = createMuiTheme({
   },
 });
 function App() {
-  const list:Array<ListProfileInterface> = [
-    {name:"西園寺 日向", imageUrl:"/images/josei_07_a.png", simpleProf:"共学に通う高校生です\n自己主張激しめ？" },
-    {name:"跡部景吾", imageUrl:"/images/atobe.jpg", simpleProf:"俺様の美技に酔いな"},
-  ];
-  const [showProfile, setProfileModal] = React.useState<ListProfileInterface|null>(null);
 
   return (
     <ThemeProvider theme={theme}>
-      <AppBar position="sticky" color="primary">
-        <Toolbar>
-          {/* <IconButton edge="start" color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton> */}
-          <Typography variant="h6" >
-            LoveMinus
-          </Typography>
-          <Button color="inherit">タイムライン</Button>
-          <Button color="inherit">メールボックス</Button>
-        </Toolbar>
-      </AppBar>
-      {list.map((list, i)=>{
-        return (
-          <div key={i} onClick={()=>{
-            console.log("okclick");
-            setProfileModal(list);
-          }}>
-            <ProfileListCard {...list} />
-          </div>
-        );
-      })}
-      <Modal 
-        open={showProfile!=null}
-        onClose={()=>{
-          setProfileModal(null);
-        }}
-      >
-        <Fade in={showProfile!=null}>
-          {showProfile?<ProfileModal {...showProfile} />:<div></div>}
-        </Fade>
-      </Modal>
+      <Router>
+        <AppBar position="sticky" color="primary">
+          <Toolbar>
+            {/* <IconButton edge="start" color="inherit" aria-label="menu">
+              <MenuIcon />
+            </IconButton> */}
+            <Typography variant="h6" >
+              LoveMinus
+            </Typography>
+            <Link to="/timeline"><Button color="inherit">タイムライン</Button></Link>
+            <Link to="/mailbox"><Button color="inherit">メールボックス</Button></Link>
+          </Toolbar>
+        </AppBar>
+        <Switch>
+          <Route exact={true} path="/timeline" component={TimeLine} />
+          <Route path="/mailbox" component={MailBox} />
+        </Switch>
+      </Router>
     </ThemeProvider>
   );
 }
