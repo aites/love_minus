@@ -24,7 +24,7 @@ const modalStyles = makeStyles((theme: Theme) =>
       top: 0,
       right: 0,
       left: 0,
-      maxHeight: "85vh",
+      maxHeight: "calc(100% - 60px)",
     },
     closeIcon: {
       position: "fixed",
