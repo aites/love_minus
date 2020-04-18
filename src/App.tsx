@@ -77,7 +77,7 @@ function App() {
       </AppBar>
       {list.map((list, i) => {
         return (
-          <Paper
+          <div
             key={i}
             onClick={() => {
               console.log("okclick");
@@ -85,7 +85,7 @@ function App() {
             }}
           >
             <ProfileListCard {...list} />
-          </Paper>
+          </div>
         );
       })}
       <Modal
