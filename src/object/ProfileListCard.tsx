@@ -37,7 +37,7 @@ function ProfileListCard(prof: ListProfileInterface) {
         </Box>
         <Box flexGrow={1}>
           <Typography gutterBottom variant="subtitle1">
-            {prof.name}
+            {prof.name}(10分前)
           </Typography>
           <Typography gutterBottom variant="subtitle1">
             <p>{prof.simpleProf}</p>

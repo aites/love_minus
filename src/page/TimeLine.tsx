@@ -23,7 +23,7 @@ function TimeLine(){
   ];
   const [showProfile, setProfileModal] = React.useState<ListProfileInterface|null>(null);
   return (
-    <div>
+    <>
       {list.map((list, i)=>{
         return (
           <div key={i} onClick={()=>{
@@ -44,7 +44,7 @@ function TimeLine(){
           {showProfile?<ProfileModal {...showProfile} />:<div></div>}
         </Fade>
       </Modal>
-    </div>
+    </>
   );
 }
 
