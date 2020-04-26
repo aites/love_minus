@@ -14,11 +14,10 @@ import "./App.css";
 import ProfileListCard, {
   ListProfileInterface,
 } from "./object/ProfileListCard";
-import {BrowserRouter as Router,Link,Route,Switch,} from 'react-router-dom';
+import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import ProfileModal from "./object/ProfileModal";
-import TimeLine from './page/TimeLine';
-import MailBox from './page/MailBox';
-import MakeCharacter from "./page/MakeCharacter";
+import TimeLine from "./page/TimeLine";
+import MailBox from "./page/MailBox";
 
 const theme = createMuiTheme({
   palette: {
@@ -68,34 +67,35 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-    <Router>
-      <AppBar position="sticky" color="primary">
-        <Toolbar>
-          {/* <IconButton edge="start" color="inherit" aria-label="menu">
+      <Router>
+        <AppBar position="sticky" color="primary">
+          <Toolbar>
+            {/* <IconButton edge="start" color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton> */}
-          <Typography variant="h6">LoveMinus</Typography>
-          <Link to="/timeline"><Button color="inherit">タイムライン</Button></Link>
-          <Link to="/mailbox"><Button color="inherit">メールボックス</Button></Link>
-          <Link to="/character"><Button color="inherit">キャラクター作成</Button></Link>
-        </Toolbar>
-      </AppBar>
-      <Switch>
-        <Route exact={true} path="/timeline" component={TimeLine} />
-        <Route path="/mailbox" component={MailBox} />
-        <Route path="/character" component={MakeCharacter} />
-        
-      </Switch>
-      <Modal
-        open={showProfile != null}
-        onClose={() => {
-          setProfileModal(null);
-        }}
-      >
-        <Fade in={showProfile != null}>
-          {showProfile ? <ProfileModal {...showProfile} /> : <div></div>}
-        </Fade>
-      </Modal>
+            <Typography variant="h6">LoveMinus</Typography>
+            <Link to="/timeline">
+              <Button color="inherit">タイムライン</Button>
+            </Link>
+            <Link to="/mailbox">
+              <Button color="inherit">メールボックス</Button>
+            </Link>
+          </Toolbar>
+        </AppBar>
+        <Switch>
+          <Route exact={true} path="/timeline" component={TimeLine} />
+          <Route path="/mailbox" component={MailBox} />
+        </Switch>
+        <Modal
+          open={showProfile != null}
+          onClose={() => {
+            setProfileModal(null);
+          }}
+        >
+          <Fade in={showProfile != null}>
+            {showProfile ? <ProfileModal {...showProfile} /> : <div></div>}
+          </Fade>
+        </Modal>
       </Router>
     </ThemeProvider>
   );
