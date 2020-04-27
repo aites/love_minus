@@ -18,6 +18,7 @@ import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import ProfileModal from "./object/ProfileModal";
 import TimeLine from "./page/TimeLine";
 import MailBox from "./page/MailBox";
+import MakeCharacter from "./page/MakeCharacter";
 
 const theme = createMuiTheme({
   palette: {
@@ -80,11 +81,15 @@ function App() {
             <Link to="/mailbox">
               <Button color="inherit">メールボックス</Button>
             </Link>
+            <Link to="/character">
+              <Button color="inherit">キャラクター作成</Button>
+            </Link>
           </Toolbar>
         </AppBar>
         <Switch>
           <Route exact={true} path="/timeline" component={TimeLine} />
           <Route path="/mailbox" component={MailBox} />
+          <Route path="/character" component={MakeCharacter} />
         </Switch>
         <Modal
           open={showProfile != null}
