@@ -1,6 +1,7 @@
 import React from 'react';
 import { Theme, Grid, Divider, Badge, Typography } from '@material-ui/core';
 import { makeStyles, withStyles, createStyles } from '@material-ui/core/styles';
+import ChatRoom from './ChatRoom';
 
 const StyledBadge = withStyles((theme: Theme) =>
   createStyles({
@@ -54,7 +55,7 @@ function MailBox() {
         })}
       </Grid>
       <Grid item xs={12} sm={8} md={9} className={classes.content}>
-        <div style={{ height: '100%' }}></div>
+        <ChatRoom />
       </Grid>
     </Grid>
   );
