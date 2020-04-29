@@ -1,6 +1,6 @@
-import React from "react";
-import { Theme, Grid, Divider, Badge, Typography } from "@material-ui/core";
-import { makeStyles, withStyles, createStyles } from "@material-ui/core/styles";
+import React from 'react';
+import { Theme, Grid, Divider, Badge, Typography } from '@material-ui/core';
+import { makeStyles, withStyles, createStyles } from '@material-ui/core/styles';
 
 const StyledBadge = withStyles((theme: Theme) =>
   createStyles({
@@ -12,11 +12,11 @@ const StyledBadge = withStyles((theme: Theme) =>
 
 const useStyles = makeStyles({
   main: {
-    height: "calc(100vh - 64px)",
+    height: 'calc(100vh - 64px)',
   },
   content: {
-    height: "100%",
-    overflow: "scroll",
+    height: '100%',
+    overflow: 'scroll',
   },
   mailListRow: {
     height: 100,
@@ -54,7 +54,7 @@ function MailBox() {
         })}
       </Grid>
       <Grid item xs={12} sm={8} md={9} className={classes.content}>
-        <div style={{ height: "100%" }}></div>
+        <div style={{ height: '100%' }}></div>
       </Grid>
     </Grid>
   );
