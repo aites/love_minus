@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { TextField, Grid, Button, Paper } from '@material-ui/core';
+import {
+  TextField,
+  Grid,
+  Button,
+  Paper,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from '@material-ui/core';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -38,6 +47,14 @@ interface Character {
   icon: string;
   image: string;
 }
+interface Profile {
+  name: String;
+  sex: number;
+  character: Character;
+  profile: String;
+  simpleProf: String;
+}
+
 const characterList: Array<Character> = [
   { sex: 2, icon: '/images/josei_01_a.png', image: '/images/josei_01_b.png' },
   { sex: 2, icon: '/images/josei_02_a.png', image: '/images/josei_02_b.png' },
@@ -73,6 +90,8 @@ const characterList: Array<Character> = [
 function MakeCharacter() {
   const classes = useStyles();
   const [selected, setIcon] = useState(characterList[0]);
+  const [profile, setProfile] = useState();
+
   return (
     <Grid container className={classes.main}>
       <Grid container item xs={12} sm={6} md={6} className={classes.main}>
@@ -120,8 +139,19 @@ function MakeCharacter() {
         direction="column"
         style={{ textAlign: 'center' }}
       >
-        <Grid item>
-          <TextField id="name" label="名前" variant="outlined" className={classes.textfield} />
+        <Grid item container>
+          <Grid item xs={10}>
+            <TextField id="name" label="名前" variant="outlined" className={classes.textfield} />
+          </Grid>
+          <Grid item xs={2}>
+            <FormControl variant="outlined" className={classes.textfield}>
+              <InputLabel id="sex">性別</InputLabel>
+              <Select labelId="sex" id="sex" value={1} onChange={() => {}} label="性別">
+                <MenuItem value={1}>男</MenuItem>
+                <MenuItem value={2}>女</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
         </Grid>
         <Grid item>
           <TextField
