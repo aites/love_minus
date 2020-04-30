@@ -54,7 +54,7 @@ function MailBox() {
           );
         })}
       </Grid>
-      <Grid item xs={12} sm={8} md={9} className={classes.content}>
+      <Grid item xs={12} sm={8} md={9} className={classes.main}>
         <ChatRoom />
       </Grid>
     </Grid>

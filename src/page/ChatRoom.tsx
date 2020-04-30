@@ -1,37 +1,39 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import ClassNames from 'classnames';
+import SendIcon from '@material-ui/icons/Send';
+import CharacterImage from '../image/chat_background.svg';
 
 const chatStyles = makeStyles((theme: Theme) =>
   createStyles({
     chat: {
+      position: 'relative',
+      width: '100%',
+      height: 'calc(100vh - 64px)',
+      backgroundImage: `url(${CharacterImage})`,
+      backgroundSize: 'contain',
       display: 'flex',
     },
-    chat__imageWrap: {
-      width: '300px',
-      height: 'calc(100vh - 64px)',
-      position: 'relative',
-      marginRight: 'auto',
-    },
-    chat__image: {
-      width: '300px',
+    chat__character: {
+      minWidth: '300px',
+      flexBasis: '300px',
       height: 'calc(100vh - 64px)',
       objectFit: 'contain',
     },
     chatContentsWrap: {
       position: 'relative',
-    },
-    chatContentsWrap__background: {
-      width: '100%',
-      height: 'calc(100vh - 64px)',
-      objectFit: 'cover',
+      margin: '16px 36px 16px 16px',
     },
     chatContents: {
-      position: 'absolute',
-      top: 0,
-      width: '100%',
+      minWidth: 'calc(100% - 332px)',
+      flexBasis: 'calc(100% - 332px)',
+      marginBottom: '16px',
+      padding: '16px',
       display: 'grid',
+      backgroundColor: 'rgba(255,255,255,0.7)',
+      border: '1px solid #FFF',
+      borderRadius: '8px',
     },
     chatContents__name: {
       fontSize: '12px',
@@ -44,17 +46,19 @@ const chatStyles = makeStyles((theme: Theme) =>
       fontSize: '20px',
       lineHeight: '1.5',
       padding: '8px',
-      margin: '8px',
+      margin: '8px 0',
       display: 'inline-block',
     },
-    speech__mine: {
-      marginLeft: '40px',
-    },
     speech__your: {
-      marginRight: '40px',
-      marginLeft: 'auto',
+      marginRight: 'auto',
+      marginLeft: '16px',
     },
-    mineBefore: {
+    speech__mine: {
+      marginRight: '16px',
+      marginLeft: 'auto',
+      maxWidth: 'calc(100%  -  50px)',
+    },
+    yourBefore: {
       position: 'absolute',
       top: 0,
       bottom: 0,
@@ -67,7 +71,7 @@ const chatStyles = makeStyles((theme: Theme) =>
       borderColor: 'transparent #FFF transparent transparent',
       zIndex: 2,
     },
-    mineAfter: {
+    yourAfter: {
       position: 'absolute',
       top: 0,
       bottom: 0,
@@ -80,7 +84,7 @@ const chatStyles = makeStyles((theme: Theme) =>
       borderColor: 'transparent #6B6969 transparent transparent',
       zIndex: 1,
     },
-    yourBefore: {
+    mineBefore: {
       position: 'absolute',
       top: 0,
       bottom: 0,
@@ -93,7 +97,7 @@ const chatStyles = makeStyles((theme: Theme) =>
       borderColor: 'transparent transparent transparent #FFF ',
       zIndex: 2,
     },
-    yourAfter: {
+    mineAfter: {
       position: 'absolute',
       top: 0,
       bottom: 0,
@@ -111,6 +115,32 @@ const chatStyles = makeStyles((theme: Theme) =>
     },
     woman: {
       color: '#FC319F',
+    },
+    chatSendMessage: {
+      display: 'flex',
+      position: 'relative',
+      bottom: 0,
+    },
+    chatSendMessage__button: {
+      width: '108px',
+      height: '52px',
+      backgroundColor: '#3E87F8',
+      '&:hover': {
+        backgroundColor: '#0069d9',
+        borderColor: '#0062cc',
+        boxShadow: 'none',
+      },
+    },
+    chatSendMessage__textArea: {
+      width: 'calc(100% - 108px)',
+      height: '52px',
+      border: '1px solid #676767',
+      borderRadius: '8px',
+      fontSize: '20px',
+      lineHeight: '1.5',
+      padding: '8px',
+      marginRight: '12px',
+      boxSizing: 'border-box',
     },
   })
 );
@@ -136,6 +166,21 @@ const status2: MessageInfo = {
   name: '自分',
   comment:
     'ほしい！！ちょうだい！！ほしい！！ちょうだい！！ほしい！！ちょうだい！！ほしい！！ちょうだい！！ほしい！！ちょうだい！！ほしい！！ちょうだい！！ほしい！！ちょうだい！！ほしい！！ちょうだい！！',
+};
+
+const status3: MessageInfo = {
+  user: 'your',
+  sex: 'man',
+  name: '跡部',
+  comment:
+    '跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国',
+};
+
+const status4: MessageInfo = {
+  user: 'mine',
+  sex: 'woman',
+  name: '自分',
+  comment: '跡部王国うれしい',
 };
 
 function UserSpeech(props: MessageInfo) {
@@ -164,14 +209,17 @@ function UserSpeech(props: MessageInfo) {
 
 export default function ChatRoom() {
   const classes = chatStyles();
+
+  const onKeyDown = (event: React.KeyboardEvent) => {
+    const ENTER_KEY_CODE = 13;
+    if (event.keyCode === ENTER_KEY_CODE) {
+      console.log('test');
+    }
+  };
   return (
     <Box className={classes.chat}>
+      <img className={classes.chat__character} src="/images/dansei_01_b.png" alt="" />
       <Box className={classes.chatContentsWrap}>
-        <img
-          className={classes.chatContentsWrap__background}
-          src="/images/chat_background.png"
-          alt=""
-        />
         <Box className={classes.chatContents}>
           <UserSpeech
             user={status.user}
@@ -185,10 +233,34 @@ export default function ChatRoom() {
             name={status2.name}
             comment={status2.comment}
           />
+          <UserSpeech
+            user={status3.user}
+            sex={status3.sex}
+            name={status3.name}
+            comment={status3.comment}
+          />
+          <UserSpeech
+            user={status4.user}
+            sex={status4.sex}
+            name={status4.name}
+            comment={status4.comment}
+          />
         </Box>
-      </Box>
-      <Box className={classes.chat__imageWrap}>
-        <img className={classes.chat__image} src="/images/atobe.jpg" alt="" />
+        <Box className={classes.chatSendMessage}>
+          <textarea
+            className={classes.chatSendMessage__textArea}
+            onKeyDown={(e) => onKeyDown(e)}
+          ></textarea>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            className={classes.chatSendMessage__button}
+            endIcon={<SendIcon />}
+          >
+            送信
+          </Button>
+        </Box>
       </Box>
     </Box>
   );
