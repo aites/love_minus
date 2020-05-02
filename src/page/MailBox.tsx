@@ -3,33 +3,34 @@ import { Theme, Grid, Divider, Badge, Typography } from '@material-ui/core';
 import ChatRoom from './ChatRoom';
 import classes from './mailBox.module.scss';
 
-function MailBox() {
-  return (
-    <Grid container component="main" className={classes.main}>
-      <Grid item xs={12} sm={4} md={3} className={classes.content}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 1, 9, 0].map((v, i) => {
-          return (
-            <>
-              <Grid container wrap="nowrap" className={classes.mailListRow}>
-                <Grid item>
-                  <img className={classes.image} src="/images/atobe.jpg" alt="" />
+export default class MailBox extends React.Component {
+  render() {
+    return (
+      <Grid container component="main" className={classes.main}>
+        <Grid item xs={12} sm={4} md={3} className={classes.content}>
+          {[1, 2, 3, 4, 5, 6, 7, 8, 1, 9, 0].map((v, i) => {
+            return (
+              <>
+                <Grid container wrap="nowrap" className={classes.mailListRow}>
+                  <Grid item>
+                    <img className={classes.image} src="/images/atobe.jpg" alt="" />
+                  </Grid>
+                  <Grid item>
+                    <Typography>西園寺 日向</Typography>
+                    <Typography noWrap variant="caption">
+                      もしもし〜
+                    </Typography>
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  <Typography>西園寺 日向</Typography>
-                  <Typography noWrap variant="caption">
-                    もしもし〜
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Divider></Divider>
-            </>
-          );
-        })}
+                <Divider></Divider>
+              </>
+            );
+          })}
+        </Grid>
+        <Grid item xs={12} sm={8} md={9} className={classes.main}>
+          <ChatRoom />
+        </Grid>
       </Grid>
-      <Grid item xs={12} sm={8} md={9} className={classes.main}>
-        <ChatRoom />
-      </Grid>
-    </Grid>
-  );
+    );
+  }
 }
-export default MailBox;
