@@ -9,39 +9,8 @@ import {
   Select,
   MenuItem,
 } from '@material-ui/core';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import classes from './makeCharacter.module.scss';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    main: {
-      height: 'calc(100vh - 64px)',
-    },
-    content: {
-      height: '100%',
-      overflow: 'scroll',
-    },
-    textfield: {
-      margin: 10,
-      width: 'calc(100% - 20px)',
-      '& textarea': {
-        resize: 'vertical',
-      },
-    },
-    image: {
-      height: '100%',
-      maxWidth: '100%',
-      margin: 'auto',
-    },
-    image_icon_wrap: {
-      marginTop: 10,
-      marginLeft: 5,
-      marginRight: 5,
-    },
-    image_icon: {
-      width: '100%',
-    },
-  })
-);
 interface Character {
   sex: number;
   icon: string;
@@ -88,7 +57,6 @@ const characterList: Array<Character> = [
   { sex: 1, icon: '/images/dansei_14_a.png', image: '/images/dansei_14_b.png' },
 ];
 function MakeCharacter() {
-  const classes = useStyles();
   const [selected, setIcon] = useState(characterList[0]);
   const [profile, setProfile] = useState();
 

@@ -1,0 +1,23 @@
+.badge {
+  top: 12;
+}
+
+.main {
+  height: calc(100vh - 64px);
+}
+
+.content {
+  height: 100%;
+  overflow: scroll;
+}
+
+.mailListRow {
+  height: 100px;
+  padding-left: 10px;
+  padding-top: 10px;
+}
+
+.image {
+  width: 80px;
+  height: 80px;
+}

@@ -1,23 +1,6 @@
-import React from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { Paper, Typography, Grid, Button, Box } from "@material-ui/core";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
-    },
-    paper: {
-      padding: theme.spacing(2),
-      margin: "auto",
-      maxWidth: 500,
-    },
-    image: {
-      width: 100,
-      height: 100,
-    },
-  })
-);
+import React from 'react';
+import { Paper, Typography, Grid, Button, Box } from '@material-ui/core';
+import classes from './profileListCard.module.scss';
 
 export interface ListProfileInterface {
   name: string;
@@ -28,12 +11,11 @@ export interface ListProfileInterface {
 }
 
 function ProfileListCard(prof: ListProfileInterface) {
-  const classes = useStyles();
   return (
     <Paper style={{ margin: 10 }}>
       <Box display="flex">
         <Box>
-          <img className={classes.image} src={prof.imageUrl} />
+          <img className={classes.image} src={prof.imageUrl} alt="" />
         </Box>
         <Box flexGrow={1}>
           <Typography gutterBottom variant="subtitle1">

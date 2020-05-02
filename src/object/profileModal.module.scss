@@ -1,0 +1,70 @@
+.modal {
+  display: flex;
+  width: 80%;
+  max-width: 680px;
+  padding: 16px;
+  margin: 40px auto;
+  overflow: auto;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  max-height: calc(100% - 60px);
+}
+
+.closeIcon {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  pointer-events: none;
+}
+
+.imageWrapper {
+  min-width: 30%;
+  flex-basis: 30%;
+  height: 100%;
+  position: relative;
+  padding: 0 24px;
+  overflow: hidden;
+  margin-top: 22px;
+}
+
+.image {
+  width: 100%;
+  position: relative;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.prevIcon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.nextIcon {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.contents {
+  margin-left: 20px;
+  flex: 1;
+}
+
+.name {
+  font-size: 20px;
+}
+
+.profile {
+  margin-top: 12px;
+  font-size: 12px;
+}

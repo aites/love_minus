@@ -1,0 +1,35 @@
+.main {
+  height: calc(100vh - 64px);
+}
+
+.content {
+  height: 100%;
+  overflow: scroll;
+}
+
+.textfield {
+  margin: 10px;
+  width: calc(100% - 20px);
+
+  & .textarea {
+    resize: vertical;
+  }
+}
+
+.image {
+  height: 100%;
+  max-width: 100%;
+  margin: auto;
+}
+
+.image_icon_wrap {
+  margin-top: 10;
+  margin-left: 5;
+  margin-right: 5;
+}
+
+;
+
+.image_icon {
+  width: 100%;
+}

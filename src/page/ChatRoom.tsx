@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Button } from '@material-ui/core';
 import ClassNames from 'classnames';
 import SendIcon from '@material-ui/icons/Send';
-import chatStyles from '../style/chatRoom.module.scss';
+import classes from './chatRoom.module.scss';
 
 interface MessageInfo {
   user: string;
@@ -43,26 +43,22 @@ const status4: MessageInfo = {
 };
 
 function UserSpeech(props: MessageInfo) {
-  const sexClass = props.sex === 'man' ? chatStyles.man : chatStyles.woman;
+  const sexClass = props.sex === 'man' ? classes.man : classes.woman;
   if (props.user === 'mine') {
     return (
-      <Box
-        className={ClassNames(chatStyles.chatContents__speech, chatStyles.speech__mine, sexClass)}
-      >
-        <Box className={chatStyles.chatContents__name}>{props.name}</Box>
-        <span className={chatStyles.mineBefore}></span>
-        <span className={chatStyles.mineAfter}></span>
+      <Box className={ClassNames(classes.chatContents__speech, classes.speech__mine, sexClass)}>
+        <Box className={classes.chatContents__name}>{props.name}</Box>
+        <span className={classes.mineBefore}></span>
+        <span className={classes.mineAfter}></span>
         {props.comment}
       </Box>
     );
   } else {
     return (
-      <Box
-        className={ClassNames(chatStyles.chatContents__speech, chatStyles.speech__your, sexClass)}
-      >
-        <Box className={chatStyles.chatContents__name}>{props.name}</Box>
-        <span className={chatStyles.yourBefore}></span>
-        <span className={chatStyles.yourAfter}></span>
+      <Box className={ClassNames(classes.chatContents__speech, classes.speech__your, sexClass)}>
+        <Box className={classes.chatContents__name}>{props.name}</Box>
+        <span className={classes.yourBefore}></span>
+        <span className={classes.yourAfter}></span>
         {props.comment}
       </Box>
     );
@@ -77,10 +73,10 @@ export default function ChatRoom() {
     }
   };
   return (
-    <Box className={chatStyles.chat}>
-      <img className={chatStyles.chat__character} src="/images/dansei_01_b.png" alt="" />
-      <Box className={chatStyles.chatContentsWrap}>
-        <Box className={chatStyles.chatContents}>
+    <Box className={classes.chat}>
+      <img className={classes.chat__character} src="/images/dansei_01_b.png" alt="" />
+      <Box className={classes.chatContentsWrap}>
+        <Box className={classes.chatContents}>
           <UserSpeech
             user={status.user}
             sex={status.sex}
@@ -106,16 +102,16 @@ export default function ChatRoom() {
             comment={status4.comment}
           />
         </Box>
-        <Box className={chatStyles.chatSendMessage}>
+        <Box className={classes.chatSendMessage}>
           <textarea
-            className={chatStyles.chatSendMessage__textArea}
+            className={classes.chatSendMessage__textArea}
             onKeyDown={(e) => onKeyDown(e)}
           ></textarea>
           <Button
             variant="contained"
             color="primary"
             size="large"
-            className={chatStyles.chatSendMessage__button}
+            className={classes.chatSendMessage__button}
             endIcon={<SendIcon />}
           >
             送信
