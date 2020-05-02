@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import { AppBar, Toolbar, Paper, Typography, Button, Modal, Fade } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import './App.css';
+import './App.scss';
 import ProfileListCard, { ListProfileInterface } from './object/ProfileListCard';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import ProfileModal from './object/ProfileModal';
