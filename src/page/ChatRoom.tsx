@@ -65,59 +65,61 @@ function UserSpeech(props: MessageInfo) {
   }
 }
 
-export default function ChatRoom() {
-  const onKeyDown = (event: React.KeyboardEvent) => {
+export default class ChatRoom extends React.Component {
+  onKeyDown(event: React.KeyboardEvent) {
     const ENTER_KEY_CODE = 13;
     if (event.keyCode === ENTER_KEY_CODE) {
       console.log('test');
     }
-  };
-  return (
-    <Box className={classes.chat}>
-      <img className={classes.chat__character} src="/images/dansei_01_b.png" alt="" />
-      <Box className={classes.chatContentsWrap}>
-        <Box className={classes.chatContents}>
-          <UserSpeech
-            user={status.user}
-            sex={status.sex}
-            name={status.name}
-            comment={status.comment}
-          />
-          <UserSpeech
-            user={status2.user}
-            sex={status2.sex}
-            name={status2.name}
-            comment={status2.comment}
-          />
-          <UserSpeech
-            user={status3.user}
-            sex={status3.sex}
-            name={status3.name}
-            comment={status3.comment}
-          />
-          <UserSpeech
-            user={status4.user}
-            sex={status4.sex}
-            name={status4.name}
-            comment={status4.comment}
-          />
-        </Box>
-        <Box className={classes.chatSendMessage}>
-          <textarea
-            className={classes.chatSendMessage__textArea}
-            onKeyDown={(e) => onKeyDown(e)}
-          ></textarea>
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            className={classes.chatSendMessage__button}
-            endIcon={<SendIcon />}
-          >
-            送信
-          </Button>
+  }
+  render() {
+    return (
+      <Box className={classes.chat}>
+        <img className={classes.chat__character} src="/images/dansei_01_b.png" alt="" />
+        <Box className={classes.chatContentsWrap}>
+          <Box className={classes.chatContents}>
+            <UserSpeech
+              user={status.user}
+              sex={status.sex}
+              name={status.name}
+              comment={status.comment}
+            />
+            <UserSpeech
+              user={status2.user}
+              sex={status2.sex}
+              name={status2.name}
+              comment={status2.comment}
+            />
+            <UserSpeech
+              user={status3.user}
+              sex={status3.sex}
+              name={status3.name}
+              comment={status3.comment}
+            />
+            <UserSpeech
+              user={status4.user}
+              sex={status4.sex}
+              name={status4.name}
+              comment={status4.comment}
+            />
+          </Box>
+          <Box className={classes.chatSendMessage}>
+            <textarea
+              className={classes.chatSendMessage__textArea}
+              onKeyDown={(e) => this.onKeyDown(e)}
+            ></textarea>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              className={classes.chatSendMessage__button}
+              endIcon={<SendIcon />}
+            >
+              送信
+            </Button>
+          </Box>
         </Box>
       </Box>
-    </Box>
-  );
+    );
+  }
 }

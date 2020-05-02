@@ -3,7 +3,8 @@
   width: 100%;
   height: calc(100vh - 64px);
   background-image: url('../image/chat_background.svg');
-  background-size: contain;
+  background-size: cover;
+  background-repeat: no-repeat;
   display: flex;
 }
 
@@ -22,12 +23,31 @@
 .chatContents {
   min-width: calc(100% - 332px);
   flex-basis: calc(100% - 332px);
+  height: calc(100vh - 220px);
   margin-bottom: 16px;
   padding: 16px;
   display: grid;
   background-color: rgba(255, 255, 255, 0.7);
   border: 1px solid #FFF;
   border-radius: 8px;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* スクロールの背景の設定 */
+  &::-webkit-scrollbar-track {
+    border-radius: 5px;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0) inset;
+  }
+
+  /* スクロールのつまみ部分の設定 */
+  &::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: #BBB;
+  }
 }
 
 .chatContents__name {
@@ -85,8 +105,6 @@
   z-index: 1;
 }
 
-
-
 .mineBefore {
   position: absolute;
   top: 0;
@@ -100,7 +118,6 @@
   border-color: transparent transparent transparent #FFF;
   z-index: 2;
 }
-
 
 .mineAfter {
   position: absolute;
@@ -116,19 +133,13 @@
   z-index: 1;
 }
 
-
-
 .man {
   color: #6495ED;
 }
 
-
-
 .woman {
   color: #FC319F;
 }
-
-
 
 .chatSendMessage {
   display: flex;
