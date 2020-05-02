@@ -97,13 +97,13 @@ function MakeCharacter() {
       <Grid container item xs={12} sm={6} md={6} className={classes.main}>
         <Grid item xs={2} className={classes.content}>
           {characterList
-            .filter((v) => v.sex == 1)
+            .filter((v) => v.sex === 1)
             .map((v) => {
               return (
                 <Paper
                   className={classes.image_icon_wrap}
                   onClick={() => setIcon(v)}
-                  elevation={v == selected ? 4 : 1}
+                  elevation={v === selected ? 4 : 1}
                 >
                   <img className={classes.image_icon} src={v.icon} alt="" />
                 </Paper>
@@ -115,13 +115,13 @@ function MakeCharacter() {
         </Grid>
         <Grid item xs={2} className={classes.content}>
           {characterList
-            .filter((v) => v.sex == 2)
+            .filter((v) => v.sex === 2)
             .map((v) => {
               return (
                 <Paper
                   className={classes.image_icon_wrap}
                   onClick={() => setIcon(v)}
-                  elevation={v == selected ? 4 : 1}
+                  elevation={v === selected ? 4 : 1}
                 >
                   <img className={classes.image_icon} src={v.icon} alt="" />
                 </Paper>
