@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import {
   TextField,
   Grid,
@@ -56,97 +56,154 @@ const characterList: Array<Character> = [
   { sex: 1, icon: '/images/dansei_13_a.png', image: '/images/dansei_13_b.png' },
   { sex: 1, icon: '/images/dansei_14_a.png', image: '/images/dansei_14_b.png' },
 ];
-function MakeCharacter() {
-  const [selected, setIcon] = useState(characterList[0]);
-  const [profile, setProfile] = useState();
 
-  return (
-    <Grid container className={classes.main}>
-      <Grid container item xs={12} sm={6} md={6} className={classes.main}>
-        <Grid item xs={2} className={classes.content}>
-          {characterList
-            .filter((v) => v.sex === 1)
-            .map((v) => {
-              return (
-                <Paper
-                  className={classes.image_icon_wrap}
-                  onClick={() => setIcon(v)}
-                  elevation={v === selected ? 4 : 1}
-                >
-                  <img className={classes.image_icon} src={v.icon} alt="" />
-                </Paper>
-              );
-            })}
+type MakeCharacterProps = {};
+type MakeCharacterStates = {
+  selected: Character;
+  name: string;
+  sex: number;
+  simpleProfile: string;
+  profile: string;
+};
+
+export default class MakeCharacter extends Component<MakeCharacterProps, MakeCharacterStates> {
+  constructor(props: MakeCharacterProps) {
+    super(props);
+    this.state = {
+      selected: characterList[0],
+      name: '',
+      sex: characterList[0].sex,
+      simpleProfile: '',
+      profile: '',
+    };
+  }
+  setIcon(character: Character) {
+    this.setState({
+      selected: character,
+      sex: character.sex,
+    });
+  }
+
+  render() {
+    const selected = this.state.selected;
+    return (
+      <Grid container className={classes.main}>
+        <Grid container item xs={12} sm={6} md={6} className={classes.main}>
+          <Grid item xs={2} className={classes.content}>
+            {characterList
+              .filter((v) => v.sex === 1)
+              .map((v) => {
+                return (
+                  <Paper
+                    className={classes.image_icon_wrap}
+                    onClick={() => this.setIcon(v)}
+                    elevation={v === selected ? 4 : 1}
+                  >
+                    <img className={classes.image_icon} src={v.icon} alt="" />
+                  </Paper>
+                );
+              })}
+          </Grid>
+          <Grid item xs={8} style={{ textAlign: 'center' }} className={classes.image}>
+            <img className={classes.image} src={selected.image} alt="" />
+          </Grid>
+          <Grid item xs={2} className={classes.content}>
+            {characterList
+              .filter((v) => v.sex === 2)
+              .map((v) => {
+                return (
+                  <Paper
+                    className={classes.image_icon_wrap}
+                    onClick={() => this.setIcon(v)}
+                    elevation={v === selected ? 4 : 1}
+                  >
+                    <img className={classes.image_icon} src={v.icon} alt="" />
+                  </Paper>
+                );
+              })}
+          </Grid>
         </Grid>
-        <Grid item xs={8} style={{ textAlign: 'center' }} className={classes.image}>
-          <img className={classes.image} src={selected.image} alt="" />
-        </Grid>
-        <Grid item xs={2} className={classes.content}>
-          {characterList
-            .filter((v) => v.sex === 2)
-            .map((v) => {
-              return (
-                <Paper
-                  className={classes.image_icon_wrap}
-                  onClick={() => setIcon(v)}
-                  elevation={v === selected ? 4 : 1}
+        <Grid
+          container
+          item
+          xs={12}
+          sm={6}
+          md={6}
+          alignItems="stretch"
+          direction="column"
+          style={{ textAlign: 'center' }}
+        >
+          <Grid item container>
+            <Grid item xs={10}>
+              <TextField
+                id="name"
+                label="名前"
+                variant="outlined"
+                className={classes.textfield}
+                value={this.state.name}
+                onChange={(e) => {
+                  this.setState({ name: e.target.value });
+                }}
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <FormControl variant="outlined" className={classes.textfield}>
+                <InputLabel id="sex">性別</InputLabel>
+                <Select
+                  labelId="sex"
+                  id="sex"
+                  value={this.state.sex}
+                  onChange={(e) => {
+                    this.setState({ sex: Number(e.target.value) });
+                  }}
+                  label="性別"
                 >
-                  <img className={classes.image_icon} src={v.icon} alt="" />
-                </Paper>
-              );
-            })}
+                  <MenuItem value={1}>男</MenuItem>
+                  <MenuItem value={2}>女</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+          <Grid item>
+            <TextField
+              id="simpleProfile"
+              label="ひとこと"
+              variant="outlined"
+              className={classes.textfield}
+              value={this.state.simpleProfile}
+              onChange={(e) => {
+                this.setState({ simpleProfile: e.target.value });
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              id="profile"
+              label="自己紹介"
+              variant="outlined"
+              className={classes.textfield}
+              rows={4}
+              multiline={true}
+              value={this.state.profile}
+              onChange={(e) => {
+                this.setState({ profile: e.target.value });
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <Button
+              variant="outlined"
+              color="primary"
+              className={classes.textfield}
+              onClick={() => {
+                alert(JSON.stringify(this.state));
+              }}
+            >
+              登録
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
-      <Grid
-        container
-        item
-        xs={12}
-        sm={6}
-        md={6}
-        alignItems="stretch"
-        direction="column"
-        style={{ textAlign: 'center' }}
-      >
-        <Grid item container>
-          <Grid item xs={10}>
-            <TextField id="name" label="名前" variant="outlined" className={classes.textfield} />
-          </Grid>
-          <Grid item xs={2}>
-            <FormControl variant="outlined" className={classes.textfield}>
-              <InputLabel id="sex">性別</InputLabel>
-              <Select labelId="sex" id="sex" value={1} onChange={() => {}} label="性別">
-                <MenuItem value={1}>男</MenuItem>
-                <MenuItem value={2}>女</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
-        <Grid item>
-          <TextField
-            id="simpleProf"
-            label="ひとこと"
-            variant="outlined"
-            className={classes.textfield}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            id="profile"
-            label="自己紹介"
-            variant="outlined"
-            className={classes.textfield}
-            rows={4}
-            multiline={true}
-          />
-        </Grid>
-        <Grid item>
-          <Button variant="outlined" color="primary" className={classes.textfield}>
-            登録
-          </Button>
-        </Grid>
-      </Grid>
-    </Grid>
-  );
+    );
+  }
 }
-
-export default MakeCharacter;
