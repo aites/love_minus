@@ -9,8 +9,8 @@
 }
 
 .chat__character {
-  min-width: 300px;
-  flex-basis: 300px;
+  min-width: 30vw;
+  flex-basis: 30vw;
   height: calc(100vh - 64px);
   object-fit: contain;
 }
@@ -26,7 +26,6 @@
   height: calc(100vh - 220px);
   margin-bottom: 16px;
   padding: 16px;
-  display: grid;
   background-color: rgba(255, 255, 255, 0.7);
   border: 1px solid #FFF;
   border-radius: 8px;
@@ -51,7 +50,12 @@
 }
 
 .chatContents__name {
-  font-size: 12px;
+  font-size: 10px;
+}
+
+.chatContents__speechWrap {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .chatContents__speech {
@@ -59,7 +63,7 @@
   border-radius: 8px;
   background: #FFF;
   position: relative;
-  font-size: 20px;
+  font-size: 14px;
   line-height: 1.5;
   padding: 8px;
   margin: 8px 0;
@@ -67,13 +71,13 @@
 }
 
 .speech__your {
-  margin-right: auto;
+  margin-right: 8px;
   margin-left: 16px;
 }
 
 .speech__mine {
   margin-right: 16px;
-  margin-left: auto;
+  margin-left: 16px;
   max-width: calc(100% - 50px);
 }
 
@@ -144,29 +148,40 @@
 .chatSendMessage {
   display: flex;
   position: relative;
+  right: 0;
+  left: 0;
   bottom: 0;
+  margin: auto;
 }
 
 .chatSendMessage__button {
-  width: 108px;
-  height: 52px;
-  background-color: #3E87F8;
+  width: 60px;
+  height: 39px;
+  background: #3E87F8 !important;
+  margin-left: auto !important;
 
   &:hover {
-    background-color: #0069d9;
-    border-color: #0062cc;
+    background: #0069d9 !important;
+    border-color: #0062cc !important;
     box-shadow: none;
   }
 }
 
 .chatSendMessage__textArea {
-  width: calc(100% - 108px);
-  height: 52px;
+  width: calc(100% - 76px);
   border: 1px solid #676767;
   border-radius: 8px;
-  font-size: 20px;
+  font-size: 14px;
   line-height: 1.5;
   padding: 8px;
-  margin-right: 12px;
   box-sizing: border-box;
+  position: absolute;
+  bottom: 0;
+  z-index: 10;
+  max-height: 50vh;
+  resize: none;
+}
+
+.chatSendMessage__buttonIcon {
+  margin-left: 4px;
 }

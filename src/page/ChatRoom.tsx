@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button, TextareaAutosize } from '@material-ui/core';
 import ClassNames from 'classnames';
 import SendIcon from '@material-ui/icons/Send';
 import classes from './chatRoom.module.scss';
@@ -46,11 +46,13 @@ function UserSpeech(props: MessageInfo) {
   const sexClass = props.sex === 'man' ? classes.man : classes.woman;
   if (props.user === 'mine') {
     return (
-      <Box className={ClassNames(classes.chatContents__speech, classes.speech__mine, sexClass)}>
-        <Box className={classes.chatContents__name}>{props.name}</Box>
-        <span className={classes.mineBefore}></span>
-        <span className={classes.mineAfter}></span>
-        {props.comment}
+      <Box className={classes.chatContents__speechWrap}>
+        <Box className={ClassNames(classes.chatContents__speech, classes.speech__mine, sexClass)}>
+          <Box className={classes.chatContents__name}>{props.name}</Box>
+          <span className={classes.mineBefore}></span>
+          <span className={classes.mineAfter}></span>
+          {props.comment}
+        </Box>
       </Box>
     );
   } else {
@@ -66,16 +68,10 @@ function UserSpeech(props: MessageInfo) {
 }
 
 export default class ChatRoom extends React.Component {
-  onKeyDown(event: React.KeyboardEvent) {
-    const ENTER_KEY_CODE = 13;
-    if (event.keyCode === ENTER_KEY_CODE) {
-      console.log('test');
-    }
-  }
   render() {
     return (
       <Box className={classes.chat}>
-        <img className={classes.chat__character} src="/images/dansei_01_b.png" alt="" />
+        <img className={classes.chat__character} src="/images/josei_13_b.png" alt="" />
         <Box className={classes.chatContentsWrap}>
           <Box className={classes.chatContents}>
             <UserSpeech
@@ -104,18 +100,14 @@ export default class ChatRoom extends React.Component {
             />
           </Box>
           <Box className={classes.chatSendMessage}>
-            <textarea
+            <TextareaAutosize
               className={classes.chatSendMessage__textArea}
-              onKeyDown={(e) => this.onKeyDown(e)}
-            ></textarea>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              className={classes.chatSendMessage__button}
-              endIcon={<SendIcon />}
-            >
-              送信
+              aria-label="empty textarea"
+              placeholder=""
+              rowsMin={1}
+            />
+            <Button className={classes.chatSendMessage__button}>
+              <SendIcon className={classes.chatSendMessage__buttonIcon} />
             </Button>
           </Box>
         </Box>
