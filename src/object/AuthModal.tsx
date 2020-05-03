@@ -12,8 +12,11 @@ import {
   Popover,
   TextField,
   InputLabel,
+  Box,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import HelpOutline from '@material-ui/icons/HelpOutline';
+import classes from './authModal.module.scss';
 
 type AuthModalProps = {};
 type AuthModalStates = {
@@ -82,12 +85,43 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
 
   GuestPaper = () => {
     return (
-      <Paper style={{ width: 300, height: 400, padding: 10 }}>
+      <Paper className={classes.modal}>
+        <Box>
+          <h2 className={classes.modal__head}>新規登録</h2>
+          <TextField
+            id="name"
+            label="メールアドレス"
+            variant="outlined"
+            className={classes.modal__inputText}
+            onChange={(e) => {
+              this.setState({ email: e.target.value });
+            }}
+          />
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => {
+              this.login(this.state.email);
+            }}
+          >
+            登録
+          </Button>
+          {this.LoginPaper()}
+          {this.InfoContents()}
+        </Box>
+      </Paper>
+    );
+  };
+
+  LoginPaper = () => {
+    return (
+      <Box>
+        <h2 className={classes.modal__head}>ログイン</h2>
         <TextField
           id="name"
           label="メールアドレス"
           variant="outlined"
-          style={{ width: '100%' }}
+          className={classes.modal__inputText}
           onChange={(e) => {
             this.setState({ email: e.target.value });
           }}
@@ -99,9 +133,20 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
             this.login(this.state.email);
           }}
         >
-          登録
+          ログイン
         </Button>
-      </Paper>
+      </Box>
+    );
+  };
+
+  InfoContents = () => {
+    return (
+      <Box className={classes.modal__infoBox}>
+        <HelpOutline className={classes.modal__infoIcon}></HelpOutline>
+        <span>
+          メールアドレス宛に1回限り使えるログイン用の認証リンクを送ります。そちらのリンクをクリックすることでログインとなります。
+        </span>
+      </Box>
     );
   };
 
@@ -122,7 +167,7 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
             this.setState({ open: true, anchorEl: e.currentTarget });
           }}
         >
-          aaaa
+          ログイン/アカウント登録
         </Button>
         <Popover
           open={this.state.open}

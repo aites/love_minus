@@ -1,0 +1,29 @@
+.modal {
+  width: 300px;
+  height: 400px;
+  padding: 10px;
+}
+
+.modal__inputText {
+  width: 100%;
+}
+
+.modal__head {
+  font-size: 14px;
+  line-height: 1;
+  margin-bottom: 8px;
+  color: #333;
+  text-align: center;
+}
+
+.modal__infoBox {
+  border-color: #f2c744;
+  background-color: #fcf4da;
+  border-radius: 4px;
+  color: #454245;
+}
+
+.modal__infoIcon {
+  color: #f2c744;
+  margin-top: 4px;
+}
