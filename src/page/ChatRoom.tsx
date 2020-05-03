@@ -105,6 +105,7 @@ export default class ChatRoom extends React.Component {
               aria-label="empty textarea"
               placeholder=""
               rowsMin={1}
+              rowsMax={5}
             />
             <Button className={classes.chatSendMessage__button}>
               <SendIcon className={classes.chatSendMessage__buttonIcon} />

@@ -27,7 +27,7 @@ export default class MailBox extends React.Component {
             );
           })}
         </Grid>
-        <Grid item xs={12} sm={8} md={9} className={classes.main}>
+        <Grid item xs={12} sm={8} md={9} className={classes.content}>
           <ChatRoom />
         </Grid>
       </Grid>

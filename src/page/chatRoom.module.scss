@@ -16,18 +16,20 @@
 }
 
 .chatContentsWrap {
+  display: flex;
+  flex-direction: column;
   position: relative;
   margin: 16px 36px 16px 16px;
 }
 
 .chatContents {
+  flex-grow: 1;
   min-width: calc(100% - 332px);
   flex-basis: calc(100% - 332px);
-  height: calc(100vh - 220px);
   margin-bottom: 16px;
   padding: 16px;
   background-color: rgba(255, 255, 255, 0.7);
-  border: 1px solid #FFF;
+  border: 1px solid #fff;
   border-radius: 8px;
   overflow: auto;
 
@@ -45,7 +47,7 @@
   /* スクロールのつまみ部分の設定 */
   &::-webkit-scrollbar-thumb {
     border-radius: 8px;
-    background-color: #BBB;
+    background-color: #bbb;
   }
 }
 
@@ -59,9 +61,9 @@
 }
 
 .chatContents__speech {
-  border: 1px solid #6B6969;
+  border: 1px solid #6b6969;
   border-radius: 8px;
-  background: #FFF;
+  background: #fff;
   position: relative;
   font-size: 14px;
   line-height: 1.5;
@@ -91,7 +93,7 @@
   height: 0;
   border-style: solid;
   border-width: 10px 17.3px 10px 0;
-  border-color: transparent #FFF transparent transparent;
+  border-color: transparent #fff transparent transparent;
   z-index: 2;
 }
 
@@ -105,7 +107,7 @@
   height: 0;
   border-style: solid;
   border-width: 10px 17.3px 10px 0;
-  border-color: transparent #6B6969 transparent transparent;
+  border-color: transparent #6b6969 transparent transparent;
   z-index: 1;
 }
 
@@ -119,7 +121,7 @@
   height: 0;
   border-style: solid;
   border-width: 10px 0 10px 17.3px;
-  border-color: transparent transparent transparent #FFF;
+  border-color: transparent transparent transparent #fff;
   z-index: 2;
 }
 
@@ -133,16 +135,16 @@
   height: 0;
   border-style: solid;
   border-width: 10px 0 10px 17.3px;
-  border-color: transparent transparent transparent #6B6969;
+  border-color: transparent transparent transparent #6b6969;
   z-index: 1;
 }
 
 .man {
-  color: #6495ED;
+  color: #6495ed;
 }
 
 .woman {
-  color: #FC319F;
+  color: #fc319f;
 }
 
 .chatSendMessage {
@@ -151,13 +153,13 @@
   right: 0;
   left: 0;
   bottom: 0;
-  margin: auto;
 }
 
 .chatSendMessage__button {
+  bottom: 0;
   width: 60px;
   height: 39px;
-  background: #3E87F8 !important;
+  background: #3e87f8 !important;
   margin-left: auto !important;
 
   &:hover {
@@ -175,7 +177,6 @@
   line-height: 1.5;
   padding: 8px;
   box-sizing: border-box;
-  position: absolute;
   bottom: 0;
   z-index: 10;
   max-height: 50vh;
