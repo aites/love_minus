@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import firebase from '../modules/firebase';
-import { Paper, Button, Popover, TextField, InputLabel, Box } from '@material-ui/core';
+import { Paper, Button, Popover, TextField, InputLabel, Box, Grid } from '@material-ui/core';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import classes from './authModal.module.scss';
 
@@ -90,39 +90,48 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
       });
   }
 
-  GuestPaper = () => {
+  ModalPaper = () => {
     return (
       <Paper className={classes.modal}>
-        <Box>
-          <h2 className={classes.modal__head}>新規登録</h2>
-          <TextField
-            id="name"
-            label="メールアドレス"
-            variant="outlined"
-            className={classes.modal__inputText}
-            onChange={(e) => {
-              this.setState({ email: e.target.value });
-            }}
-          />
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => {
-              this.login(this.state.email);
-            }}
-          >
-            登録
-          </Button>
+        <Grid container direction="column" justify="center" spacing={2}>
+          {this.GuestPaper()}
           {this.LoginPaper()}
           {this.InfoContents()}
-        </Box>
+        </Grid>
       </Paper>
+    );
+  };
+
+  GuestPaper = () => {
+    return (
+      <Grid item xs={12}>
+        <h2 className={classes.modal__head}>新規登録</h2>
+        <TextField
+          id="name"
+          label="メールアドレス"
+          variant="outlined"
+          className={classes.modal__inputText}
+          onChange={(e) => {
+            this.setState({ email: e.target.value });
+          }}
+        />
+        <Button
+          variant="outlined"
+          color="primary"
+          className={classes.modal__button}
+          onClick={() => {
+            this.login(this.state.email);
+          }}
+        >
+          登録
+        </Button>
+      </Grid>
     );
   };
 
   LoginPaper = () => {
     return (
-      <Box>
+      <Grid item xs={12}>
         <h2 className={classes.modal__head}>ログイン</h2>
         <TextField
           id="name"
@@ -136,25 +145,28 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
         <Button
           variant="outlined"
           color="primary"
+          className={classes.modal__button}
           onClick={() => {
             this.login(this.state.email);
           }}
         >
           ログイン
         </Button>
-      </Box>
+      </Grid>
     );
   };
 
   InfoContents = () => {
     return (
-      <Box className={classes.modal__infoBox}>
-        <HelpOutline className={classes.modal__infoIcon}></HelpOutline>
-        <span>
-          メールアドレス宛に1回限り使えるログイン用の認証リンクを送ります。そちらのリンクをクリックすることでログインとなります。
-        </span>
-        <span>{this.state.userInfo?.uid}</span>
-      </Box>
+      <Grid item xs={12}>
+        <Box className={classes.modal__infoBox}>
+          <HelpOutline className={classes.modal__infoIcon}></HelpOutline>
+          <span className={classes.modal__infoText}>
+            メールアドレス宛に1回限り使えるログイン用の認証リンクを送ります。そちらのリンクをクリックすることでログインとなります。
+          </span>
+          <span>{this.state.userInfo?.uid}</span>
+        </Box>
+      </Grid>
     );
   };
 
@@ -187,7 +199,7 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
             horizontal: 'center',
           }}
         >
-          {this.state.userInfo?.isAnonymous ? this.GuestPaper() : this.userPaper()}
+          {this.state.userInfo?.isAnonymous ? this.ModalPaper() : this.userPaper()}
         </Popover>
       </>
     );
