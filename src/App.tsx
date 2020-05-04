@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
+import { AppBar, Toolbar, Tabs, Tab } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import './App.scss';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
@@ -29,27 +29,48 @@ const theme = createMuiTheme({
     // two indexes within its tonal palette.
     // E.g., shift from Red 500 to Red 300 or Red 700.
     tonalOffset: 0.2,
+    success: {
+      main: '#bac778',
+    },
   },
 });
+
 function App() {
+  const [value, setValue] = React.useState(2);
+
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    setValue(newValue);
+  };
   return (
     <ThemeProvider theme={theme}>
       <Router>
         <AppBar position="sticky" color="primary">
           <Toolbar>
-            {/* <IconButton edge="start" color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton> */}
-            <Typography variant="h6">LoveMinus</Typography>
-            <Link to="/timeline">
-              <Button color="inherit">タイムライン</Button>
-            </Link>
-            <Link to="/mailbox">
-              <Button color="inherit">メールボックス</Button>
-            </Link>
-            <Link to="/character">
-              <Button color="inherit">キャラクター作成</Button>
-            </Link>
+            <h1 className="title">
+              <img className="logo" src="../images/logo.png" alt="LoveMinus" />
+            </h1>
+            <Tabs
+              value={value}
+              TabIndicatorProps={{ style: { background: '#FFF' } }}
+              onChange={handleChange}
+              aria-label="ヘッダーメニュー"
+            >
+              <Tab
+                label={<span className="tabLabel">タイムライン</span>}
+                component={Link}
+                to="/timeline"
+              />
+              <Tab
+                label={<span className="tabLabel">メールボックス</span>}
+                component={Link}
+                to="/mailbox"
+              />
+              <Tab
+                label={<span className="tabLabel">キャラクター作成</span>}
+                component={Link}
+                to="/character"
+              />
+            </Tabs>
             <div style={{ flexGrow: 1 }}></div>
             <AuthModal />
           </Toolbar>
