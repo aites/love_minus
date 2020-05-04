@@ -9,7 +9,9 @@
   top: 0;
   right: 0;
   left: 0;
+  bottom: 0;
   max-height: calc(100% - 60px);
+  align-items: flex-start;
 }
 
 .closeIcon {
@@ -22,7 +24,6 @@
 .imageWrapper {
   min-width: 30%;
   flex-basis: 30%;
-  height: 100%;
   position: relative;
   padding: 0 24px;
   overflow: hidden;
