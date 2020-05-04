@@ -9,7 +9,6 @@ import {
   Select,
   MenuItem,
 } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import NavigateNext from '@material-ui/icons/NavigateNext';
 import classes from './profileModal.module.scss';
@@ -37,7 +36,6 @@ export default class ProfileModal extends Component<ProfileModalProps, ProfileMo
     const prof = this.state.profile;
     return (
       <Paper className={classes.modal}>
-        <CloseIcon className={classes.closeIcon} />
         <Box className={classes.imageWrapper}>
           <NavigateBefore className={classes.prevIcon} />
           <img className={classes.image} src={prof.icon} alt="" />
