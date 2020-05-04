@@ -6,10 +6,10 @@ import ProfileModal from '../object/ProfileModal';
 import { getTimeLine, Profile } from '../modules/models/Profile';
 
 type TimeLineProps = {};
-interface TimeLineState {
+type TimeLineState = {
   profileList: Profile[];
   showProfile: Profile | null;
-}
+};
 
 export default class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
   constructor(props: TimeLineProps) {

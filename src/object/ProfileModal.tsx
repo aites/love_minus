@@ -14,6 +14,8 @@ import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import NavigateNext from '@material-ui/icons/NavigateNext';
 import classes from './profileModal.module.scss';
 import { Profile } from '../modules/models/Profile';
+import { createChatRoom } from '../modules/models/Chatroom';
+import firebase from 'firebase';
 
 type ProfileModalProps = {
   profile: Profile;
@@ -32,6 +34,26 @@ export default class ProfileModal extends Component<ProfileModalProps, ProfileMo
       sex: 1,
       name: '',
     };
+    this.createChatroom = this.createChatroom.bind(this);
+  }
+
+  async createChatroom() {
+    const ownerUid = this.state.profile.author || '';
+    const playerUid = firebase.auth().currentUser?.uid || '';
+    await createChatRoom({
+      joinUsers: [ownerUid, playerUid],
+      ownerUid,
+      playerUid,
+      ownerInfo: this.state.profile,
+      playerInfo: {
+        name: this.state.name,
+        sex: this.state.sex,
+        icon: '',
+        miniIcon: '',
+        profile: '',
+        simpleProf: '',
+      },
+    });
   }
   render() {
     const prof = this.state.profile;
@@ -72,7 +94,12 @@ export default class ProfileModal extends Component<ProfileModalProps, ProfileMo
                 <MenuItem value={2}>女</MenuItem>
               </Select>
             </FormControl>
-            <Button style={{ marginLeft: 'auto' }} color="secondary" variant="outlined">
+            <Button
+              style={{ marginLeft: 'auto' }}
+              color="secondary"
+              variant="outlined"
+              onClick={this.createChatroom}
+            >
               チャット開始
             </Button>
           </Box>

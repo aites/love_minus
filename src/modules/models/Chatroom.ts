@@ -5,7 +5,7 @@ export type ChatRoom = {
   joinUsers: string[];
   ownerUid: string; // チャットオーナー(TimeLineに書いた人)
   playerUid: string; // チャットを申し込んだ人
-  onwerInfo: Profile;
+  ownerInfo: Profile;
   playerInfo: Profile;
 };
 
