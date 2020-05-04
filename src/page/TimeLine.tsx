@@ -50,6 +50,7 @@ export default class TimeLine extends React.Component<TimeLineProps, TimeLineSta
           );
         })}
         <Modal
+          disableAutoFocus
           open={showProfile != null}
           onClose={() => {
             this.setState({ showProfile: null });
