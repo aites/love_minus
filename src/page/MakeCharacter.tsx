@@ -10,7 +10,6 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import classes from './makeCharacter.module.scss';
-import firebase from '../modules/firebase';
 import { createProfile } from '../modules/models/Profile';
 
 interface Character {

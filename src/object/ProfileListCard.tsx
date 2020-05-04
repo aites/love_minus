@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, Typography, Grid, Button, Box } from '@material-ui/core';
+import { Paper, Typography, Button, Box } from '@material-ui/core';
 import classes from './profileListCard.module.scss';
 import { Profile } from '../modules/models/Profile';
 

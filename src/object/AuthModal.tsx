@@ -1,20 +1,6 @@
 import React, { Component } from 'react';
 import firebase from '../modules/firebase';
-import {
-  createStyles,
-  makeStyles,
-  Theme,
-  Paper,
-  Button,
-  Popper,
-  Typography,
-  Fade,
-  Popover,
-  TextField,
-  InputLabel,
-  Box,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+import { Paper, Button, Popover, TextField, InputLabel, Box } from '@material-ui/core';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import classes from './authModal.module.scss';
 

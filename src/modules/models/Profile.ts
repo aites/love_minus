@@ -1,4 +1,4 @@
-import firebase, { db } from '../firebase';
+import firebase from '../firebase';
 
 export type Profile = {
   name: string;

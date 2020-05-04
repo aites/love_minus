@@ -1,5 +1,5 @@
 import React from 'react';
-import { Theme, Grid, Divider, Badge, Typography } from '@material-ui/core';
+import { Grid, Divider, Typography } from '@material-ui/core';
 import ChatRoom from './ChatRoom';
 import classes from './mailBox.module.scss';
 
