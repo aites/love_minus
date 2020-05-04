@@ -31,23 +31,6 @@
   border: 1px solid #fff;
   border-radius: 8px;
   overflow: auto;
-
-  &::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-
-  /* スクロールの背景の設定 */
-  &::-webkit-scrollbar-track {
-    border-radius: 5px;
-    box-shadow: 0 0 4px rgba(255, 255, 255, 0) inset;
-  }
-
-  /* スクロールのつまみ部分の設定 */
-  &::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    background-color: #bbb;
-  }
 }
 
 .chatContents__name {
