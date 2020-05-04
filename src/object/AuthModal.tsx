@@ -28,6 +28,7 @@ type AuthModalStates = {
 type UserInfo = {
   uid: string;
   email: string;
+  isAnonymous: boolean;
 };
 
 class AuthModal extends Component<AuthModalProps, AuthModalStates> {
@@ -37,6 +38,9 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
   }
 
   async componentDidMount() {
+    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+    await firebase.auth().signInAnonymously();
+
     if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
       // メールリンクのURLからきた場合
       let email = window.localStorage.getItem('emailForSignIn');
@@ -44,17 +48,34 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
         // 保存されたメアドが見つからなかったので入力を求める
         email = window.prompt('Please provide your email for confirmation');
       }
-      const { additionalUserInfo } = await firebase
-        .auth()
-        .signInWithEmailLink(email, window.location.href);
+      const currentUser = firebase.auth().currentUser;
+      if (currentUser) {
+        const credential = firebase.auth.EmailAuthProvider.credentialWithLink(
+          email,
+          window.location.href
+        );
+        try {
+          // 匿名ユーザーにメールアドレスを紐づける
+          await currentUser.linkWithCredential(credential);
+        } catch (e) {
+          switch (e.code) {
+            // すでに登録済みアドレスの場合, ログインする
+            case 'auth/email-already-in-use':
+              await firebase.auth().signInWithEmailLink(email, window.location.href);
+              break;
+          }
+        }
+      } else {
+        await firebase.auth().signInWithEmailLink(email, window.location.href);
+      }
     }
     firebase.auth().onAuthStateChanged((user) => {
-      //      this.setState({ user });
       if (user != null) {
         this.setState({
           userInfo: {
             uid: user.uid,
             email: user.email || '',
+            isAnonymous: user.isAnonymous,
           },
         });
       }
@@ -146,6 +167,7 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
         <span>
           メールアドレス宛に1回限り使えるログイン用の認証リンクを送ります。そちらのリンクをクリックすることでログインとなります。
         </span>
+        <span>{this.state.userInfo?.uid}</span>
       </Box>
     );
   };
@@ -154,7 +176,6 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
     return (
       <>
         <InputLabel>{this.state.userInfo?.uid}</InputLabel>
-        <Button onClick={this.logout.bind(this)}>LogOut</Button>
       </>
     );
   };
@@ -180,7 +201,7 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
             horizontal: 'center',
           }}
         >
-          {this.state.userInfo === null ? this.GuestPaper() : this.userPaper()}
+          {this.state.userInfo?.isAnonymous ? this.GuestPaper() : this.userPaper()}
         </Popover>
       </>
     );

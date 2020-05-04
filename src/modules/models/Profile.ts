@@ -1,5 +1,4 @@
 import firebase, { db } from '../firebase';
-import ProfileListCard from '../../object/ProfileListCard';
 
 export type Profile = {
   name: string;

@@ -76,7 +76,7 @@ export default class TimeLine extends React.Component<TimeLineProps, TimeLineSta
           }}
         >
           <Fade in={showProfile != null}>
-            {showProfile ? <ProfileModal {...showProfile} /> : <div></div>}
+            {showProfile ? <ProfileModal profile={showProfile} /> : <div></div>}
           </Fade>
         </Modal>
       </>
