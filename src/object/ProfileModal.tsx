@@ -1,23 +1,23 @@
 import React from 'react';
 import { Paper, Button, Box } from '@material-ui/core';
-import { ListProfileInterface } from './ProfileListCard';
 import CloseIcon from '@material-ui/icons/Close';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import NavigateNext from '@material-ui/icons/NavigateNext';
 import classes from './profileModal.module.scss';
+import { Profile } from '../modules/models/Profile';
 
 /**
  * ユーザープロフィールのモーダル
  * @param prof
  */
 
-function ProfileModal(prof: ListProfileInterface) {
+function ProfileModal(prof: Profile) {
   return (
     <Paper className={classes.modal}>
       <CloseIcon className={classes.closeIcon} />
       <Box className={classes.imageWrapper}>
         <NavigateBefore className={classes.prevIcon} />
-        <img className={classes.image} src={prof.modalImage} alt="" />
+        <img className={classes.image} src={prof.icon} alt="" />
         <NavigateNext className={classes.nextIcon} />
       </Box>
       <Box className={classes.contents}>

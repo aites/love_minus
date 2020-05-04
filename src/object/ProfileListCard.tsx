@@ -1,21 +1,14 @@
 import React from 'react';
 import { Paper, Typography, Grid, Button, Box } from '@material-ui/core';
 import classes from './profileListCard.module.scss';
+import { Profile } from '../modules/models/Profile';
 
-export interface ListProfileInterface {
-  name: string;
-  imageUrl: string;
-  simpleProf: string; // ひとこと
-  modalImage: string;
-  profile: string;
-}
-
-function ProfileListCard(prof: ListProfileInterface) {
+function ProfileListCard(prof: Profile) {
   return (
     <Paper style={{ margin: 10 }}>
       <Box display="flex">
         <Box>
-          <img className={classes.image} src={prof.imageUrl} alt="" />
+          <img className={classes.image} src={prof.miniIcon} alt="" />
         </Box>
         <Box flexGrow={1}>
           <Typography gutterBottom variant="subtitle1">

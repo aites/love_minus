@@ -10,18 +10,13 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import classes from './makeCharacter.module.scss';
+import firebase from '../modules/firebase';
+import { createProfile } from '../modules/models/Profile';
 
 interface Character {
   sex: number;
   icon: string;
   image: string;
-}
-interface Profile {
-  name: String;
-  sex: number;
-  character: Character;
-  profile: String;
-  simpleProf: String;
 }
 
 const characterList: Array<Character> = [
@@ -196,7 +191,16 @@ export default class MakeCharacter extends Component<MakeCharacterProps, MakeCha
               color="primary"
               className={classes.textfield}
               onClick={() => {
-                alert(JSON.stringify(this.state));
+                createProfile({
+                  name: this.state.name,
+                  sex: this.state.sex,
+                  icon: this.state.selected.image,
+                  miniIcon: this.state.selected.icon,
+                  profile: this.state.profile,
+                  simpleProf: this.state.simpleProfile,
+                }).then(() => {
+                  window.location.href = '/timeline';
+                });
               }}
             >
               登録
