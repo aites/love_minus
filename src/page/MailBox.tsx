@@ -22,6 +22,7 @@ export default class MailBox extends React.Component<MailBoxProps, MailBoxState>
   }
   componentDidMount() {
     getChatRooms({ limit: 30 }).then((chatrooms) => {
+      console.log(chatrooms);
       this.setState({
         chatRoomList: chatrooms,
         isLoading: false,
@@ -61,7 +62,7 @@ export default class MailBox extends React.Component<MailBoxProps, MailBoxState>
           )}
         </Grid>
         <Grid item xs={12} sm={8} md={9} className={classes.content} style={{ overflow: 'hidden' }}>
-          <ChatRoom />
+          <ChatRoom chatroomId="4lyJt4c6OBsoUocSCcgh" />
         </Grid>
       </Grid>
     );

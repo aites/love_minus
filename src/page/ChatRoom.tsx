@@ -3,6 +3,7 @@ import { Box, Button, TextareaAutosize } from '@material-ui/core';
 import ClassNames from 'classnames';
 import SendIcon from '@material-ui/icons/Send';
 import classes from './chatRoom.module.scss';
+import { ChatMessage, getChatMessage, postChatMessage } from '../modules/models/Chatroom';
 
 interface MessageInfo {
   user: string;
@@ -67,37 +68,41 @@ function UserSpeech(props: MessageInfo) {
   }
 }
 
-export default class ChatRoom extends React.Component {
+type ChatRoomProps = {
+  chatroomId: string;
+};
+type ChatRoomState = {
+  chatroomId: string;
+  messageList: ChatMessage[];
+  message: string;
+};
+
+export default class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
+  constructor(props: ChatRoomProps) {
+    super(props);
+    this.state = { chatroomId: props.chatroomId, messageList: [], message: '' };
+  }
+  componentDidMount() {
+    getChatMessage({ chatroomId: this.state.chatroomId, limit: 100 }).then((list) => {
+      this.setState({ messageList: list });
+    });
+  }
   render() {
     return (
       <Box className={classes.chat}>
         <img className={classes.chat__character} src="/images/josei_13_b.png" alt="" />
         <Box className={classes.chatContentsWrap}>
           <Box className={classes.chatContents}>
-            <UserSpeech
-              user={status.user}
-              sex={status.sex}
-              name={status.name}
-              comment={status.comment}
-            />
-            <UserSpeech
-              user={status2.user}
-              sex={status2.sex}
-              name={status2.name}
-              comment={status2.comment}
-            />
-            <UserSpeech
-              user={status3.user}
-              sex={status3.sex}
-              name={status3.name}
-              comment={status3.comment}
-            />
-            <UserSpeech
-              user={status4.user}
-              sex={status4.sex}
-              name={status4.name}
-              comment={status4.comment}
-            />
+            {this.state.messageList.map((message) => {
+              return (
+                <UserSpeech
+                  user={status.user}
+                  sex={status.sex}
+                  name={status.name}
+                  comment={message.message}
+                />
+              );
+            })}
           </Box>
           <Box className={classes.chatSendMessage}>
             <TextareaAutosize
@@ -106,8 +111,24 @@ export default class ChatRoom extends React.Component {
               placeholder=""
               rowsMin={1}
               rowsMax={5}
+              value={this.state.message}
+              onChange={(e) => {
+                this.setState({ message: e.target.value });
+              }}
             />
-            <Button className={classes.chatSendMessage__button}>
+            <Button
+              className={classes.chatSendMessage__button}
+              onClick={async () => {
+                await postChatMessage({
+                  chatroomId: this.props.chatroomId,
+                  message: this.state.message,
+                }).then(() => {
+                  getChatMessage({ chatroomId: this.state.chatroomId, limit: 100 }).then((list) => {
+                    this.setState({ messageList: list });
+                  });
+                });
+              }}
+            >
               <SendIcon className={classes.chatSendMessage__buttonIcon} />
             </Button>
           </Box>
