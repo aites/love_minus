@@ -3,6 +3,7 @@ import firebase from '../modules/firebase';
 import { Paper, Button, Popover, TextField, InputLabel, Box, Grid } from '@material-ui/core';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import classes from './authModal.module.scss';
+import Validation from '../modules/models/formValidation';
 
 type AuthModalProps = {};
 type AuthModalStates = {
@@ -10,6 +11,8 @@ type AuthModalStates = {
   anchorEl: HTMLButtonElement | null;
   email: string;
   userInfo: UserInfo | null;
+  validation01: string;
+  validation02: string;
 };
 type UserInfo = {
   uid: string;
@@ -20,7 +23,14 @@ type UserInfo = {
 class AuthModal extends Component<AuthModalProps, AuthModalStates> {
   constructor(props: AuthModalProps) {
     super(props);
-    this.state = { open: false, anchorEl: null, email: '', userInfo: null };
+    this.state = {
+      open: false,
+      anchorEl: null,
+      email: '',
+      userInfo: null,
+      validation01: '',
+      validation02: '',
+    };
   }
 
   async componentDidMount() {
@@ -90,6 +100,22 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
       });
   }
 
+  formValidation = (e: React.ChangeEvent<HTMLInputElement>, stateKey: string) => {
+    const key = e.target.name;
+    const value = e.target.value;
+    const message = String(Validation.formValidate(key, value));
+
+    if (stateKey === 'validation01') {
+      this.setState({
+        validation01: message,
+      });
+    } else if (stateKey === 'validation02') {
+      this.setState({
+        validation02: message,
+      });
+    }
+  };
+
   ModalPaper = () => {
     return (
       <Paper className={classes.modal}>
@@ -110,11 +136,15 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
           id="name"
           label="メールアドレス"
           variant="outlined"
+          type="email"
+          name="email"
           className={classes.modal__inputText}
-          onChange={(e) => {
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             this.setState({ email: e.target.value });
+            this.formValidation(e, 'validation01');
           }}
         />
+        <p className={classes.errorMessage}>{this.state.validation01}</p>
         <Button
           variant="outlined"
           color="primary"
@@ -137,11 +167,15 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
           id="name"
           label="メールアドレス"
           variant="outlined"
+          type="email"
+          name="email"
           className={classes.modal__inputText}
-          onChange={(e) => {
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             this.setState({ email: e.target.value });
+            this.formValidation(e, 'validation02');
           }}
         />
+        <p className={classes.errorMessage}>{this.state.validation02}</p>
         <Button
           variant="outlined"
           color="primary"
