@@ -16,6 +16,7 @@
 
 .chatContentsWrap {
   display: flex;
+  flex: 1;
   flex-direction: column;
   position: relative;
   margin: 16px 36px 16px 16px;
@@ -40,7 +41,13 @@
 .chatContents__speechWrap {
   display: flex;
   justify-content: flex-end;
+
+  &.your {
+    justify-content: flex-start;
+  }
 }
+
+
 
 .chatContents__speech {
   border: 1px solid #6b6969;
@@ -51,7 +58,6 @@
   line-height: 1.5;
   padding: 8px;
   margin: 8px 0;
-  display: inline-block;
 }
 
 .speech__your {

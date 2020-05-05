@@ -20,29 +20,6 @@ const status: MessageInfo = {
   comment: '海老煎餅をやろうか？',
 };
 
-const status2: MessageInfo = {
-  user: 'mine',
-  sex: 'woman',
-  name: '自分',
-  comment:
-    'ほしい！！ちょうだい！！ほしい！！ちょうだい！！ほしい！！ちょうだい！！ほしい！！ちょうだい！！ほしい！！ちょうだい！！ほしい！！ちょうだい！！ほしい！！ちょうだい！！ほしい！！ちょうだい！！',
-};
-
-const status3: MessageInfo = {
-  user: 'your',
-  sex: 'man',
-  name: '跡部',
-  comment:
-    '跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国跡部王国',
-};
-
-const status4: MessageInfo = {
-  user: 'mine',
-  sex: 'woman',
-  name: '自分',
-  comment: '跡部王国うれしい',
-};
-
 function UserSpeech(props: MessageInfo) {
   const sexClass = props.sex === 'man' ? classes.man : classes.woman;
   if (props.user === 'mine') {
@@ -58,11 +35,13 @@ function UserSpeech(props: MessageInfo) {
     );
   } else {
     return (
-      <Box className={ClassNames(classes.chatContents__speech, classes.speech__your, sexClass)}>
-        <Box className={classes.chatContents__name}>{props.name}</Box>
-        <span className={classes.yourBefore}></span>
-        <span className={classes.yourAfter}></span>
-        {props.comment}
+      <Box className={ClassNames(classes.chatContents__speechWrap, classes.your)}>
+        <Box className={ClassNames(classes.chatContents__speech, classes.speech__your, sexClass)}>
+          <Box className={classes.chatContents__name}>{props.name}</Box>
+          <span className={classes.yourBefore}></span>
+          <span className={classes.yourAfter}></span>
+          {props.comment}
+        </Box>
       </Box>
     );
   }
