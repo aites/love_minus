@@ -36,7 +36,7 @@ const theme = createMuiTheme({
 });
 
 function App() {
-  const [value, setValue] = React.useState(2);
+  const [value, setValue] = React.useState(-1);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -47,7 +47,9 @@ function App() {
         <AppBar position="sticky" color="primary">
           <Toolbar>
             <h1 className="title">
-              <img className="logo" src="../images/logo.png" alt="LoveMinus" />
+              <Link to="/" onClick={(e) => handleChange(e, -1)}>
+                <img className="logo" src="../images/logo.png" alt="LoveMinus" />
+              </Link>
             </h1>
             <Tabs
               value={value}
