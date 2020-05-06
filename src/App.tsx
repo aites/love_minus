@@ -7,6 +7,7 @@ import TimeLine from './page/TimeLine';
 import MailBox from './page/MailBox';
 import MakeCharacter from './page/MakeCharacter';
 import AuthModal from './object/AuthModal';
+import Top from './page/Top';
 
 const theme = createMuiTheme({
   palette: {
@@ -78,6 +79,7 @@ function App() {
           </Toolbar>
         </AppBar>
         <Switch>
+          <Route exact={true} path="/" component={Top} />
           <Route exact={true} path="/timeline" component={TimeLine} />
           <Route path="/mailbox" component={MailBox} />
           <Route path="/character" component={MakeCharacter} />
