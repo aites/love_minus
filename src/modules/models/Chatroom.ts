@@ -39,6 +39,30 @@ export async function getChatRooms(option: ChatRoomSearchOption) {
   });
 }
 
+export async function getChatRoomsSnapShot(
+  option: ChatRoomSearchOption,
+  callback: (chatroom: ChatRoom[]) => void
+) {
+  const currentUser = await new Promise((resolve, reject) => {
+    firebase.auth().onAuthStateChanged((user) => {
+      resolve(user?.uid);
+    });
+  });
+  return db
+    .collection('chatroom')
+    .where('joinUsers', 'array-contains', currentUser)
+    .limit(option.limit)
+    .onSnapshot((snapShot) => {
+      const list: ChatRoom[] = [];
+      snapShot.forEach((doc) => {
+        const data = doc.data() as ChatRoom;
+        data.docId = doc.id;
+        list.push(data);
+      });
+      callback(list);
+    });
+}
+
 export type ChatMessage = {
   chatroomId: string;
   ownerUid?: string;
@@ -65,6 +89,30 @@ export async function getChatMessage(option: GetChatMessageOption) {
     const data = doc.data();
     return data as ChatMessage;
   });
+}
+export async function getChatMessageSnapShot(
+  option: GetChatMessageOption,
+  callback: (chatroom: ChatMessage[]) => void
+) {
+  const currentUser = await new Promise((resolve, reject) => {
+    firebase.auth().onAuthStateChanged((user) => {
+      resolve(user?.uid);
+    });
+  });
+
+  return db
+    .collection('chatroom')
+    .doc(option.chatroomId)
+    .collection('message')
+    .limit(option.limit)
+    .onSnapshot((snapShot) => {
+      const list: ChatMessage[] = [];
+      snapShot.forEach((doc) => {
+        const data = doc.data() as ChatMessage;
+        list.push(data);
+      });
+      callback(list);
+    });
 }
 export async function postChatMessage(chatMessage: ChatMessage) {
   const currentUser = await new Promise((resolve, reject) => {
