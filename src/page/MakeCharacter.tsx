@@ -128,6 +128,9 @@ export default class MakeCharacter extends Component<MakeCharacterProps, MakeCha
           style={{ textAlign: 'center' }}
         >
           <Grid item container>
+            <h2 className={classes.title}>キャラクター情報</h2>
+          </Grid>
+          <Grid item container>
             <Grid item xs={10}>
               <TextField
                 id="name"
