@@ -1,13 +1,12 @@
 import React from 'react';
-import { AppBar, Toolbar, Tabs, Tab } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import './App.scss';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import TimeLine from './page/TimeLine';
 import MailBox from './page/MailBox';
 import MakeCharacter from './page/MakeCharacter';
-import AuthModal from './object/AuthModal';
 import Top from './page/Top';
+import MainAppBar from './object/MainAppBar';
 
 const theme = createMuiTheme({
   palette: {
@@ -37,47 +36,10 @@ const theme = createMuiTheme({
 });
 
 function App() {
-  const [value, setValue] = React.useState(-1);
-
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue);
-  };
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <AppBar position="sticky" color="primary">
-          <Toolbar>
-            <h1 className="title">
-              <Link to="/" onClick={(e) => handleChange(e, -1)}>
-                <img className="logo" src="../images/logo.png" alt="LoveMinus" />
-              </Link>
-            </h1>
-            <Tabs
-              value={value}
-              TabIndicatorProps={{ style: { background: '#FFF' } }}
-              onChange={handleChange}
-              aria-label="ヘッダーメニュー"
-            >
-              <Tab
-                label={<span className="tabLabel">タイムライン</span>}
-                component={Link}
-                to="/timeline"
-              />
-              <Tab
-                label={<span className="tabLabel">メールボックス</span>}
-                component={Link}
-                to="/mailbox"
-              />
-              <Tab
-                label={<span className="tabLabel">キャラクター作成</span>}
-                component={Link}
-                to="/character"
-              />
-            </Tabs>
-            <div style={{ flexGrow: 1 }}></div>
-            <AuthModal />
-          </Toolbar>
-        </AppBar>
+        <MainAppBar></MainAppBar>
         <Switch>
           <Route exact={true} path="/" component={Top} />
           <Route exact={true} path="/timeline" component={TimeLine} />
