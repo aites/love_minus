@@ -8,16 +8,20 @@ export type Profile = {
   profile: string;
   simpleProf: string;
   author?: string;
-  createdAt?: firebase.firestore.FieldValue;
+  createdAt?: firebase.firestore.Timestamp;
 };
 
 export async function createProfile(profile: Profile) {
-  profile.author = firebase.auth().currentUser?.uid || '';
-  profile.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-
   const db = firebase.firestore();
   const docId = db.collection('timeline').doc().id;
-  await db.collection('timeline').doc(docId).set(profile);
+  await db
+    .collection('timeline')
+    .doc(docId)
+    .set({
+      ...profile,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      author: firebase.auth().currentUser?.uid || '',
+    });
   return profile;
 }
 

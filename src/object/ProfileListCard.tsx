@@ -2,6 +2,7 @@ import React from 'react';
 import { Paper, Typography, Button, Box } from '@material-ui/core';
 import classes from './profileListCard.module.scss';
 import { Profile } from '../modules/models/Profile';
+import { timestampToString } from '../modules/firebase';
 
 function ProfileListCard(prof: Profile) {
   return (
@@ -12,7 +13,7 @@ function ProfileListCard(prof: Profile) {
         </Box>
         <Box flexGrow={1}>
           <Typography gutterBottom variant="subtitle1">
-            {prof.name}(10分前)
+            {prof.name}({timestampToString(prof.createdAt)})
           </Typography>
           <Typography gutterBottom variant="subtitle1">
             <p>{prof.simpleProf}</p>
