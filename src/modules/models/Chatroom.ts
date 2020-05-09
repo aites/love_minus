@@ -8,12 +8,22 @@ export type ChatRoom = {
   playerUid: string; // チャットを申し込んだ人
   ownerInfo: Profile;
   playerInfo: Profile;
+  lastMessage?: string;
+  createdAt?: firebase.firestore.Timestamp;
+  updatedAt?: firebase.firestore.Timestamp;
 };
 
 export async function createChatRoom(chatRoom: ChatRoom) {
   const db = firebase.firestore();
   const docId = db.collection('chatroom').doc().id;
-  await db.collection('chatroom').doc(docId).set(chatRoom);
+  await db
+    .collection('chatroom')
+    .doc(docId)
+    .set({
+      ...chatRoom,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
   return chatRoom;
 }
 
@@ -67,6 +77,7 @@ export type ChatMessage = {
   chatroomId: string;
   ownerUid?: string;
   message: string;
+  createdAt?: firebase.firestore.FieldValue;
 };
 
 type GetChatMessageOption = {
@@ -120,13 +131,17 @@ export async function postChatMessage(chatMessage: ChatMessage) {
       resolve(user?.uid);
     });
   });
+  chatMessage.createdAt = firebase.firestore.FieldValue.serverTimestamp();
 
   chatMessage.ownerUid = currentUser as string;
-
-  await db
-    .collection('chatroom')
-    .doc(chatMessage.chatroomId)
-    .collection('message')
-    .add(chatMessage);
+  const batch = db.batch();
+  const roomRef = db.collection('chatroom').doc(chatMessage.chatroomId);
+  const messageRef = roomRef.collection('message').doc();
+  batch.set(messageRef, chatMessage);
+  batch.update(roomRef, {
+    lastMessage: chatMessage.message,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+  await batch.commit();
   return chatMessage;
 }

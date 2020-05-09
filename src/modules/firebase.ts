@@ -17,3 +17,14 @@ firebase.initializeApp(firebaseConfig);
 
 export default firebase;
 export const db = firebase.firestore();
+export const timestampToString = (timestamp?: firebase.firestore.Timestamp) => {
+  if (!timestamp) return '';
+  const diff = firebase.firestore.Timestamp.now().seconds - timestamp.seconds;
+  if (diff <= 60) return '1分以内';
+  if (diff <= 5 * 60) return '5分以内';
+  if (diff <= 60 * 60) return '1時間以内';
+  if (diff <= 6 * 60 * 60) return '6時間以内';
+  if (diff <= 12 * 60 * 60) return '12時間以内';
+  if (diff <= 24 * 60 * 60) return '24時間以内';
+  return '24時間以上前';
+};

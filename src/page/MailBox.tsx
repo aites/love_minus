@@ -4,6 +4,7 @@ import { Grid, Divider, Typography, CircularProgress } from '@material-ui/core';
 import ChatRoom from './ChatRoom';
 import classes from './mailBox.module.scss';
 import { ChatRoom as ChatRoomModel, getChatRoomsSnapShot } from '../modules/models/Chatroom';
+import { timestampToString } from '../modules/firebase';
 import { getChatroomId } from '../modules/searchParams';
 
 interface MailBoxProps extends RouteComponentProps<{}> {
@@ -73,7 +74,10 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
                     <Grid item>
                       <Typography>{room.ownerInfo.name}</Typography>
                       <Typography noWrap variant="caption">
-                        もしもし〜
+                        {room.lastMessage}
+                      </Typography>
+                      <Typography noWrap variant="caption">
+                        {timestampToString(room.updatedAt)}
                       </Typography>
                     </Grid>
                   </Grid>
