@@ -25,7 +25,7 @@ class MainAppBar extends Component<MainAppBarProps, MainAppBarStates> {
     '/character': 2,
   };
   componentDidUpdate(prevProps: MainAppBarProps) {
-    if (this.props.pathname != prevProps.pathname) {
+    if (this.props.pathname !== prevProps.pathname) {
       // Pathnameが変わったらインディケーターを入れ替える
       this.setState({
         selectedTab: this.PathnameTabMap[this.props.pathname] ?? -1,

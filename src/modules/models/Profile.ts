@@ -1,8 +1,8 @@
-import firebase from '../firebase';
+import firebase, { getCurrentUser } from '../firebase';
 
 export type Profile = {
   name: string;
-  sex: number;
+  sex: 'man' | 'woman';
   icon: string;
   miniIcon: string;
   profile: string;
@@ -14,13 +14,15 @@ export type Profile = {
 export async function createProfile(profile: Profile) {
   const db = firebase.firestore();
   const docId = db.collection('timeline').doc().id;
+  const currentUser = await getCurrentUser();
+  if (currentUser === null) throw new Error();
   await db
     .collection('timeline')
     .doc(docId)
     .set({
       ...profile,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      author: firebase.auth().currentUser?.uid || '',
+      author: currentUser.uid,
     });
   return profile;
 }

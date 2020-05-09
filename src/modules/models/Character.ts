@@ -1,7 +1,7 @@
 import firebase from '../firebase';
 
 export type Character = {
-  sex: number;
+  sex: 'man' | 'woman';
   icon: string;
   image: string;
 };

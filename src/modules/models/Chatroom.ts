@@ -1,4 +1,4 @@
-import firebase, { db } from '../firebase';
+import firebase, { db, getCurrentUser } from '../firebase';
 import { Profile } from './Profile';
 
 export type ChatRoom = {
@@ -27,15 +27,23 @@ export async function createChatRoom(chatRoom: ChatRoom) {
   return chatRoom;
 }
 
+type ChatRoomGetOption = {
+  docId: string;
+};
 type ChatRoomSearchOption = {
   limit: number;
 };
+export async function getChatRoom(option: ChatRoomGetOption) {
+  const result = await db.collection('chatroom').doc(option.docId).get();
+  const data = result.data();
+  if (data) {
+    data.docId = result.id;
+  }
+  return data as ChatRoom;
+}
 export async function getChatRooms(option: ChatRoomSearchOption) {
-  const currentUser = await new Promise((resolve, reject) => {
-    firebase.auth().onAuthStateChanged((user) => {
-      resolve(user?.uid);
-    });
-  });
+  const currentUser = (await getCurrentUser())?.uid;
+  if (currentUser === null) throw new Error();
   console.log('currentUser', currentUser);
   const result = await db
     .collection('chatroom')
@@ -75,6 +83,7 @@ export async function getChatRoomsSnapShot(
 
 export type ChatMessage = {
   chatroomId: string;
+  chatroomInfo?: ChatRoom;
   ownerUid?: string;
   message: string;
   createdAt?: firebase.firestore.FieldValue;
@@ -85,15 +94,11 @@ type GetChatMessageOption = {
   limit: number;
 };
 export async function getChatMessage(option: GetChatMessageOption) {
-  const currentUser = await new Promise((resolve, reject) => {
-    firebase.auth().onAuthStateChanged((user) => {
-      resolve(user?.uid);
-    });
-  });
   const result = await db
     .collection('chatroom')
     .doc(option.chatroomId)
     .collection('message')
+    .orderBy('createdAt', 'asc')
     .limit(option.limit)
     .get();
   return result.docs.map((doc) => {
@@ -105,21 +110,17 @@ export async function getChatMessageSnapShot(
   option: GetChatMessageOption,
   callback: (chatroom: ChatMessage[]) => void
 ) {
-  const currentUser = await new Promise((resolve, reject) => {
-    firebase.auth().onAuthStateChanged((user) => {
-      resolve(user?.uid);
-    });
-  });
-
-  return db
-    .collection('chatroom')
-    .doc(option.chatroomId)
+  const chatRoomRef = db.collection('chatroom').doc(option.chatroomId);
+  const chatRoomInfo = (await chatRoomRef.get()).data() as ChatRoom;
+  return chatRoomRef
     .collection('message')
     .limit(option.limit)
+    .orderBy('createdAt', 'asc')
     .onSnapshot((snapShot) => {
       const list: ChatMessage[] = [];
       snapShot.forEach((doc) => {
         const data = doc.data() as ChatMessage;
+        data.chatroomInfo = chatRoomInfo;
         list.push(data);
       });
       callback(list);

@@ -14,14 +14,14 @@ import NavigateNext from '@material-ui/icons/NavigateNext';
 import classes from './profileModal.module.scss';
 import { Profile } from '../modules/models/Profile';
 import { createChatRoom } from '../modules/models/Chatroom';
-import firebase from 'firebase';
+import { getCurrentUser } from '../modules/firebase';
 
 type ProfileModalProps = {
   profile: Profile;
 };
 type ProfileModalStates = {
   name: string;
-  sex: number;
+  sex: 'man' | 'woman';
   profile: Profile;
 };
 
@@ -30,15 +30,17 @@ export default class ProfileModal extends Component<ProfileModalProps, ProfileMo
     super(props);
     this.state = {
       profile: props.profile,
-      sex: 1,
+      sex: 'man',
       name: '',
     };
     this.createChatroom = this.createChatroom.bind(this);
   }
 
   async createChatroom() {
-    const ownerUid = this.state.profile.author || '';
-    const playerUid = firebase.auth().currentUser?.uid || '';
+    const ownerUid = this.state.profile.author;
+    const playerInfo = await getCurrentUser();
+    if (!playerInfo || !ownerUid) throw new Error();
+    const playerUid = playerInfo.uid;
     await createChatRoom({
       joinUsers: [ownerUid, playerUid],
       ownerUid,
@@ -51,6 +53,7 @@ export default class ProfileModal extends Component<ProfileModalProps, ProfileMo
         miniIcon: '',
         profile: '',
         simpleProf: '',
+        author: playerUid,
       },
     });
   }
@@ -84,12 +87,12 @@ export default class ProfileModal extends Component<ProfileModalProps, ProfileMo
                 id="sex"
                 value={this.state.sex}
                 onChange={(e) => {
-                  this.setState({ sex: Number(e.target.value) });
+                  this.setState({ sex: e.target.value as 'man' | 'woman' });
                 }}
                 label="性別"
               >
-                <MenuItem value={1}>男</MenuItem>
-                <MenuItem value={2}>女</MenuItem>
+                <MenuItem value={'man'}>男</MenuItem>
+                <MenuItem value={'woman'}>女</MenuItem>
               </Select>
             </FormControl>
             <Button

@@ -28,3 +28,14 @@ export const timestampToString = (timestamp?: firebase.firestore.Timestamp) => {
   if (diff <= 24 * 60 * 60) return '24時間以内';
   return '24時間以上前';
 };
+
+let currentUser: firebase.User | null;
+export const getCurrentUser = async () => {
+  if (currentUser) return currentUser;
+  currentUser = await new Promise<firebase.User | null>((resolve) => {
+    firebase.auth().onAuthStateChanged((user) => {
+      resolve(user);
+    });
+  });
+  return currentUser;
+};

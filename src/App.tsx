@@ -1,7 +1,7 @@
 import React from 'react';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import './App.scss';
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import TimeLine from './page/TimeLine';
 import MailBox from './page/MailBox';
 import MakeCharacter from './page/MakeCharacter';
