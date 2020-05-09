@@ -79,7 +79,7 @@ export default class ChatRoom extends React.Component<ChatRoomProps, ChatRoomSta
   unsubscribe() {}
 
   componentDidUpdate(prev: ChatRoomProps) {
-    if (this.props.chatroomId != prev.chatroomId) {
+    if (this.props.chatroomId !== prev.chatroomId) {
       if (this.props.chatroomId) {
         getChatMessageSnapShot({ chatroomId: this.props.chatroomId, limit: 100 }, (list) => {
           this.setState({ messageList: list });

@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import { AppBar, Toolbar, Tabs, Tab } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import AuthModal from './AuthModal';
+import { connect } from 'react-redux';
 
-type MainAppBarProps = {};
+type MainAppBarProps = {
+  pathname: string;
+};
 type MainAppBarStates = {
   selectedTab: number;
 };
@@ -11,9 +14,23 @@ type MainAppBarStates = {
 class MainAppBar extends Component<MainAppBarProps, MainAppBarStates> {
   constructor(props: MainAppBarProps) {
     super(props);
+    console.log('onload', props);
     this.state = {
-      selectedTab: -1,
+      selectedTab: this.PathnameTabMap[this.props.pathname] ?? -1,
     };
+  }
+  PathnameTabMap: { [s: string]: number } = {
+    '/timeline': 0,
+    '/mailbox': 1,
+    '/character': 2,
+  };
+  componentDidUpdate(prevProps: MainAppBarProps) {
+    if (this.props.pathname != prevProps.pathname) {
+      // Pathnameが変わったらインディケーターを入れ替える
+      this.setState({
+        selectedTab: this.PathnameTabMap[this.props.pathname] ?? -1,
+      });
+    }
   }
 
   render() {
@@ -28,9 +45,6 @@ class MainAppBar extends Component<MainAppBarProps, MainAppBarStates> {
           <Tabs
             value={this.state.selectedTab}
             TabIndicatorProps={{ style: { background: '#FFF' } }}
-            onChange={(event: React.ChangeEvent<{}>, newValue: number) => {
-              this.setState({ selectedTab: newValue });
-            }}
             aria-label="ヘッダーメニュー"
           >
             <Tab
@@ -56,4 +70,10 @@ class MainAppBar extends Component<MainAppBarProps, MainAppBarStates> {
     );
   }
 }
-export default MainAppBar;
+
+const mapStateToProps = (state: any) => ({
+  pathname: state.router.location.pathname,
+  search: state.router.location.search,
+  hash: state.router.location.hash,
+});
+export default connect(mapStateToProps)(MainAppBar);

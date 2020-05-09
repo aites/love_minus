@@ -7,6 +7,9 @@ import MailBox from './page/MailBox';
 import MakeCharacter from './page/MakeCharacter';
 import Top from './page/Top';
 import MainAppBar from './object/MainAppBar';
+import { Provider } from 'react-redux';
+import { store, history } from './redux/store';
+import { ConnectedRouter } from 'connected-react-router';
 
 const theme = createMuiTheme({
   palette: {
@@ -37,17 +40,19 @@ const theme = createMuiTheme({
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <MainAppBar></MainAppBar>
-        <Switch>
-          <Route exact={true} path="/" component={Top} />
-          <Route exact={true} path="/timeline" component={TimeLine} />
-          <Route path="/mailbox" component={MailBox} />
-          <Route path="/character" component={MakeCharacter} />
-        </Switch>
-      </Router>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <ConnectedRouter history={history}>
+          <MainAppBar></MainAppBar>
+          <Switch>
+            <Route exact={true} path="/" component={Top} />
+            <Route exact={true} path="/timeline" component={TimeLine} />
+            <Route path="/mailbox" component={MailBox} />
+            <Route path="/character" component={MakeCharacter} />
+          </Switch>
+        </ConnectedRouter>
+      </ThemeProvider>
+    </Provider>
   );
 }
 
