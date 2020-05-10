@@ -115,9 +115,20 @@ export default class ChatRoom extends React.Component<ChatRoomProps, ChatRoomSta
     const playerInfo = this.state.chatRoomInfo.playerInfo;
     const myUserInfo = currentUserUid === ownerInfo.author ? ownerInfo : playerInfo;
     const otherUserInfo = currentUserUid === playerInfo.author ? ownerInfo : playerInfo;
+    console.log('otherUserInfo.icon', otherUserInfo.icon);
     return (
       <Box className={classes.chat}>
-        <img className={classes.chat__character} src="/images/josei_13_b.png" alt="" />
+        <img
+          className={classes.chat__character}
+          src={
+            otherUserInfo.icon !== ''
+              ? otherUserInfo.icon
+              : otherUserInfo.sex === 'man'
+              ? '/images/dansei_0_b.png'
+              : '/images/josei_0_b.png'
+          }
+          alt=""
+        />
         <Box className={classes.chatContentsWrap}>
           <Box className={classes.chatContents}>
             {this.state.messageList.map((message, i) => {
