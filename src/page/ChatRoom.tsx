@@ -76,16 +76,26 @@ export default class ChatRoom extends React.Component<ChatRoomProps, ChatRoomSta
 
   async setChatMessageSnapShot() {
     const currentUserUid = await getCurrentUser();
-    if (this.props.chatroomId && currentUserUid) {
-      const chatRoomInfo = await getChatRoom({ docId: this.props.chatroomId });
-      if (chatRoomInfo) {
-        getChatMessageSnapShot({ chatroomId: this.props.chatroomId, limit: 100 }, (list) => {
-          this.setState({
-            currentUser: currentUserUid,
-            chatRoomInfo: chatRoomInfo,
-            messageList: list,
-          });
-        }).then((unsubscribe) => (this.unsubscribe = unsubscribe));
+    if (currentUserUid) {
+      const chatroomId = this.props.chatroomId;
+      if (chatroomId) {
+        const chatRoomInfo = await getChatRoom({ docId: chatroomId });
+        if (chatRoomInfo) {
+          getChatMessageSnapShot({ chatroomId: chatroomId, limit: 100 }, (list) => {
+            this.setState({
+              chatroomId: chatroomId,
+              currentUser: currentUserUid,
+              chatRoomInfo: chatRoomInfo,
+              messageList: list,
+            });
+          }).then((unsubscribe) => (this.unsubscribe = unsubscribe));
+        }
+      } else {
+        this.setState({
+          currentUser: currentUserUid,
+          chatroomId: '',
+          messageList: [],
+        });
       }
     }
   }
@@ -109,7 +119,8 @@ export default class ChatRoom extends React.Component<ChatRoomProps, ChatRoomSta
     }
   }
   render() {
-    if (!this.state.chatRoomInfo || !this.state.currentUser) return <></>;
+    console.log(this.state);
+    if (!this.state.chatroomId || !this.state.chatRoomInfo || !this.state.currentUser) return <></>;
     const currentUserUid = this.state.currentUser.uid;
     const ownerInfo = this.state.chatRoomInfo.ownerInfo;
     const playerInfo = this.state.chatRoomInfo.playerInfo;
