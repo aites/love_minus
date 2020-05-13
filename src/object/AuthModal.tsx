@@ -198,7 +198,6 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
           <span className={classes.modal__infoText}>
             メールアドレス宛に1回限り使えるログイン用の認証リンクを送ります。そちらのリンクをクリックすることでログインとなります。
           </span>
-          <span>{this.state.userInfo?.uid}</span>
         </Box>
       </Grid>
     );
@@ -219,6 +218,7 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             this.setState({ open: true, anchorEl: e.currentTarget });
           }}
+          className={classes.link}
         >
           ログイン/アカウント登録
         </Button>
