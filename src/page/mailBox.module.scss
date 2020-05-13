@@ -4,6 +4,7 @@
 
 .main {
   height: calc(100vh - 64px);
+  position: relative;
 }
 
 .content {
@@ -20,4 +21,36 @@
 .image {
   width: 80px;
   height: 80px;
+}
+
+.warningBox {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  margin: auto !important;
+  width: 80vw;
+}
+
+.warningBox__contents {
+  display: inline-block;
+  border-color: #f2c744;
+  background-color: #fcf4da;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #454245;
+  position: relative;
+  padding: 16px;
+  width: 80vw;
+}
+
+.warningBox__infoText {
+  padding-left: 20px;
+}
+
+.warningBox__infoIcon {
+  color: #f2c744;
+  position: absolute;
+  top: 15px;
+  left: 8px;
 }

@@ -1,11 +1,12 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Grid, Divider, Typography, CircularProgress } from '@material-ui/core';
+import { Grid, Divider, Typography, CircularProgress, Box } from '@material-ui/core';
 import ChatRoom from './ChatRoom';
 import classes from './mailBox.module.scss';
 import { ChatRoom as ChatRoomModel, getChatRoomsSnapShot } from '../modules/models/Chatroom';
 import { timestampToString } from '../modules/firebase';
 import { getChatroomId } from '../modules/searchParams';
+import HelpOutline from '@material-ui/icons/HelpOutline';
 
 interface MailBoxProps extends RouteComponentProps<{}> {
   selectRoomId?: string;
@@ -90,6 +91,16 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
         <Grid item xs={12} sm={8} md={9} className={classes.content} style={{ overflow: 'hidden' }}>
           <ChatRoom chatroomId={getChatroomId()} />
         </Grid>
+        {this.state.chatRoomList.length === 0 && (
+          <Grid item className={classes.warningBox}>
+            <Box className={classes.warningBox__contents}>
+              <HelpOutline className={classes.warningBox__infoIcon}></HelpOutline>
+              <span className={classes.warningBox__infoText}>
+                チャットできる相手がいません。タイムラインからチャット相手を選んでください。
+              </span>
+            </Box>
+          </Grid>
+        )}
       </Grid>
     );
   }
