@@ -53,7 +53,7 @@ class MainAppBar extends Component<MainAppBarProps, MainAppBarStates> {
               to="/timeline"
             />
             <Tab
-              label={<span className="tabLabel">メールボックス</span>}
+              label={<span className="tabLabel">トークルーム</span>}
               component={Link}
               to="/mailbox"
             />
