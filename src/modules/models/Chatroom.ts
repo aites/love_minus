@@ -61,14 +61,12 @@ export async function getChatRoomsSnapShot(
   option: ChatRoomSearchOption,
   callback: (chatroom: ChatRoom[]) => void
 ) {
-  const currentUser = await new Promise((resolve, reject) => {
-    firebase.auth().onAuthStateChanged((user) => {
-      resolve(user?.uid);
-    });
-  });
+  const currentUser = await getCurrentUser();
+  if (currentUser === null) throw new Error();
+  console.log('currentUser', currentUser);
   return db
     .collection('chatroom')
-    .where('joinUsers', 'array-contains', currentUser)
+    .where('joinUsers', 'array-contains', currentUser.uid)
     .limit(option.limit)
     .onSnapshot((snapShot) => {
       const list: ChatRoom[] = [];
