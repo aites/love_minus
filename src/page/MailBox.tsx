@@ -16,6 +16,7 @@ interface MailBoxState {
   isLoading: boolean;
   progress: number;
   selectRoomId?: string;
+  isNoChat: boolean;
 }
 
 class MailBox extends React.Component<MailBoxProps, MailBoxState> {
@@ -26,6 +27,7 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
       isLoading: true,
       progress: 0,
       selectRoomId: props.selectRoomId,
+      isNoChat: true,
     };
     this.onSelectChatRoom = this.onSelectChatRoom.bind(this);
   }
@@ -46,12 +48,25 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
 
   onSelectChatRoom(roomId?: string) {
     if (roomId) {
+      this.setState({
+        isNoChat: false,
+      });
       const url = new URL(document.URL);
       url.searchParams.delete('r');
       url.searchParams.append('r', roomId);
       this.props.history.push(url.pathname + url.search);
     }
   }
+
+  WarningBox = (text: string) => {
+    return (
+      <Box className={classes.warningBox__contents}>
+        <HelpOutline className={classes.warningBox__infoIcon}></HelpOutline>
+        <span className={classes.warningBox__infoText}>{text}</span>
+      </Box>
+    );
+  };
+
   render() {
     return (
       <Grid container component="main" className={classes.main}>
@@ -88,19 +103,15 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
             })
           )}
         </Grid>
-        <Grid item xs={12} sm={8} md={9} className={classes.content} style={{ overflow: 'hidden' }}>
-          <ChatRoom chatroomId={getChatroomId()} />
+        <Grid item xs={12} sm={8} md={9} className={classes.content}>
+          {!this.state.isLoading && this.state.isNoChat ? (
+            this.WarningBox(
+              '左の一覧からトークしたい人を選んでください。クリックするとトーク画面に切り替わります。'
+            )
+          ) : (
+            <ChatRoom chatroomId={getChatroomId()} />
+          )}
         </Grid>
-        {!this.state.isLoading && this.state.chatRoomList.length === 0 && (
-          <Grid item className={classes.warningBox}>
-            <Box className={classes.warningBox__contents}>
-              <HelpOutline className={classes.warningBox__infoIcon}></HelpOutline>
-              <span className={classes.warningBox__infoText}>
-                チャットできる相手がいません。タイムラインからチャット相手を選んでください。
-              </span>
-            </Box>
-          </Grid>
-        )}
       </Grid>
     );
   }
