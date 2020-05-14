@@ -35,8 +35,10 @@ export const resetCurrentUser = () => {
 };
 export const getCurrentUser = async () => {
   if (currentUser) return currentUser;
+  console.log('getCurrentUser');
   currentUser = await new Promise<firebase.User | null>((resolve) => {
     firebase.auth().onAuthStateChanged((user) => {
+      console.log('getCurrentUser', user);
       resolve(user);
     });
   });

@@ -213,23 +213,14 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
     return (
       <Paper className={classes.modal}>
         <Grid container direction="column" justify="center" spacing={2}>
-          <Button
-            variant="outlined"
-            color="primary"
-            className={classes.modal__button}
-            onClick={() => {
-              this.logout();
-            }}
-          >
-            ログアウト
-          </Button>
+          <p>Email:{this.state.userInfo?.email}</p>
         </Grid>
       </Paper>
     );
   };
 
   render() {
-    const isLogin = !!this.state.userInfo;
+    const isLogin = !!this.state.userInfo && !this.state.userInfo.isAnonymous;
     return (
       <>
         <Button

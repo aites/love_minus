@@ -62,7 +62,10 @@ export async function getChatRoomsSnapShot(
   callback: (chatroom: ChatRoom[]) => void
 ) {
   const currentUser = await getCurrentUser();
-  if (currentUser === null) throw new Error();
+  if (currentUser === null) {
+    callback([]);
+    return () => undefined;
+  }
   console.log('currentUser', currentUser);
   return db
     .collection('chatroom')
