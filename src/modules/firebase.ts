@@ -30,6 +30,9 @@ export const timestampToString = (timestamp?: firebase.firestore.Timestamp) => {
 };
 
 let currentUser: firebase.User | null;
+export const resetCurrentUser = () => {
+  currentUser = null;
+};
 export const getCurrentUser = async () => {
   if (currentUser) return currentUser;
   currentUser = await new Promise<firebase.User | null>((resolve) => {

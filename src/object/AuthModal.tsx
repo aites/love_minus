@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import firebase from '../modules/firebase';
+import firebase, { resetCurrentUser } from '../modules/firebase';
 import { Paper, Button, Popover, TextField, InputLabel, Box, Grid } from '@material-ui/core';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import classes from './authModal.module.scss';
@@ -66,6 +66,7 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
       }
     }
     firebase.auth().onAuthStateChanged((user) => {
+      console.log('onAuthStateChanged', user);
       if (user != null) {
         this.setState({
           userInfo: {
@@ -73,6 +74,11 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
             email: user.email || '',
             isAnonymous: user.isAnonymous,
           },
+        });
+      } else {
+        resetCurrentUser();
+        this.setState({
+          userInfo: null,
         });
       }
     });
@@ -88,7 +94,6 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
       handleCodeInApp: true,
     });
   }
-  //signInWithRedirectでGoogleのログインページに接続して、Google プロバイダ オブジェクトのインスタンスを作成する。
   logout() {
     console.log('logout click');
     firebase
@@ -96,6 +101,7 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
       .signOut()
       .then(() => {
         console.log('logouted');
+        resetCurrentUser();
         this.setState({ userInfo: null });
       });
   }
@@ -205,13 +211,25 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
 
   userPaper = () => {
     return (
-      <>
-        <InputLabel>{this.state.userInfo?.uid}</InputLabel>
-      </>
+      <Paper className={classes.modal}>
+        <Grid container direction="column" justify="center" spacing={2}>
+          <Button
+            variant="outlined"
+            color="primary"
+            className={classes.modal__button}
+            onClick={() => {
+              this.logout();
+            }}
+          >
+            ログアウト
+          </Button>
+        </Grid>
+      </Paper>
     );
   };
 
   render() {
+    const isLogin = !!this.state.userInfo;
     return (
       <>
         <Button
@@ -220,7 +238,7 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
           }}
           className={classes.link}
         >
-          ログイン/アカウント登録
+          {isLogin ? 'ログアウト' : 'ログイン/アカウント登録'}
         </Button>
         <Popover
           open={this.state.open}
@@ -233,7 +251,7 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
             horizontal: 'center',
           }}
         >
-          {this.state.userInfo?.isAnonymous ? this.ModalPaper() : this.userPaper()}
+          {isLogin ? this.userPaper() : this.ModalPaper()}
         </Popover>
       </>
     );
