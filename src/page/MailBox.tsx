@@ -57,7 +57,7 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
       <Grid container component="main" className={classes.main}>
         <Grid item xs={12} sm={4} md={3} className={classes.content}>
           {this.state.isLoading ? (
-            <CircularProgress variant="determinate" value={this.state.progress} />
+            <CircularProgress variant="determinate" />
           ) : (
             this.state.chatRoomList.map((room: ChatRoomModel, i) => {
               return (
