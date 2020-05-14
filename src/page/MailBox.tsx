@@ -91,7 +91,7 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
         <Grid item xs={12} sm={8} md={9} className={classes.content} style={{ overflow: 'hidden' }}>
           <ChatRoom chatroomId={getChatroomId()} />
         </Grid>
-        {this.state.chatRoomList.length === 0 && (
+        {!this.state.isLoading && this.state.chatRoomList.length === 0 && (
           <Grid item className={classes.warningBox}>
             <Box className={classes.warningBox__contents}>
               <HelpOutline className={classes.warningBox__infoIcon}></HelpOutline>
