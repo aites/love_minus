@@ -118,6 +118,7 @@ export default class ChatRoom extends React.Component<ChatRoomProps, ChatRoomSta
       });
     }
   }
+  handleKeyPress() {}
   render() {
     console.log(this.state);
     if (!this.state.chatroomId || !this.state.chatRoomInfo || !this.state.currentUser) return <></>;
@@ -168,6 +169,11 @@ export default class ChatRoom extends React.Component<ChatRoomProps, ChatRoomSta
               rowsMin={1}
               rowsMax={5}
               value={this.state.message}
+              onKeyDown={(e) => {
+                if (((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) && e.keyCode === 13) {
+                  this.postMessage();
+                }
+              }}
               onChange={(e) => {
                 this.setState({ message: e.target.value });
               }}
