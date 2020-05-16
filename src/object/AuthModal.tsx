@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import firebase, { resetCurrentUser } from '../modules/firebase';
+import firebase, { getCurrentUser } from '../modules/firebase';
 import { Paper, Button, Popover, TextField, InputLabel, Box, Grid } from '@material-ui/core';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import classes from './authModal.module.scss';
@@ -10,6 +10,7 @@ type AuthModalStates = {
   open: boolean;
   anchorEl: HTMLButtonElement | null;
   email: string;
+  isLoading: boolean;
   userInfo: UserInfo | null;
   validation01: string;
   validation02: string;
@@ -25,6 +26,7 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
     super(props);
     this.state = {
       open: false,
+      isLoading: true,
       anchorEl: null,
       email: '',
       userInfo: null,
@@ -34,9 +36,24 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
   }
 
   async componentDidMount() {
-    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-    await firebase.auth().signInAnonymously();
-
+    firebase.auth().onAuthStateChanged((user) => {
+      console.log('onAuthStateChanged', user);
+      if (user != null) {
+        this.setState({
+          userInfo: {
+            uid: user.uid,
+            email: user.email || '',
+            isAnonymous: user.isAnonymous,
+          },
+          isLoading: false,
+        });
+      } else {
+        this.setState({
+          userInfo: null,
+          isLoading: false,
+        });
+      }
+    });
     if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
       // メールリンクのURLからきた場合
       let email = window.localStorage.getItem('emailForSignIn');
@@ -64,24 +81,14 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
       } else {
         await firebase.auth().signInWithEmailLink(email, window.location.href);
       }
-    }
-    firebase.auth().onAuthStateChanged((user) => {
-      console.log('onAuthStateChanged', user);
-      if (user != null) {
-        this.setState({
-          userInfo: {
-            uid: user.uid,
-            email: user.email || '',
-            isAnonymous: user.isAnonymous,
-          },
-        });
-      } else {
-        resetCurrentUser();
-        this.setState({
-          userInfo: null,
-        });
+    } else {
+      // メールリンクではない場合
+      let currentUser = await getCurrentUser();
+      if (!currentUser) {
+        // ログインしていない場合
+        await firebase.auth().signInAnonymously();
       }
-    });
+    }
   }
   //componentDidMountはrenderが実行された後に行われる。データの受け渡しが可能な状態になったら下記のコードが実行されていく。
   //onAuthstateChangeでuserにログインしたユーザーの情報を与える
@@ -101,7 +108,6 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
       .signOut()
       .then(() => {
         console.log('logouted');
-        resetCurrentUser();
         this.setState({ userInfo: null });
       });
   }
@@ -229,7 +235,7 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
           }}
           className={classes.link}
         >
-          {isLogin ? 'ログアウト' : 'ログイン/アカウント登録'}
+          {this.state.isLoading ? '' : isLogin ? 'マイページ' : 'ログイン/アカウント登録'}
         </Button>
         <Popover
           open={this.state.open}

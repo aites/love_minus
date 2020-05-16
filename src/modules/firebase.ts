@@ -16,6 +16,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 export default firebase;
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
 export const db = firebase.firestore();
 export const timestampToString = (timestamp?: firebase.firestore.Timestamp) => {
   if (!timestamp) return '';
@@ -30,9 +32,6 @@ export const timestampToString = (timestamp?: firebase.firestore.Timestamp) => {
 };
 
 let currentUser: firebase.User | null;
-export const resetCurrentUser = () => {
-  currentUser = null;
-};
 export const getCurrentUser = async () => {
   if (currentUser) return currentUser;
   console.log('getCurrentUser');
@@ -42,5 +41,6 @@ export const getCurrentUser = async () => {
       resolve(user);
     });
   });
+  console.log('getCurrentUser end', currentUser);
   return currentUser;
 };
