@@ -6,10 +6,13 @@ import { RootStateProps } from '../redux/reducers';
 import { CHANGE_USER, AppStateProps } from '../redux/reducers/firebaseReducer';
 import { success } from 'react-notification-system-redux';
 import { ChatRoom } from '../modules/models/Chatroom';
+import { history } from '../redux/store';
+import { push } from 'connected-react-router';
 
 type Props = {
   authChanged: (user: User) => void;
   addChatRoom: (room: ChatRoom) => void;
+  updateChatRoom: (room: ChatRoom) => void;
   firebase: AppStateProps;
 };
 
@@ -61,7 +64,16 @@ class FirebaseNotification extends Component<Props> {
         if (snapShot.metadata.hasPendingWrites === true) return;
         if (!snapShot.metadata.hasPendingWrites && !snapShot.empty) {
           const data = snapShot.docs[0].data() as ChatRoom;
-          this.props.addChatRoom(data);
+          data.docId = snapShot.docs[0].id;
+          if (data.lastUpdateUser !== currentUserUID) {
+            if (data.createdAt && data.updatedAt) {
+              if (data.createdAt.isEqual(data.updatedAt)) {
+                this.props.addChatRoom(data);
+              } else {
+                this.props.updateChatRoom(data);
+              }
+            }
+          }
         }
       });
   }
@@ -89,7 +101,31 @@ const mapDispatchToProps = (dispatch: Function) => {
     },
     addChatRoom(room: ChatRoom) {
       console.log('addChatRoom', room);
-      dispatch(success({ title: 'チャットリクエストが届きました' }));
+      dispatch(
+        success({
+          title: 'チャットリクエストが届きました',
+          action: {
+            label: '見る',
+            callback: () => {
+              dispatch(push(`/mailbox?r=${room.docId}`));
+            },
+          },
+        })
+      );
+    },
+    updateChatRoom(room: ChatRoom) {
+      console.log('addChatRoom', room);
+      dispatch(
+        success({
+          title: '新しいメッセージが届きました',
+          action: {
+            label: '見る',
+            callback: () => {
+              dispatch(push(`/mailbox?r=${room.docId}`));
+            },
+          },
+        })
+      );
     },
   };
 };

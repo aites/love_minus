@@ -45,6 +45,7 @@ export default class ProfileModal extends Component<ProfileModalProps, ProfileMo
       joinUsers: [ownerUid, playerUid],
       ownerUid,
       playerUid,
+      lastUpdateUser: playerUid,
       ownerInfo: this.state.profile,
       playerInfo: {
         name: this.state.name,

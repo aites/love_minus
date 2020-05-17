@@ -8,14 +8,11 @@ import { timestampToString, getCurrentUser } from '../modules/firebase';
 import { getChatroomId } from '../modules/searchParams';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 
-interface MailBoxProps extends RouteComponentProps<{}> {
-  selectRoomId?: string;
-}
+interface MailBoxProps extends RouteComponentProps<{}> {}
 interface MailBoxState {
   chatRoomList: ChatRoomModel[];
   isLoading: boolean;
   progress: number;
-  selectRoomId?: string;
   isNoChat: boolean;
   currentUserUID: string;
 }
@@ -27,8 +24,7 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
       chatRoomList: [],
       isLoading: true,
       progress: 0,
-      selectRoomId: props.selectRoomId,
-      isNoChat: true,
+      isNoChat: !getChatroomId(),
       currentUserUID: '',
     };
     this.onSelectChatRoom = this.onSelectChatRoom.bind(this);

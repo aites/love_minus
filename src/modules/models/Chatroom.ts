@@ -8,6 +8,7 @@ export type ChatRoom = {
   playerUid: string; // チャットを申し込んだ人
   ownerInfo: Profile;
   playerInfo: Profile;
+  lastUpdateUser?: string;
   lastMessage?: string;
   createdAt?: firebase.firestore.Timestamp;
   updatedAt?: firebase.firestore.Timestamp;
@@ -82,29 +83,6 @@ export async function getChatRoomsSnapShot(
     });
 }
 
-export async function getNewChatRoomsSnapshot(callback: (chatroom: ChatRoom[]) => void) {
-  const currentUser = await getCurrentUser();
-  if (currentUser === null) {
-    callback([]);
-    return () => undefined;
-  }
-  return db
-    .collection('chatroom')
-    .where('joinUsers', 'array-contains', currentUser.uid)
-    .where('updatedAt', '>', new Date())
-    .limit(1)
-    .onSnapshot((snapShot) => {
-      if (snapShot.metadata.hasPendingWrites === true) return;
-      const list: ChatRoom[] = [];
-      snapShot.forEach((doc) => {
-        const data = doc.data() as ChatRoom;
-        data.docId = doc.id;
-        list.push(data);
-      });
-      callback(list);
-    });
-}
-
 export type ChatMessage = {
   chatroomId: string;
   chatroomInfo?: ChatRoom;
@@ -164,6 +142,7 @@ export async function postChatMessage(chatMessage: ChatMessage) {
   const messageRef = roomRef.collection('message').doc();
   batch.set(messageRef, chatMessage);
   batch.update(roomRef, {
+    lastUpdateUser: currentUser,
     lastMessage: chatMessage.message,
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
   });

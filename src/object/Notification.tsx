@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { success } from 'react-notification-system-redux';
 import firebase from '../modules/firebase';
-import { getChatRoomsSnapShot, getNewChatRoomsSnapshot } from '../modules/models/Chatroom';
 
 type Props = {
   notifications: any;
