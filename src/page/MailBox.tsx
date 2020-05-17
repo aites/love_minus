@@ -13,7 +13,6 @@ interface MailBoxState {
   chatRoomList: ChatRoomModel[];
   isLoading: boolean;
   progress: number;
-  isNoChat: boolean;
   currentUserUID: string;
 }
 
@@ -24,7 +23,6 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
       chatRoomList: [],
       isLoading: true,
       progress: 0,
-      isNoChat: !getChatroomId(),
       currentUserUID: '',
     };
     this.onSelectChatRoom = this.onSelectChatRoom.bind(this);
@@ -48,9 +46,6 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
 
   onSelectChatRoom(roomId?: string) {
     if (roomId) {
-      this.setState({
-        isNoChat: false,
-      });
       const url = new URL(document.URL);
       url.searchParams.delete('r');
       url.searchParams.append('r', roomId);
@@ -106,7 +101,7 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
           )}
         </Grid>
         <Grid item xs={12} sm={8} md={9} className={classes.content}>
-          {!this.state.isLoading && this.state.isNoChat ? (
+          {!this.state.isLoading && !getChatroomId() ? (
             this.WarningBox(
               '左の一覧からトークしたい人を選んでください。クリックするとトーク画面に切り替わります。'
             )
