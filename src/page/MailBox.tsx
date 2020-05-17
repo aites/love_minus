@@ -4,7 +4,7 @@ import { Grid, Divider, Typography, CircularProgress, Box } from '@material-ui/c
 import ChatRoom from './ChatRoom';
 import classes from './mailBox.module.scss';
 import { ChatRoom as ChatRoomModel, getChatRoomsSnapShot } from '../modules/models/Chatroom';
-import { timestampToString } from '../modules/firebase';
+import { timestampToString, getCurrentUser } from '../modules/firebase';
 import { getChatroomId } from '../modules/searchParams';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 
@@ -17,6 +17,7 @@ interface MailBoxState {
   progress: number;
   selectRoomId?: string;
   isNoChat: boolean;
+  currentUserUID: string;
 }
 
 class MailBox extends React.Component<MailBoxProps, MailBoxState> {
@@ -28,6 +29,7 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
       progress: 0,
       selectRoomId: props.selectRoomId,
       isNoChat: true,
+      currentUserUID: '',
     };
     this.onSelectChatRoom = this.onSelectChatRoom.bind(this);
   }
@@ -38,10 +40,12 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
 
   unsubscribe() {}
   async componentDidMount() {
+    const currentUserUID = (await getCurrentUser())?.uid || '';
     this.unsubscribe = await getChatRoomsSnapShot({ limit: 30 }, (chatrooms) => {
       this.setState({
         chatRoomList: chatrooms,
         isLoading: false,
+        currentUserUID: currentUserUID,
       });
     });
   }
@@ -75,6 +79,8 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
             <CircularProgress variant="determinate" />
           ) : (
             this.state.chatRoomList.map((room: ChatRoomModel, i) => {
+              const userInfo =
+                room.ownerUid === this.state.currentUserUID ? room.playerInfo : room.ownerInfo;
               return (
                 <>
                   <Grid
@@ -85,10 +91,10 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
                     onClick={() => this.onSelectChatRoom(room.docId)}
                   >
                     <Grid item>
-                      <img className={classes.image} src={room.ownerInfo.miniIcon} alt="" />
+                      <img className={classes.image} src={userInfo.miniIcon} alt="" />
                     </Grid>
                     <Grid item>
-                      <Typography>{room.ownerInfo.name}</Typography>
+                      <Typography>{userInfo.name}</Typography>
                       <Typography noWrap variant="caption">
                         {room.lastMessage}
                       </Typography>
