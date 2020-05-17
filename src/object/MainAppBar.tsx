@@ -3,9 +3,11 @@ import { AppBar, Toolbar, Tabs, Tab } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import AuthModal from './AuthModal';
 import { connect } from 'react-redux';
+import { success } from 'react-notification-system-redux';
 
 type MainAppBarProps = {
   pathname: string;
+  notifySuccess: Function;
 };
 type MainAppBarStates = {
   selectedTab: number;
@@ -26,6 +28,7 @@ class MainAppBar extends Component<MainAppBarProps, MainAppBarStates> {
   };
   componentDidUpdate(prevProps: MainAppBarProps) {
     if (this.props.pathname !== prevProps.pathname) {
+      this.props.notifySuccess('ok');
       // Pathnameが変わったらインディケーターを入れ替える
       this.setState({
         selectedTab: this.PathnameTabMap[this.props.pathname] ?? -1,
@@ -75,5 +78,13 @@ const mapStateToProps = (state: any) => ({
   pathname: state.router.location.pathname,
   search: state.router.location.search,
   hash: state.router.location.hash,
+  notifications: state.notifications,
 });
-export default connect(mapStateToProps)(MainAppBar);
+const mapDispatchToProps = (dispatch: Function) => {
+  return {
+    notifySuccess(title: string) {
+      //      dispatch(success({ title }));
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(MainAppBar);

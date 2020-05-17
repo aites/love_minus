@@ -10,6 +10,7 @@ import MainAppBar from './object/MainAppBar';
 import { Provider } from 'react-redux';
 import { store, history } from './redux/store';
 import { ConnectedRouter } from 'connected-react-router';
+import Notification from './object/Notification';
 
 const theme = createMuiTheme({
   palette: {
@@ -52,6 +53,7 @@ function App() {
           </Switch>
         </ConnectedRouter>
       </ThemeProvider>
+      <Notification />
     </Provider>
   );
 }

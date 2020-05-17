@@ -32,6 +32,7 @@ type ChatRoomGetOption = {
 };
 type ChatRoomSearchOption = {
   limit: number;
+  hasPendingWrites?: boolean; // falseを指定した場合、サーバーのデータのみ取得する
 };
 export async function getChatRoom(option: ChatRoomGetOption) {
   const result = await db.collection('chatroom').doc(option.docId).get();
@@ -72,6 +73,32 @@ export async function getChatRoomsSnapShot(
     .where('joinUsers', 'array-contains', currentUser.uid)
     .limit(option.limit)
     .onSnapshot((snapShot) => {
+      const list: ChatRoom[] = [];
+      snapShot.forEach((doc) => {
+        const data = doc.data() as ChatRoom;
+        data.docId = doc.id;
+        list.push(data);
+      });
+      if (option.hasPendingWrites === false && snapShot.metadata.hasPendingWrites === true) return;
+      console.log('chatroom snapshot', snapShot);
+      callback(list);
+    });
+}
+
+export async function getNewChatRoomsSnapshot(callback: (chatroom: ChatRoom[]) => void) {
+  const currentUser = await getCurrentUser();
+  if (currentUser === null) {
+    callback([]);
+    return () => undefined;
+  }
+  console.log('currentUser', currentUser);
+  return db
+    .collection('chatroom')
+    .where('joinUsers', 'array-contains', currentUser.uid)
+    .where('createdAt', '>', new Date())
+    .limit(1)
+    .onSnapshot((snapShot) => {
+      if (snapShot.metadata.hasPendingWrites === true) return;
       const list: ChatRoom[] = [];
       snapShot.forEach((doc) => {
         const data = doc.data() as ChatRoom;
