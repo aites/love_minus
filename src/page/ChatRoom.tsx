@@ -109,6 +109,7 @@ export default class ChatRoom extends React.Component<ChatRoomProps, ChatRoomSta
   }
 
   async postMessage() {
+    if (!this.state.message || !this.state.message.match(/\S/g)) return false;
     const chatRoomId = this.props.chatroomId;
     const message = this.state.message;
     if (chatRoomId && message) {
@@ -116,6 +117,7 @@ export default class ChatRoom extends React.Component<ChatRoomProps, ChatRoomSta
         chatroomId: chatRoomId,
         message: message,
       });
+      this.setState({ message: '' });
     }
   }
   handleKeyPress() {}
