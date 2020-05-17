@@ -35,7 +35,6 @@ export async function getTimeLine(option: TimeLineSearchOption) {
   const result = await db.collection('timeline').orderBy('createdAt').limit(option.limit).get();
   return result.docs.map((doc) => {
     const data = doc.data();
-    console.log(data);
     return data as Profile;
   });
 }

@@ -20,11 +20,9 @@ export default class TimeLine extends React.Component<TimeLineProps, TimeLineSta
     };
   }
   componentDidMount() {
-    console.log('did mount');
     getTimeLine({
       limit: 30,
     }).then((data) => {
-      console.log(data);
       this.setState({
         profileList: data,
       });
@@ -40,9 +38,7 @@ export default class TimeLine extends React.Component<TimeLineProps, TimeLineSta
             <div
               key={i}
               onClick={() => {
-                console.log('okclick');
                 this.setState({ showProfile: profile });
-                console.log(showProfile);
               }}
             >
               <ProfileListCard {...profile} />

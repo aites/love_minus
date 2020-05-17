@@ -45,7 +45,6 @@ export async function getChatRoom(option: ChatRoomGetOption) {
 export async function getChatRooms(option: ChatRoomSearchOption) {
   const currentUser = (await getCurrentUser())?.uid;
   if (currentUser === null) throw new Error();
-  console.log('currentUser', currentUser);
   const result = await db
     .collection('chatroom')
     .where('joinUsers', 'array-contains', currentUser)
@@ -67,7 +66,6 @@ export async function getChatRoomsSnapShot(
     callback([]);
     return () => undefined;
   }
-  console.log('currentUser', currentUser);
   return db
     .collection('chatroom')
     .where('joinUsers', 'array-contains', currentUser.uid)
@@ -80,7 +78,6 @@ export async function getChatRoomsSnapShot(
         list.push(data);
       });
       if (option.hasPendingWrites === false && snapShot.metadata.hasPendingWrites === true) return;
-      console.log('chatroom snapshot', snapShot);
       callback(list);
     });
 }
@@ -91,11 +88,10 @@ export async function getNewChatRoomsSnapshot(callback: (chatroom: ChatRoom[]) =
     callback([]);
     return () => undefined;
   }
-  console.log('currentUser', currentUser);
   return db
     .collection('chatroom')
     .where('joinUsers', 'array-contains', currentUser.uid)
-    .where('createdAt', '>', new Date())
+    .where('updatedAt', '>', new Date())
     .limit(1)
     .onSnapshot((snapShot) => {
       if (snapShot.metadata.hasPendingWrites === true) return;

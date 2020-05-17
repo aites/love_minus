@@ -16,7 +16,6 @@ type MainAppBarStates = {
 class MainAppBar extends Component<MainAppBarProps, MainAppBarStates> {
   constructor(props: MainAppBarProps) {
     super(props);
-    console.log('onload', props);
     this.state = {
       selectedTab: this.PathnameTabMap[this.props.pathname] ?? -1,
     };

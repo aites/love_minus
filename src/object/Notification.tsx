@@ -13,19 +13,6 @@ class Notification extends Component<Props> {
   constructor(props: Props) {
     super(props);
   }
-  componentDidMount() {
-    // ログイン完了通知
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user != null && !user.isAnonymous) {
-        this.props.notifySuccess(`LoveMinusにログインしました`);
-      }
-    });
-
-    // チャット開始通知
-    getNewChatRoomsSnapshot((chatrooms) => {
-      if (chatrooms.length > 0) this.props.notifySuccess(`チャットを開始しました`);
-    });
-  }
   render() {
     const { notifications } = this.props;
     const style = {

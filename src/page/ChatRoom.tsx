@@ -120,14 +120,12 @@ export default class ChatRoom extends React.Component<ChatRoomProps, ChatRoomSta
   }
   handleKeyPress() {}
   render() {
-    console.log(this.state);
     if (!this.state.chatroomId || !this.state.chatRoomInfo || !this.state.currentUser) return <></>;
     const currentUserUid = this.state.currentUser.uid;
     const ownerInfo = this.state.chatRoomInfo.ownerInfo;
     const playerInfo = this.state.chatRoomInfo.playerInfo;
     const myUserInfo = currentUserUid === ownerInfo.author ? ownerInfo : playerInfo;
     const otherUserInfo = currentUserUid === playerInfo.author ? ownerInfo : playerInfo;
-    console.log('otherUserInfo.icon', otherUserInfo.icon);
     return (
       <Box className={classes.chat}>
         <img
@@ -145,7 +143,6 @@ export default class ChatRoom extends React.Component<ChatRoomProps, ChatRoomSta
           <Box className={classes.chatContents}>
             {this.state.messageList.map((message, i) => {
               const isMine = currentUserUid === message.ownerUid;
-              console.log('isMine', isMine, currentUserUid, message.ownerUid);
               const { user, sex, name } = isMine
                 ? { ...myUserInfo, user: 'mine' as 'mine' | 'yours' }
                 : { ...otherUserInfo, user: 'yours' as 'mine' | 'yours' };

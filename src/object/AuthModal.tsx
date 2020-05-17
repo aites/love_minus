@@ -4,8 +4,13 @@ import { Paper, Button, Popover, TextField, InputLabel, Box, Grid } from '@mater
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import classes from './authModal.module.scss';
 import Validation from '../modules/models/formValidation';
+import { connect } from 'react-redux';
+import { RootStateProps } from '../redux/reducers';
+import { AppStateProps } from '../redux/reducers/firebaseReducer';
 
-type AuthModalProps = {};
+type AuthModalProps = {
+  firebase: AppStateProps;
+};
 type AuthModalStates = {
   open: boolean;
   anchorEl: HTMLButtonElement | null;
@@ -34,26 +39,22 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
       validation02: '',
     };
   }
-
-  async componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
-      console.log('onAuthStateChanged', user);
-      if (user != null) {
+  componentDidUpdate(prevProps: AuthModalProps) {
+    if (prevProps.firebase !== this.props.firebase) {
+      if (this.props.firebase.user) {
         this.setState({
+          isLoading: false,
           userInfo: {
-            uid: user.uid,
-            email: user.email || '',
-            isAnonymous: user.isAnonymous,
+            uid: this.props.firebase.user.uid,
+            email: this.props.firebase.user.email || '',
+            isAnonymous: this.props.firebase.user.isAnonymous,
           },
-          isLoading: false,
-        });
-      } else {
-        this.setState({
-          userInfo: null,
-          isLoading: false,
         });
       }
-    });
+    }
+  }
+
+  async componentDidMount() {
     if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
       // メールリンクのURLからきた場合
       let email = window.localStorage.getItem('emailForSignIn');
@@ -102,12 +103,10 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
     });
   }
   logout() {
-    console.log('logout click');
     firebase
       .auth()
       .signOut()
       .then(() => {
-        console.log('logouted');
         this.setState({ userInfo: null });
       });
   }
@@ -255,4 +254,13 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
   }
 }
 
-export default AuthModal;
+function mapStateToProps(state: RootStateProps) {
+  return {
+    firebase: state.firebase,
+  };
+}
+const mapDispatchToProps = (dispatch: Function) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthModal);
