@@ -4,6 +4,26 @@ import classes from './top.module.scss';
 
 type TopProps = {};
 
+const howToPlay = [
+  {
+    title: 'トークの相手を探そう',
+    image: '../images/explanation_01.png',
+    text: `タイムラインにトークを待っている人がいるよ
+  気になる人を見つけてチャットを開始しよう`,
+  },
+  {
+    title: 'トークの相手を募集しよう',
+    image: '../images/explanation_02.png',
+    text: `キャラクター作成から自分のプロフィールを作成してタイムラインに載せることができるよ
+    　タイムラインに気になる人がいなかったら試してみてね`,
+  },
+  {
+    title: 'トークルームで会話を楽しもう',
+    image: '../images/explanation_03.png',
+    text: `チャットを開始するとトークルームに相手の名前が出てくるよ`,
+  },
+];
+
 export default class Top extends React.Component<TopProps> {
   render() {
     return (
@@ -21,29 +41,30 @@ export default class Top extends React.Component<TopProps> {
           </Typography>
           <Grid container justify="center">
             <Grid item xs={10}>
-              <Card className={classes.card}>
-                <CardHeader
-                  className={classes.card__head}
-                  avatar={
-                    <Typography component="h5" variant="h5">
-                      トークをするには？
-                    </Typography>
-                  }
-                />
-                <div className={classes.card__imageBox}>
-                  <img
-                    src="../images/explanation_01.png"
-                    className={classes.card__image}
-                    alt="タイムラインを選んで、トークしたい人を選んでください"
+              {howToPlay.map((item) => (
+                <Card className={classes.card}>
+                  <CardHeader
+                    className={classes.card__head}
+                    avatar={
+                      <Typography component="h5" variant="h5">
+                        {item.title}
+                      </Typography>
+                    }
                   />
-                </div>
-                <CardContent className={classes.card__contents}>
-                  <Typography component="h6" variant="h6">
-                    タイムラインを選んで、トークしたい人を探して、
-                    トークしたい人を決めたら、「チャット開始」を押してください！!
-                  </Typography>
-                </CardContent>
-              </Card>
+                  <div className={classes.card__imageBox}>
+                    <img
+                      src={item.image}
+                      className={classes.card__image}
+                      alt="タイムラインを選んで、トークしたい人を選んでください"
+                    />
+                  </div>
+                  <CardContent className={classes.card__contents}>
+                    <Typography className={classes.card__contentsText} component="h6" variant="h6">
+                      {item.text}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ))}
             </Grid>
           </Grid>
         </Grid>
