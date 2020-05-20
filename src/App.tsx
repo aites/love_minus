@@ -11,7 +11,7 @@ import { Provider } from 'react-redux';
 import { store, history } from './redux/store';
 import { ConnectedRouter } from 'connected-react-router';
 import Notification from './object/Notification';
-import FirebaseNotification from './object/FirebaseNotification';
+import FirebaseNotification from './object/FisebaseSnapshot/FirebaseNotification';
 
 const theme = createMuiTheme({
   palette: {

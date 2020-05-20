@@ -1,12 +1,12 @@
-import firebase, { db } from '../modules/firebase';
+import firebase, { db } from '../../modules/firebase';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { User } from 'firebase';
-import { RootStateProps } from '../redux/reducers';
-import { CHANGE_USER, AppStateProps } from '../redux/reducers/firebaseReducer';
+import { RootStateProps } from '../../redux/reducers';
+import { CHANGE_USER, AppStateProps } from '../../redux/reducers/firebaseReducer';
 import { success } from 'react-notification-system-redux';
-import { ChatRoom } from '../modules/models/Chatroom';
-import { history } from '../redux/store';
+import { ChatRoom } from '../../modules/models/Chatroom';
+import { history } from '../../redux/store';
 import { push } from 'connected-react-router';
 
 type Props = {
