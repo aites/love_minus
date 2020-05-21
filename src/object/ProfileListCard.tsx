@@ -4,7 +4,7 @@ import classes from './profileListCard.module.scss';
 import { Profile } from '../modules/models/Profile';
 import { timestampToString } from '../modules/firebase';
 
-function ProfileListCard(prof: Profile) {
+function ProfileListCard(prof: Profile & { loginUserUid?: string }) {
   return (
     <Paper style={{ margin: 10 }}>
       <Box display="flex">
@@ -21,7 +21,7 @@ function ProfileListCard(prof: Profile) {
         </Box>
         <Box>
           <Button style={{ margin: 10 }} color="secondary" variant="outlined">
-            チャット開始
+            {prof.author === prof.loginUserUid ? '自分の' : 'チャット開始'}
           </Button>
         </Box>
       </Box>

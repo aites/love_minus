@@ -4,14 +4,19 @@ import ProfileListCard from '../object/ProfileListCard';
 import ProfileModal from '../object/ProfileModal';
 //import classes from './timeLine.module.scss';
 import { getTimeLine, Profile } from '../modules/models/Profile';
+import { RootStateProps } from '../redux/reducers';
+import { connect } from 'react-redux';
+import { User } from 'firebase';
 
-type TimeLineProps = {};
+type TimeLineProps = {
+  user: User | null;
+};
 type TimeLineState = {
   profileList: Profile[];
   showProfile: Profile | null;
 };
 
-export default class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
+class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
   constructor(props: TimeLineProps) {
     super(props);
     this.state = {
@@ -41,7 +46,7 @@ export default class TimeLine extends React.Component<TimeLineProps, TimeLineSta
                 this.setState({ showProfile: profile });
               }}
             >
-              <ProfileListCard {...profile} />
+              <ProfileListCard {...profile} loginUserUid={this.props.user?.uid} />
             </div>
           );
         })}
@@ -60,3 +65,14 @@ export default class TimeLine extends React.Component<TimeLineProps, TimeLineSta
     );
   }
 }
+
+function mapStateToProps(state: RootStateProps) {
+  return {
+    user: state.firebase.user,
+  };
+}
+const mapDispatchToProps = (dispatch: Function) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TimeLine);
