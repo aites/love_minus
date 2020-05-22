@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ChatRoom, getChatRoomsSnapShot } from '../../modules/models/Chatroom';
 import { RootStateProps } from '../../redux/reducers';
-import { UPDATE_CHATLIST } from '../../redux/reducers/chatroomReducer';
+import { UPDATE_CHATLIST } from '../../redux/reducers/MailBoxReducer';
 
 type Props = {
   updateChatRoom: (chatrooms: ChatRoom[]) => void;

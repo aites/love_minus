@@ -12,6 +12,9 @@ import {
   ChatRoom as ChatRoomModel,
 } from '../modules/models/Chatroom';
 import { UserInfo } from 'firebase';
+import { connect } from 'react-redux';
+import { RootStateProps } from '../redux/reducers';
+import ChatMessageSnapshot from '../object/FisebaseSnapshot/ChatMessageSnapshot';
 
 interface MessageInfo {
   user: 'yours' | 'mine';
@@ -48,21 +51,22 @@ function UserSpeech(props: MessageInfo) {
 }
 
 type ChatRoomProps = {
-  chatroomId?: string;
+  chatRoomId?: string;
+  messages: ChatMessage[];
+  chatRoomInfo?: ChatRoomModel;
+  currentUser?: UserInfo | null;
 };
 type ChatRoomState = {
-  chatroomId?: string;
+  chatRoomId?: string;
   messageList: ChatMessage[];
-  chatRoomInfo?: ChatRoomModel;
   message: string;
-  currentUser?: UserInfo;
 };
 
-export default class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
+class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
   constructor(props: ChatRoomProps) {
     super(props);
     this.state = {
-      chatroomId: props.chatroomId,
+      chatRoomId: props.chatRoomId,
       messageList: [],
       message: '',
     };
@@ -74,43 +78,14 @@ export default class ChatRoom extends React.Component<ChatRoomProps, ChatRoomSta
 
   unsubscribe() {}
 
-  async setChatMessageSnapShot() {
-    const currentUserUid = await getCurrentUser();
-    if (currentUserUid) {
-      const chatroomId = this.props.chatroomId;
-      if (chatroomId) {
-        const chatRoomInfo = await getChatRoom({ docId: chatroomId });
-        if (chatRoomInfo) {
-          getChatMessageSnapShot({ chatroomId: chatroomId, limit: 100 }, (list) => {
-            this.setState({
-              chatroomId: chatroomId,
-              currentUser: currentUserUid,
-              chatRoomInfo: chatRoomInfo,
-              messageList: list,
-            });
-          }).then((unsubscribe) => (this.unsubscribe = unsubscribe));
-        }
-      } else {
-        this.setState({
-          currentUser: currentUserUid,
-          chatroomId: '',
-          messageList: [],
-        });
-      }
-    }
-  }
-  async componentDidMount() {
-    await this.setChatMessageSnapShot();
-  }
   async componentDidUpdate(prev: ChatRoomProps) {
-    if (this.props.chatroomId !== prev.chatroomId) {
-      await this.setChatMessageSnapShot();
+    if (this.props.chatRoomId !== prev.chatRoomId) {
     }
   }
 
   async postMessage() {
     if (!this.state.message || !this.state.message.match(/\S/g)) return false;
-    const chatRoomId = this.props.chatroomId;
+    const chatRoomId = this.props.chatRoomId;
     const message = this.state.message;
     if (chatRoomId && message) {
       await postChatMessage({
@@ -122,14 +97,21 @@ export default class ChatRoom extends React.Component<ChatRoomProps, ChatRoomSta
   }
   handleKeyPress() {}
   render() {
-    if (!this.state.chatroomId || !this.state.chatRoomInfo || !this.state.currentUser) return <></>;
-    const currentUserUid = this.state.currentUser.uid;
-    const ownerInfo = this.state.chatRoomInfo.ownerInfo;
-    const playerInfo = this.state.chatRoomInfo.playerInfo;
+    console.log('render', this.props);
+    if (!this.state.chatRoomId || !this.props.currentUser || !this.props.chatRoomInfo)
+      return (
+        <>
+          <ChatMessageSnapshot />
+        </>
+      );
+    const currentUserUid = this.props.currentUser.uid;
+    const ownerInfo = this.props.chatRoomInfo.ownerInfo;
+    const playerInfo = this.props.chatRoomInfo.playerInfo;
     const myUserInfo = currentUserUid === ownerInfo.author ? ownerInfo : playerInfo;
     const otherUserInfo = currentUserUid === playerInfo.author ? ownerInfo : playerInfo;
     return (
       <Box className={classes.chat}>
+        <ChatMessageSnapshot />
         <img
           className={classes.chat__character}
           src={
@@ -143,7 +125,7 @@ export default class ChatRoom extends React.Component<ChatRoomProps, ChatRoomSta
         />
         <Box className={classes.chatContentsWrap}>
           <Box className={classes.chatContents}>
-            {this.state.messageList.map((message, i) => {
+            {this.props.messages.map((message, i) => {
               const isMine = currentUserUid === message.ownerUid;
               const { user, sex, name } = isMine
                 ? { ...myUserInfo, user: 'mine' as 'mine' | 'yours' }
@@ -186,3 +168,18 @@ export default class ChatRoom extends React.Component<ChatRoomProps, ChatRoomSta
     );
   }
 }
+
+function mapStateToProps(state: RootStateProps) {
+  console.log('mapStateToProps', state);
+  return {
+    chatRoomId: state.chatmessage.roomId,
+    messages: state.chatmessage.messages,
+    chatRoomInfo: state.chatmessage.chatRoomInfo,
+    currentUser: state.firebase.user,
+  };
+}
+const mapDispatchToProps = (dispatch: Function) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatRoom);

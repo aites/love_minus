@@ -9,6 +9,7 @@ import { RootStateProps } from '../redux/reducers';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import ChatroomListSnapshot from '../object/FisebaseSnapshot/ChatroomListSnapshot';
+import { selectRoom } from '../redux/reducers/chatMessageReducer';
 
 export interface MailBoxProps {
   roomId?: string;
@@ -36,12 +37,6 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
   componentWillUnmount() {
     this.unsubscribe();
   }
-  componentDidUpdate(prevProps: MailBoxProps) {
-    console.log('MailBox componentDidUpdate', this.props);
-    if (this.props.roomId !== prevProps.roomId) {
-      console.log('componentDidUpdate', this.props);
-    }
-  }
   unsubscribe() {}
   async componentDidMount() {
     const currentUserUID = (await getCurrentUser())?.uid || '';
@@ -65,6 +60,7 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
   render() {
     const { currentUserUID } = this.state;
     const { isLoading, chatrooms } = this.props;
+    console.log('isLoading', isLoading);
     return (
       <Grid container component="main" className={classes.main}>
         <ChatroomListSnapshot />
@@ -108,7 +104,7 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
               '左の一覧からトークしたい人を選んでください。クリックするとトーク画面に切り替わります。'
             )
           ) : (
-            <ChatRoom chatroomId={this.props.roomId} />
+            <ChatRoom />
           )}
         </Grid>
       </Grid>
@@ -117,16 +113,16 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
 }
 
 function mapStateToProps(state: RootStateProps) {
-  const roomId = new URLSearchParams(state.router.location.search).get('r') || undefined;
   return {
-    roomId: roomId,
+    roomId: state.chatmessage.roomId,
     ...state.chatroom,
   };
 }
 const mapDispatchToProps = (dispatch: Function) => {
   return {
-    updateChatRoom(roomId: ChatRoom) {
-      return dispatch(push(`/mailbox?r=${roomId}`));
+    updateChatRoom(roomId: string) {
+      dispatch(selectRoom(roomId));
+      dispatch(push(`/mailbox?r=${roomId}`));
     },
   };
 };

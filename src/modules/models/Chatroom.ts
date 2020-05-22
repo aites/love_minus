@@ -110,7 +110,7 @@ export async function getChatMessage(option: GetChatMessageOption) {
 }
 export async function getChatMessageSnapShot(
   option: GetChatMessageOption,
-  callback: (chatroom: ChatMessage[]) => void
+  callback: (p: { messages: ChatMessage[]; chatRoomInfo: ChatRoom }) => void
 ) {
   const chatRoomRef = db.collection('chatroom').doc(option.chatroomId);
   const chatRoomInfo = (await chatRoomRef.get()).data() as ChatRoom;
@@ -122,10 +122,9 @@ export async function getChatMessageSnapShot(
       const list: ChatMessage[] = [];
       snapShot.forEach((doc) => {
         const data = doc.data() as ChatMessage;
-        data.chatroomInfo = chatRoomInfo;
         list.push(data);
       });
-      callback(list);
+      callback({ messages: list, chatRoomInfo });
     });
 }
 export async function postChatMessage(chatMessage: ChatMessage) {
