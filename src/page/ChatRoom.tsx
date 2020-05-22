@@ -15,6 +15,7 @@ import { UserInfo } from 'firebase';
 import { connect } from 'react-redux';
 import { RootStateProps } from '../redux/reducers';
 import ChatMessageSnapshot from '../object/FisebaseSnapshot/ChatMessageSnapshot';
+import { sendMessage } from '../redux/actions/chatMessageAction';
 
 interface MessageInfo {
   user: 'yours' | 'mine';
@@ -55,10 +56,9 @@ type ChatRoomProps = {
   messages: ChatMessage[];
   chatRoomInfo?: ChatRoomModel;
   currentUser?: UserInfo | null;
+  sendMessage: (chatRoomId: string, message: string) => void;
 };
 type ChatRoomState = {
-  chatRoomId?: string;
-  messageList: ChatMessage[];
   message: string;
 };
 
@@ -66,11 +66,8 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
   constructor(props: ChatRoomProps) {
     super(props);
     this.state = {
-      chatRoomId: props.chatRoomId,
-      messageList: [],
       message: '',
     };
-    this.postMessage = this.postMessage.bind(this);
   }
   componentWillUnmount() {
     this.unsubscribe();
@@ -83,22 +80,17 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
     }
   }
 
-  async postMessage() {
-    if (!this.state.message || !this.state.message.match(/\S/g)) return false;
+  postMessage = () => {
+    if (!this.props.chatRoomId || !this.state.message || !this.state.message.match(/\S/g))
+      return false;
     const chatRoomId = this.props.chatRoomId;
     const message = this.state.message;
-    if (chatRoomId && message) {
-      await postChatMessage({
-        chatroomId: chatRoomId,
-        message: message,
-      });
-      this.setState({ message: '' });
-    }
-  }
+    this.props.sendMessage(chatRoomId, message);
+  };
   handleKeyPress() {}
   render() {
     console.log('render', this.props);
-    if (!this.state.chatRoomId || !this.props.currentUser || !this.props.chatRoomInfo)
+    if (!this.props.chatRoomId || !this.props.currentUser || !this.props.chatRoomInfo)
       return (
         <>
           <ChatMessageSnapshot />
@@ -179,7 +171,11 @@ function mapStateToProps(state: RootStateProps) {
   };
 }
 const mapDispatchToProps = (dispatch: Function) => {
-  return {};
+  return {
+    sendMessage(chatRoomId: string, message: string) {
+      dispatch(sendMessage(chatRoomId, message));
+    },
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatRoom);
