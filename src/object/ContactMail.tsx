@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import { submitContactAction } from '../redux/actions/contactAction';
 import { RootStateProps } from '../redux/reducers';
 
+import classes from './contactMail.module.scss';
+
 type State = {
   name: string;
   mail: string;
@@ -33,38 +35,51 @@ class ContactForm extends Component<Props, State> {
 
   render() {
     return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
-          <TextField
-            name="name"
-            label="お名前"
-            type="text"
-            required
-            value={this.state.name}
-            onChange={(e) => this.setState({ name: e.target.value })}
-          />
-          <TextField
-            name="mail"
-            label="メールアドレス"
-            type="mail"
-            required
-            onChange={(e) => this.setState({ mail: e.target.value })}
-          />
-          <TextField
-            required
-            name="content"
-            label="お問い合わせ内容"
-            multiline
-            rows="8"
-            margin="normal"
-            variant="outlined"
-            onChange={(e) => this.setState({ message: e.target.value })}
-          />
-          <Button variant="contained" color="primary" type="submit">
-            送信
-          </Button>
-        </form>
-      </div>
+      <form onSubmit={this.handleSubmit}>
+        <TextField
+          name="name"
+          label="お名前"
+          type="text"
+          required
+          value={this.state.name}
+          onChange={(e) => this.setState({ name: e.target.value })}
+          fullWidth
+          className={classes.input}
+        />
+        <TextField
+          name="mail"
+          label="メールアドレス"
+          type="mail"
+          required
+          onChange={(e) => this.setState({ mail: e.target.value })}
+          fullWidth
+          className={classes.input}
+        />
+        <TextField
+          required
+          name="content"
+          label="お問い合わせ内容"
+          multiline
+          rows="8"
+          margin="normal"
+          variant="outlined"
+          onChange={(e) => this.setState({ message: e.target.value })}
+          fullWidth
+          className={classes.input}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          style={{
+            margin: 'auto',
+            display: 'block',
+            width: '33%',
+          }}
+        >
+          送　信
+        </Button>
+      </form>
     );
   }
 }
