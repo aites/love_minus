@@ -4,6 +4,7 @@ import { reducer as notifications, NotificationsProps } from 'react-notification
 import firebaseReducer, { AppStateProps } from './reducers/firebaseReducer';
 import chatroomReducer, { ChatroomStateProps } from './reducers/MailBoxReducer';
 import chatMessageReducer, { ChatMessageProps } from './reducers/chatMessageReducer';
+import contactInfoReducer, { ContactInfoProps } from './reducers/contactInfoReducer';
 
 export type RootStateProps = {
   router: RouterState;
@@ -11,6 +12,7 @@ export type RootStateProps = {
   firebase: AppStateProps;
   chatroom: ChatroomStateProps;
   chatmessage: ChatMessageProps;
+  contactInfo: ContactInfoProps;
 };
 
 const createRootReducer = (history: any) =>
@@ -20,5 +22,6 @@ const createRootReducer = (history: any) =>
     firebase: firebaseReducer,
     chatroom: chatroomReducer,
     chatmessage: chatMessageReducer,
+    contactInfo: contactInfoReducer,
   });
 export default createRootReducer;

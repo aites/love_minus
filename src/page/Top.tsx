@@ -109,7 +109,9 @@ export default class Top extends React.Component<TopProps> {
               お問い合わせ
             </Typography>
             <Grid container justify="center">
-              <Grid item xs={10}></Grid>
+              <Grid item xs={10}>
+                <ContactMail />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

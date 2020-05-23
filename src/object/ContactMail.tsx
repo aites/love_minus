@@ -1,37 +1,39 @@
 import React, { Component } from 'react';
-import { MouseEvent } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-const firebase = require('firebase');
-require('firebase/functions');
+import { connect } from 'react-redux';
+import { submitContactAction } from '../redux/actions/contactAction';
+import { RootStateProps } from '../redux/reducers';
 
 type State = {
   name: string;
-  email: string;
-  contents: string;
+  mail: string;
+  message: string;
 };
 
-class ContactForm extends Component<{}, State> {
-  constructor(props: {}) {
+type Props = {
+  handleClick: Function;
+};
+
+class ContactForm extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       name: '',
-      email: '',
-      contents: '',
+      mail: '',
+      message: '',
     };
   }
   private handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    let sendMail = firebase.functions().httpsCallable('sendMail');
-    sendMail(this.state);
-    this.setState({ name: '', email: '', contents: '' });
+    this.props.handleClick(this.state);
+    this.setState({ name: '', mail: '', message: '' });
   };
 
   render() {
     return (
       <div>
-        <h2>お問い合わせ</h2>
         <form onSubmit={this.handleSubmit}>
           <TextField
             name="name"
@@ -42,11 +44,11 @@ class ContactForm extends Component<{}, State> {
             onChange={(e) => this.setState({ name: e.target.value })}
           />
           <TextField
-            name="email"
+            name="mail"
             label="メールアドレス"
             type="mail"
             required
-            onChange={(e) => this.setState({ email: e.target.value })}
+            onChange={(e) => this.setState({ mail: e.target.value })}
           />
           <TextField
             required
@@ -56,7 +58,7 @@ class ContactForm extends Component<{}, State> {
             rows="8"
             margin="normal"
             variant="outlined"
-            onChange={(e) => this.setState({ contents: e.target.value })}
+            onChange={(e) => this.setState({ message: e.target.value })}
           />
           <Button variant="contained" color="primary" type="submit">
             送信
@@ -67,4 +69,15 @@ class ContactForm extends Component<{}, State> {
   }
 }
 
-export default ContactForm;
+function mapStateToProps(state: RootStateProps) {
+  return state;
+}
+
+function mapDispatchToProps(dispatch: Function) {
+  return {
+    handleClick: (info: State) => {
+      dispatch(submitContactAction(info.name, info.mail, info.message));
+    },
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
