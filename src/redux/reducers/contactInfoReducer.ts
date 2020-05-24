@@ -1,4 +1,4 @@
-import { submitContactAction, ContactAction } from '../actions/contactAction';
+import { ContactAction } from '../actions/contactAction';
 export const CONTACT_SUBMIT = 'SUBMIT_CONTACT' as const;
 
 export type ContactInfoProps = {
@@ -18,7 +18,6 @@ const contactReducer = (state: ContactInfoProps = initialState, action: ContactA
     case CONTACT_SUBMIT:
       return {
         ...state,
-        name: action.payload.name,
         mail: action.payload.mail,
         messages: action.payload.message,
       };

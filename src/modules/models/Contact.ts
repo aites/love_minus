@@ -1,7 +1,6 @@
 import { db } from '../firebase';
 
 export type ContactInfo = {
-  name: string;
   mail: string;
   message: string;
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid, Card, CardContent, Typography, CardHeader } from '@material-ui/core';
 import classes from './top.module.scss';
 import ContactMail from '../object/ContactMail';
+import Footer from '../object/Footer';
 type TopProps = {};
 
 const howToPlay = [
@@ -24,12 +25,12 @@ const howToPlay = [
 
 const QA = [
   {
-    title: 'トーク履歴を残すには？',
-    text: `アカウント登録すると履歴を残すことができるよ\nURLを保存しておけば、トーク履歴を残すことができるよ`,
+    title: '他の端末でも使用することができる？',
+    text: `他の端末からもログインすることができるよ\nメール連携からログインの設定をすることができるよ`,
   },
   {
-    title: 'アカウント登録とは？',
-    text: `メールアドレスで登録するとメールアドレス先にメールが届くよ\nメールのURLをクリックすると登録完了するよ`,
+    title: 'キャラクターは複数作成することはできる？',
+    text: `複数作成することはできるよ\n自分の作ったキャラは一覧から見ることができるよ`,
   },
 ];
 
@@ -115,6 +116,7 @@ export default class Top extends React.Component<TopProps> {
             </Grid>
           </Grid>
         </Grid>
+        <Footer />
       </Grid>
     );
   }

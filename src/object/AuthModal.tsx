@@ -131,8 +131,8 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
     return (
       <Paper className={classes.modal}>
         <Grid container direction="column" justify="center" spacing={2}>
-          {this.GuestPaper()}
           {this.LoginPaper()}
+          {this.GuestPaper()}
           {this.InfoContents()}
         </Grid>
       </Paper>
@@ -207,7 +207,9 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
         <Box className={classes.modal__infoBox}>
           <HelpOutline className={classes.modal__infoIcon}></HelpOutline>
           <span className={classes.modal__infoText}>
-            メールアドレス宛に1回限り使えるログイン用の認証リンクを送ります。そちらのリンクをクリックすることでログインとなります。
+            メールアドレス宛に1回限り使えるログイン用の認証リンクを送ります。
+            そちらのリンクをクリックすることでメールアドレス連携完了となります。
+            完了すると次回以降ログインすることができます。
           </span>
         </Box>
       </Grid>
@@ -234,7 +236,7 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
           }}
           className={classes.link}
         >
-          {this.state.isLoading ? '' : isLogin ? 'マイページ' : 'ログイン/アカウント登録'}
+          {this.state.isLoading ? '' : isLogin ? 'マイページ' : 'ログイン/メール連携'}
         </Button>
         <Popover
           open={this.state.open}
