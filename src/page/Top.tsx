@@ -46,6 +46,7 @@ export default class Top extends React.Component<TopProps> {
           />
         </Grid>
         <Grid className={classes.contents}>
+          <div className={classes.minText}>使用している画像:わたおきば(https://wataokiba.net/)</div>
           <Typography component="h3" variant="h3" className={classes.contents__head}>
             遊び方
           </Typography>
