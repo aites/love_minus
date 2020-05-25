@@ -131,7 +131,6 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
     return (
       <Paper className={classes.modal}>
         <Grid container direction="column" justify="center" spacing={2}>
-          {this.LoginPaper()}
           {this.GuestPaper()}
           {this.InfoContents()}
         </Grid>
@@ -142,7 +141,7 @@ class AuthModal extends Component<AuthModalProps, AuthModalStates> {
   GuestPaper = () => {
     return (
       <Grid item xs={12}>
-        <h2 className={classes.modal__head}>新規登録</h2>
+        <h2 className={classes.modal__head}>新規登録/ログイン</h2>
         <TextField
           id="name"
           label="メールアドレス"

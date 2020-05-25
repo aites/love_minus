@@ -1,5 +1,4 @@
 import React from 'react';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import './App.scss';
 import { Route, Switch } from 'react-router-dom';
 import TimeLine from './page/TimeLine';
@@ -7,57 +6,69 @@ import MailBox from './page/MailBox';
 import MakeCharacter from './page/MakeCharacter';
 import Top from './page/Top';
 import MainAppBar from './object/MainAppBar';
-import { Provider } from 'react-redux';
-import { store, history } from './redux/store';
-import { ConnectedRouter } from 'connected-react-router';
+import { connect } from 'react-redux';
 import Notification from './object/Notification';
 import FirebaseNotification from './object/FisebaseSnapshot/FirebaseNotification';
+import { RootStateProps } from './redux/reducers';
+import { setUserAgentAction } from './redux/actions/deviceAction';
+import MainFooterBar from './page_sp/MainFooterBar';
+import MainHeaderBar from './page_sp/MainHeaderBar';
+import TimeLineSP from './page_sp/TimeLineSP';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      // light: will be calculated from palette.primary.main,
-      main: '#ff4400',
-      // dark: will be calculated from palette.primary.main,
-      // contrastText: will be calculated to contrast with palette.primary.main
-    },
-    secondary: {
-      light: '#0066ff',
-      main: '#0044ff',
-      // dark: will be calculated from palette.secondary.main,
-      contrastText: '#ffcc00',
-    },
-    // Used by `getContrastText()` to maximize the contrast between
-    // the background and the text.
-    contrastThreshold: 3,
-    // Used by the functions below to shift a color's luminance by approximately
-    // two indexes within its tonal palette.
-    // E.g., shift from Red 500 to Red 300 or Red 700.
-    tonalOffset: 0.2,
-    success: {
-      main: '#bac778',
-    },
-  },
-});
+type Props = {
+  device: string;
+  setUserAgent: (ua: string) => void;
+};
+export class App extends React.Component<Props> {
+  componentDidMount() {
+    const ua = window.navigator.userAgent.toLowerCase();
+    this.props.setUserAgent(ua);
+  }
 
-function App() {
-  return (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <ConnectedRouter history={history}>
-          <FirebaseNotification />
-          <MainAppBar></MainAppBar>
-          <Switch>
-            <Route exact={true} path="/" component={Top} />
-            <Route exact={true} path="/timeline" component={TimeLine} />
-            <Route path="/mailbox" component={MailBox} />
-            <Route path="/character" component={MakeCharacter} />
-          </Switch>
-        </ConnectedRouter>
-      </ThemeProvider>
-      <Notification />
-    </Provider>
-  );
+  render() {
+    console.log('device', this.props.device);
+    return (
+      <>
+        <FirebaseNotification />
+        <Notification />
+        {this.props.device === 'pc' ? (
+          <>
+            <MainAppBar></MainAppBar>
+            <Switch>
+              <Route exact={true} path="/" component={Top} />
+              <Route exact={true} path="/timeline" component={TimeLine} />
+              <Route path="/mailbox" component={MailBox} />
+              <Route path="/character" component={MakeCharacter} />
+            </Switch>
+          </>
+        ) : (
+          <>
+            <MainHeaderBar />
+            <div style={{ minHeight: 'calc(100vh - 112px)' }}>
+              <Switch>
+                <Route exact={true} path="/" component={TimeLineSP} />
+                <Route exact={true} path="/timeline" component={TimeLineSP} />
+              </Switch>
+            </div>
+            <MainFooterBar />
+          </>
+        )}
+      </>
+    );
+  }
 }
 
-export default App;
+function mapStateToProps(state: RootStateProps) {
+  return {
+    device: state.device.device,
+  };
+}
+const mapDispatchToProps = (dispatch: Function) => {
+  return {
+    setUserAgent(ua: string) {
+      dispatch(setUserAgentAction(ua));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
