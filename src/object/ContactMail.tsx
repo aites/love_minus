@@ -8,13 +8,13 @@ import { RootStateProps } from '../redux/reducers';
 
 import classes from './contactMail.module.scss';
 
+type Props = {
+  handleClick: Function;
+};
+
 type State = {
   mail: string;
   message: string;
-};
-
-type Props = {
-  handleClick: Function;
 };
 
 class ContactForm extends Component<Props, State> {
@@ -42,6 +42,7 @@ class ContactForm extends Component<Props, State> {
             name="mail"
             label="メールアドレス"
             type="mail"
+            value={this.state.mail}
             onChange={(e) => this.setState({ mail: e.target.value })}
             fullWidth
             className={classes.input}
@@ -54,6 +55,7 @@ class ContactForm extends Component<Props, State> {
             rows="8"
             margin="normal"
             variant="outlined"
+            value={this.state.message}
             onChange={(e) => this.setState({ message: e.target.value })}
             fullWidth
             className={classes.input}

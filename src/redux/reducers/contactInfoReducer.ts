@@ -1,16 +1,15 @@
 import { ContactAction } from '../actions/contactAction';
 export const CONTACT_SUBMIT = 'SUBMIT_CONTACT' as const;
+export const CONTACT_RESET = 'RESET_CONTACT' as const;
 
 export type ContactInfoProps = {
-  name: string;
   mail: string;
-  messages: string;
+  message: string;
 };
 
 const initialState: ContactInfoProps = {
-  name: '',
   mail: '',
-  messages: '',
+  message: '',
 };
 
 const contactReducer = (state: ContactInfoProps = initialState, action: ContactAction) => {
@@ -19,7 +18,7 @@ const contactReducer = (state: ContactInfoProps = initialState, action: ContactA
       return {
         ...state,
         mail: action.payload.mail,
-        messages: action.payload.message,
+        message: action.payload.message,
       };
   }
   return state;
