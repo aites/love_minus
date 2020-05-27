@@ -7,43 +7,34 @@ import { submitContactAction } from '../redux/actions/contactAction';
 import { RootStateProps } from '../redux/reducers';
 
 import classes from './contactMail.module.scss';
+import { CONTACT_INPUT } from '../redux/reducers/contactInfoReducer';
 
 type Props = {
-  handleClick: Function;
-};
-
-type State = {
+  handleClick: (email: string, message: string) => void;
+  handleChange: (email: string, message: string) => void;
   mail: string;
   message: string;
 };
 
-class ContactForm extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      mail: '',
-      message: '',
-    };
-  }
-  private handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
-    e.preventDefault();
-    this.props.handleClick(this.state);
-    this.setState({ mail: '', message: '' });
-  };
-
+class ContactForm extends Component<Props> {
   render() {
     return (
       <div className={classes.formWrapper}>
-        <form onSubmit={this.handleSubmit}>
-          <div className={classes.infoText}>
-            メールアドレスは任意です。ご返信が欲しい方はご記載ください。
-          </div>
+        <div className={classes.infoText}>
+          メールアドレスは任意です。ご返信が欲しい方はご記載ください。
+        </div>
+        <form
+          onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+            this.props.handleClick(this.props.mail, this.props.message);
+          }}
+        >
           <TextField
             name="mail"
             label="メールアドレス"
-            type="mail"
-            value={this.state.mail}
-            onChange={(e) => this.setState({ mail: e.target.value })}
+            type="email"
+            value={this.props.mail}
+            onChange={(e) => this.props.handleChange(e.target.value, this.props.message)}
             fullWidth
             className={classes.input}
           />
@@ -55,8 +46,8 @@ class ContactForm extends Component<Props, State> {
             rows="8"
             margin="normal"
             variant="outlined"
-            value={this.state.message}
-            onChange={(e) => this.setState({ message: e.target.value })}
+            value={this.props.message}
+            onChange={(e) => this.props.handleChange(this.props.mail, e.target.value)}
             fullWidth
             className={classes.input}
           />
@@ -79,13 +70,25 @@ class ContactForm extends Component<Props, State> {
 }
 
 function mapStateToProps(state: RootStateProps) {
-  return state;
+  return {
+    mail: state.contactInfo.mail,
+    message: state.contactInfo.message,
+  };
 }
 
 function mapDispatchToProps(dispatch: Function) {
   return {
-    handleClick: (info: State) => {
-      dispatch(submitContactAction(info.mail, info.message));
+    handleChange: (mail: string, message: string) => {
+      dispatch({
+        type: CONTACT_INPUT,
+        payload: {
+          mail,
+          message,
+        },
+      });
+    },
+    handleClick: (mail: string, message: string) => {
+      dispatch(submitContactAction(mail, message));
     },
   };
 }

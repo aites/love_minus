@@ -3,7 +3,6 @@ import { AppBar, Toolbar, Tabs, Tab } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import AuthModal from './AuthModal';
 import { connect } from 'react-redux';
-import { success } from 'react-notification-system-redux';
 
 type MainAppBarProps = {
   pathname: string;

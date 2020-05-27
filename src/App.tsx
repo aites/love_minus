@@ -26,7 +26,6 @@ export class App extends React.Component<Props> {
   }
 
   render() {
-    console.log('device', this.props.device);
     return (
       <>
         <FirebaseNotification />

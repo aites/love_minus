@@ -20,6 +20,8 @@ class Validation {
         return emailValidation(value);
       case 'password':
         return passwordValidation(value);
+      default:
+        return '';
     }
   };
 }

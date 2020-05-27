@@ -3,14 +3,7 @@ import { Box, Button, TextareaAutosize } from '@material-ui/core';
 import ClassNames from 'classnames';
 import SendIcon from '@material-ui/icons/Send';
 import classes from './chatRoom.module.scss';
-import { getCurrentUser } from '../modules/firebase';
-import {
-  getChatRoom,
-  ChatMessage,
-  postChatMessage,
-  getChatMessageSnapShot,
-  ChatRoom as ChatRoomModel,
-} from '../modules/models/Chatroom';
+import { ChatMessage, ChatRoom as ChatRoomModel } from '../modules/models/Chatroom';
 import { UserInfo } from 'firebase';
 import { connect } from 'react-redux';
 import { RootStateProps } from '../redux/reducers';
@@ -69,16 +62,6 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
       message: '',
     };
   }
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  unsubscribe() {}
-
-  async componentDidUpdate(prev: ChatRoomProps) {
-    if (this.props.chatRoomId !== prev.chatRoomId) {
-    }
-  }
 
   postMessage = () => {
     if (!this.props.chatRoomId || !this.state.message || !this.state.message.match(/\S/g))
@@ -87,9 +70,8 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
     const message = this.state.message;
     this.props.sendMessage(chatRoomId, message);
   };
-  handleKeyPress() {}
+
   render() {
-    console.log('render', this.props);
     if (!this.props.chatRoomId || !this.props.currentUser || !this.props.chatRoomInfo)
       return (
         <>
@@ -162,7 +144,6 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
 }
 
 function mapStateToProps(state: RootStateProps) {
-  console.log('mapStateToProps', state);
   return {
     chatRoomId: state.chatmessage.roomId,
     messages: state.chatmessage.messages,

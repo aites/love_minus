@@ -2,8 +2,8 @@ import React from 'react';
 import { Grid, Divider, Typography, CircularProgress, Box } from '@material-ui/core';
 import ChatRoom from './ChatRoom';
 import classes from './mailBox.module.scss';
-import { ChatRoom as ChatRoomModel, getChatRoomsSnapShot } from '../modules/models/Chatroom';
-import { timestampToString, getCurrentUser } from '../modules/firebase';
+import { ChatRoom as ChatRoomModel } from '../modules/models/Chatroom';
+import { timestampToString } from '../modules/firebase';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import { RootStateProps } from '../redux/reducers';
 import { connect } from 'react-redux';
@@ -34,14 +34,6 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
     this.onSelectChatRoom = this.onSelectChatRoom.bind(this);
   }
 
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-  unsubscribe() {}
-  async componentDidMount() {
-    const currentUserUID = (await getCurrentUser())?.uid || '';
-  }
-
   onSelectChatRoom(roomId?: string) {
     if (roomId) {
       this.props.updateChatRoom(roomId);
@@ -60,7 +52,6 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
   render() {
     const { currentUserUID } = this.state;
     const { isLoading, chatrooms } = this.props;
-    console.log('isLoading', isLoading);
     return (
       <Grid container component="main" className={classes.main}>
         <ChatroomListSnapshot />
@@ -68,7 +59,7 @@ class MailBox extends React.Component<MailBoxProps, MailBoxState> {
           {isLoading ? (
             <CircularProgress variant="determinate" />
           ) : (
-            chatrooms.map((room: ChatRoomModel, i) => {
+            chatrooms.map((room: ChatRoomModel) => {
               const userInfo = room.ownerUid === currentUserUID ? room.playerInfo : room.ownerInfo;
               return (
                 <>

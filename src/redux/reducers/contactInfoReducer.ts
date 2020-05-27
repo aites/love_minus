@@ -1,6 +1,5 @@
 import { ContactAction } from '../actions/contactAction';
-export const CONTACT_SUBMIT = 'SUBMIT_CONTACT' as const;
-export const CONTACT_RESET = 'RESET_CONTACT' as const;
+export const CONTACT_INPUT = 'CONTACT_INPUT' as const;
 
 export type ContactInfoProps = {
   mail: string;
@@ -14,7 +13,7 @@ const initialState: ContactInfoProps = {
 
 const contactReducer = (state: ContactInfoProps = initialState, action: ContactAction) => {
   switch (action.type) {
-    case CONTACT_SUBMIT:
+    case CONTACT_INPUT:
       return {
         ...state,
         mail: action.payload.mail,

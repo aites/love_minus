@@ -10,7 +10,6 @@ import {
   Avatar,
   ListItemText,
   Typography,
-  Divider,
 } from '@material-ui/core';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 

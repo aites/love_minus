@@ -6,7 +6,6 @@ import { RootStateProps } from '../../redux/reducers';
 import { CHANGE_USER, AppStateProps } from '../../redux/reducers/firebaseReducer';
 import { success } from 'react-notification-system-redux';
 import { ChatRoom } from '../../modules/models/Chatroom';
-import { history } from '../../redux/store';
 import { push } from 'connected-react-router';
 
 type Props = {
@@ -26,7 +25,6 @@ class FirebaseNotification extends Component<Props> {
     this._onAuthStateChanged();
   }
   componentDidUpdate(nextProps: Props) {
-    console.log('componentDidUpdate', nextProps, this.props);
     // UID発行後に監視する内容
     if (nextProps.firebase.user === null && this.props.firebase.user) {
       const currentUserUID = this.props.firebase.user.uid;
@@ -35,7 +33,6 @@ class FirebaseNotification extends Component<Props> {
     }
   }
   componentWillUnmount() {
-    console.log('componentWillUnmount');
     this.unscribes.onAuthStateChanged();
     this.unscribes.onUpdateTimeline();
   }
@@ -60,7 +57,6 @@ class FirebaseNotification extends Component<Props> {
       .orderBy('updatedAt', 'desc')
       .limit(1)
       .onSnapshot((snapShot) => {
-        console.log('chatroom snapShot', snapShot);
         if (snapShot.metadata.hasPendingWrites === true) return;
         if (!snapShot.metadata.hasPendingWrites && !snapShot.empty) {
           const data = snapShot.docs[0].data() as ChatRoom;
@@ -100,7 +96,6 @@ const mapDispatchToProps = (dispatch: Function) => {
       }
     },
     addChatRoom(room: ChatRoom) {
-      console.log('addChatRoom', room);
       dispatch(
         success({
           title: 'チャットリクエストが届きました',
@@ -114,7 +109,6 @@ const mapDispatchToProps = (dispatch: Function) => {
       );
     },
     updateChatRoom(room: ChatRoom) {
-      console.log('addChatRoom', room);
       dispatch(
         success({
           title: '新しいメッセージが届きました',

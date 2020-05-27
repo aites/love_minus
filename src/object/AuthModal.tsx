@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import firebase, { getCurrentUser } from '../modules/firebase';
-import { Paper, Button, Popover, TextField, InputLabel, Box, Grid } from '@material-ui/core';
+import { Paper, Button, Popover, TextField, Box, Grid } from '@material-ui/core';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import classes from './authModal.module.scss';
-import Validation from '../modules/models/formValidation';
+import Validation from '../modules/formValidation';
 import { connect } from 'react-redux';
 import { RootStateProps } from '../redux/reducers';
 import { AppStateProps } from '../redux/reducers/firebaseReducer';

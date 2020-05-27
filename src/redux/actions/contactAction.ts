@@ -1,4 +1,5 @@
 import { submitContact } from '../../modules/models/Contact';
+import { CONTACT_INPUT } from '../reducers/contactInfoReducer';
 
 export type ContactAction = {
   type: string;
@@ -9,14 +10,14 @@ export type ContactAction = {
 };
 
 export const submitContactAction = (mail: string, message: string) => {
-  return async () => {
+  return async (dispatch: Function) => {
     await submitContact({ mail, message });
-    return {
-      type: 'SUBMIT_CONTACT',
+    dispatch({
+      type: CONTACT_INPUT,
       payload: {
-        mail,
-        message,
+        mail: '',
+        message: '',
       },
-    };
+    });
   };
 };

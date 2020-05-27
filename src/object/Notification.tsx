@@ -2,7 +2,6 @@ import Notifications from 'react-notification-system-redux';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { success } from 'react-notification-system-redux';
-import firebase from '../modules/firebase';
 import { RootStateProps } from '../redux/reducers';
 
 type Props = {
@@ -10,9 +9,6 @@ type Props = {
   notifySuccess: any;
 };
 class Notification extends Component<Props> {
-  constructor(props: Props) {
-    super(props);
-  }
   render() {
     const { notifications } = this.props;
     const style = {
