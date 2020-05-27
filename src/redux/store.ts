@@ -8,5 +8,5 @@ import thunk from 'redux-thunk';
 export const history = createBrowserHistory();
 export const store = createStore(
   createRootReducer(history),
-  compose(applyMiddleware(routerMiddleware(history), logger, thunk))
+  compose(applyMiddleware(routerMiddleware(history), thunk, logger))
 );

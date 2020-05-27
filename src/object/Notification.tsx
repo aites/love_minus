@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { success } from 'react-notification-system-redux';
 import firebase from '../modules/firebase';
+import { RootStateProps } from '../redux/reducers';
 
 type Props = {
   notifications: any;
@@ -32,7 +33,7 @@ class Notification extends Component<Props> {
   }
 }
 
-function mapStateToProps(state: any) {
+function mapStateToProps(state: RootStateProps) {
   return {
     notifications: state.notifications,
   };
