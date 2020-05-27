@@ -1,4 +1,3 @@
-import firebase, { db } from '../../modules/firebase';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ChatRoom, getChatRoomsSnapShot } from '../../modules/models/Chatroom';

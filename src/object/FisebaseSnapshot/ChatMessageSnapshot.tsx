@@ -1,6 +1,5 @@
-import firebase, { db } from '../../modules/firebase';
 import React, { Component } from 'react';
-import { connect, DispatchProp } from 'react-redux';
+import { connect } from 'react-redux';
 import { ChatRoom, getChatMessageSnapShot, ChatMessage } from '../../modules/models/Chatroom';
 import { RootStateProps } from '../../redux/reducers';
 import { updateMessage } from '../../redux/reducers/chatMessageReducer';
@@ -30,8 +29,7 @@ class ChatMessageSnapshot extends Component<Props> {
   }
 
   async componentDidUpdate(prevProps: Props) {
-    console.log('getChatMessageSnapShot', this.props);
-    if (this.props.roomId != prevProps.roomId) {
+    if (this.props.roomId !== prevProps.roomId) {
       await this.setChatMessage();
     }
   }

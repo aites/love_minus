@@ -1,16 +1,11 @@
 import React from 'react';
 import {
-  BottomNavigation,
-  BottomNavigationAction,
   AppBar,
   Toolbar,
   Typography,
-  Button,
   IconButton,
 } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import ForumIcon from '@material-ui/icons/Forum';
-import PersonIcon from '@material-ui/icons/Person';
 import { connect } from 'react-redux';
 import { RootStateProps } from '../redux/reducers';
 

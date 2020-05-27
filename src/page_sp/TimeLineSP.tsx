@@ -12,6 +12,7 @@ import {
   Typography,
   Divider,
 } from '@material-ui/core';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 
 type TimeLineProps = {
   user: User | null;
@@ -38,6 +39,8 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
   }
 
   render() {
+    const theme = createMuiTheme();
+
     let profileList = this.state.profileList.concat(this.state.profileList);
     profileList = profileList.concat(profileList);
     return (
@@ -46,9 +49,13 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
           {profileList.map((profile, i) => {
             return (
               <React.Fragment key={i}>
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Avatar alt="Remy Sharp" src={profile.miniIcon} />
+                <ListItem alignItems="flex-start" divider={true} style={{ paddingLeft: '8px' }}>
+                  <ListItemAvatar style={{ margin: '0' }}>
+                    <Avatar
+                      alt="alt"
+                      src={profile.miniIcon}
+                      style={{ width: theme.spacing(7), height: theme.spacing(7) }}
+                    />
                   </ListItemAvatar>
                   <ListItemText
                     primary={profile.name}
@@ -61,7 +68,6 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
                     }
                   />
                 </ListItem>
-                <Divider />
               </React.Fragment>
               //{JSON.stringify(profile)}
             );

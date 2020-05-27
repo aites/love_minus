@@ -15,24 +15,14 @@ type DeviceType = 'pc' | 'sp' | 'tab';
 export const setUserAgentAction = (ua: string) => (dispatch: Function) => {
   ua = ua.toLowerCase();
   let device: DeviceType = 'pc';
-  if (
-    ua.indexOf('iphone') > 0 ||
-    ua.indexOf('ipod') > 0 ||
-    (ua.indexOf('android') > 0 && ua.indexOf('mobile') > 0)
-  ) {
+  if (window.matchMedia && window.matchMedia('(max-device-width: 640px)').matches) {
+    // 物理サイズがスマートフォン
     device = 'sp';
-  } else if (ua.indexOf('ipad') > 0 || ua.indexOf('android') > 0) {
-    // iOS12 まで
-    device = 'tab';
-  } else if (
-    ua.indexOf('ipad') > -1 ||
-    (ua.indexOf('macintosh') > -1 && 'ontouchend' in document)
-  ) {
-    // iOS13 以降
-    device = 'tab';
   } else {
-    device = 'pc';
+    if (window.innerWidth <= 640) {
+      // 画面サイズがスマートフォン(導入するか検討)
+      device = 'sp';
+    }
   }
-  console.log(ua, device);
   dispatch({ type: 'SET_DEVICE_TYPE', payload: { device } });
 };
