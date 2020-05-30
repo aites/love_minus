@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import NavigateNext from '@material-ui/icons/NavigateNext';
-import classes from './profileModal.module.scss';
+import classes from '../scss/object/profileModal.module.scss';
 import { Profile } from '../modules/models/Profile';
 import { createChatRoom } from '../modules/models/Chatroom';
 import { getCurrentUser } from '../modules/firebase';

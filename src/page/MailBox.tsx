@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Divider, Typography, CircularProgress, Box } from '@material-ui/core';
 import ChatRoom from './ChatRoom';
-import classes from './mailBox.module.scss';
+import classes from '../scss/page/mailBox.module.scss';
 import { ChatRoom as ChatRoomModel } from '../modules/models/Chatroom';
 import { timestampToString } from '../modules/firebase';
 import HelpOutline from '@material-ui/icons/HelpOutline';

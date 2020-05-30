@@ -5,7 +5,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import ForumIcon from '@material-ui/icons/Forum';
 import PersonIcon from '@material-ui/icons/Person';
 import { connect } from 'react-redux';
-import classes from './MainFooterBar.module.scss';
+import classes from '../scss/page_sp/mainFooterBar.module.scss';
 import { RootStateProps } from '../redux/reducers';
 
 type Props = {

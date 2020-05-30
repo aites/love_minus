@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Button, TextareaAutosize } from '@material-ui/core';
 import ClassNames from 'classnames';
 import SendIcon from '@material-ui/icons/Send';
-import classes from './chatRoom.module.scss';
+import classes from '../scss/page/chatRoom.module.scss';
 import { ChatMessage, ChatRoom as ChatRoomModel } from '../modules/models/Chatroom';
 import { UserInfo } from 'firebase';
 import { connect } from 'react-redux';

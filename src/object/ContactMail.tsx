@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { submitContactAction } from '../redux/actions/contactAction';
 import { RootStateProps } from '../redux/reducers';
 
-import classes from './contactMail.module.scss';
+import classes from '../scss/object/contactMail.module.scss';
 import { CONTACT_INPUT } from '../redux/reducers/contactInfoReducer';
 
 type Props = {

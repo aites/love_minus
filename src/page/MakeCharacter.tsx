@@ -9,7 +9,7 @@ import {
   Select,
   MenuItem,
 } from '@material-ui/core';
-import classes from './makeCharacter.module.scss';
+import classes from '../scss/page/makeCharacter.module.scss';
 import { createProfile } from '../modules/models/Profile';
 
 interface Character {

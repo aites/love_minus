@@ -1,6 +1,6 @@
 import React from 'react';
 import { Paper, Typography, Button, Box } from '@material-ui/core';
-import classes from './profileListCard.module.scss';
+import classes from '../scss/object/profileListCard.module.scss';
 import { Profile } from '../modules/models/Profile';
 import { timestampToString } from '../modules/firebase';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, Card, CardContent, Typography, CardHeader } from '@material-ui/core';
-import classes from './top.module.scss';
+import classes from '../scss/page/top.module.scss';
 import ContactMail from '../object/ContactMail';
 import Footer from '../object/Footer';
 type TopProps = {};
