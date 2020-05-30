@@ -1,9 +1,15 @@
+# サイトの説明
+
+- このサイトは１対１でチャットする SPA サイトです。（なりきりチャットのような感じで作成）
+
 # 使っている技術
 
-"node": 12 系
-Typescript
-React / Redux
-Firebase
+- react 16.13.1
+- redux 4.0.5
+- node 12 系
+- typescript 3.7.5
+- Firebase
+- material-ui
 
 # レビューして欲しいファイル
 
@@ -15,6 +21,11 @@ Firebase
 
 # レビューして欲しい観点
 
+- react/redux の書き方
 - TypeScript の書き方
-- redux の書き方
-- フォルダ構成
+- state の書き方の良し悪し
+
+# 共有事項
+
+- styled-components はあえて使っていないです
+- SP 画面に関しては作成中のため、レビュー対象外です
