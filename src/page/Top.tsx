@@ -3,7 +3,11 @@ import { Grid, Card, CardContent, Typography, CardHeader } from '@material-ui/co
 import classes from '../scss/page/top.module.scss';
 import ContactMail from '../object/ContactMail';
 import Footer from '../object/Footer';
-type TopProps = {};
+import { connect } from 'react-redux';
+import { submitContactAction } from '../redux/actions/contactAction';
+type TopProps = {
+  sendContactMail: (mail: string, message: string) => void;
+};
 
 const howToPlay = [
   {
@@ -34,7 +38,7 @@ const QA = [
   },
 ];
 
-export default class Top extends React.Component<TopProps> {
+class Top extends React.Component<TopProps> {
   render() {
     return (
       <Grid>
@@ -112,7 +116,7 @@ export default class Top extends React.Component<TopProps> {
             </Typography>
             <Grid container justify="center">
               <Grid item xs={10}>
-                <ContactMail />
+                <ContactMail sendContactMail={this.props.sendContactMail} />
               </Grid>
             </Grid>
           </Grid>
@@ -122,3 +126,13 @@ export default class Top extends React.Component<TopProps> {
     );
   }
 }
+
+function mapDispatchToProps(dispatch: Function) {
+  return {
+    sendContactMail: (mail: string, message: string) => {
+      dispatch(submitContactAction(mail, message));
+    },
+  };
+}
+
+export default connect(null, mapDispatchToProps)(Top);
