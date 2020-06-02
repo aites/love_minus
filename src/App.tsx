@@ -14,6 +14,7 @@ import { setUserAgentAction } from './redux/actions/deviceAction';
 import MainFooterBar from './page_sp/MainFooterBar';
 import MainHeaderBar from './page_sp/MainHeaderBar';
 import TimeLineSP from './page_sp/TimeLineSP';
+import MailBoxSP from './page_sp/MailBoxSP';
 
 type Props = {
   device: string;
@@ -47,6 +48,7 @@ export class App extends React.Component<Props> {
               <Switch>
                 <Route exact={true} path="/" component={TimeLineSP} />
                 <Route exact={true} path="/timeline" component={TimeLineSP} />
+                <Route exact={true} path="/mailbox" component={MailBoxSP} />
               </Switch>
             </div>
             <MainFooterBar />

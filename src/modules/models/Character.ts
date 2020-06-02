@@ -6,4 +6,6 @@ export type Character = {
   image: string;
 };
 
-export async function createCharacter() {}
+export async function createCharacter() {
+  
+}
