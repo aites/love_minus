@@ -18,6 +18,7 @@ import { selectRoom } from '../redux/reducers/chatMessageReducer';
 
 type Props = {
   roomId?: string;
+  currentUserUID: string;
   isLoading: boolean;
   chatrooms: ChatRoomModel[];
   updateChatRoom: Function;
@@ -33,41 +34,32 @@ class MailBoxSP extends React.Component<Props, State> {
       profileList: [],
     };
   }
-  componentDidMount() {
-    getTimeLine({
-      limit: 30,
-    }).then((data) => {
-      this.setState({
-        profileList: data,
-      });
-    });
-  }
 
   render() {
     const theme = createMuiTheme();
+    const { chatrooms, currentUserUID } = this.props;
 
-    let profileList = this.state.profileList.concat(this.state.profileList);
-    profileList = profileList.concat(profileList);
     return (
       <>
         <List>
-          {profileList.map((profile, i) => {
+          {chatrooms.map((room, i) => {
+            const userInfo = room.ownerUid === currentUserUID ? room.playerInfo : room.ownerInfo;
             return (
               <React.Fragment key={i}>
                 <ListItem alignItems="flex-start" divider={true} style={{ paddingLeft: '8px' }}>
                   <ListItemAvatar style={{ margin: '0' }}>
                     <Avatar
                       alt="alt"
-                      src={profile.miniIcon}
+                      src={userInfo.miniIcon}
                       style={{ width: theme.spacing(7), height: theme.spacing(7) }}
                     />
                   </ListItemAvatar>
                   <ListItemText
-                    primary={profile.name}
+                    primary={userInfo.name}
                     secondary={
                       <React.Fragment>
                         <Typography component="span" variant="body2" color="textPrimary">
-                          {profile.simpleProf}
+                          {room.lastMessage}
                         </Typography>
                       </React.Fragment>
                     }
@@ -86,6 +78,7 @@ class MailBoxSP extends React.Component<Props, State> {
 function mapStateToProps(state: RootStateProps) {
   return {
     roomId: state.chatmessage.roomId,
+    currentUserUID: state.firebase.user?.uid || '',
     ...state.chatroom,
   };
 }
