@@ -44,16 +44,7 @@ export default function ContactMail(props: Props) {
           fullWidth
           className={classes.input}
         />
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          style={{
-            margin: 'auto',
-            display: 'block',
-            width: '33%',
-          }}
-        >
+        <Button variant="contained" color="primary" type="submit" className={classes.button}>
           送　信
         </Button>
       </form>
