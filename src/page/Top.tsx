@@ -38,93 +38,91 @@ const QA = [
   },
 ];
 
-class Top extends React.Component<TopProps> {
-  render() {
-    return (
+function Top(props: TopProps) {
+  return (
+    <Grid>
       <Grid>
-        <Grid>
-          <img
-            className={classes.mainView}
-            src="../images/love_minus_mainView.png"
-            alt="メイン画像"
-          />
-        </Grid>
-        <Grid className={classes.contents}>
-          <div className={classes.minText}>使用している画像:わたおきば(https://wataokiba.net/)</div>
-          <Typography component="h3" variant="h3" className={classes.contents__head}>
-            遊び方
-          </Typography>
-          <Grid container justify="center">
-            <Grid item xs={10}>
-              {howToPlay.map((item) => (
-                <Card className={classes.card}>
-                  <CardHeader
-                    className={classes.card__head}
-                    avatar={
-                      <Typography component="h5" variant="h5">
-                        {item.title}
-                      </Typography>
-                    }
-                  />
-                  <div className={classes.card__imageBox}>
-                    <img
-                      src={item.image}
-                      className={classes.card__image}
-                      alt="タイムラインを選んで、トークしたい人を選んでください"
-                    />
-                  </div>
-                  <CardContent className={classes.card__contents}>
-                    <Typography className={classes.card__contentsText} component="h6" variant="h6">
-                      {item.text}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              ))}
-            </Grid>
-          </Grid>
-        </Grid>
-
-        <Grid className={classes.contentsWhite}>
-          <Typography component="h3" variant="h3" className={classes.contents__head}>
-            Q&A
-          </Typography>
-          <Grid container justify="center">
-            <Grid item xs={10}>
-              {QA.map((item) => (
-                <Card className={classes.card}>
-                  <CardHeader
-                    className={classes.card__head}
-                    avatar={
-                      <Typography component="h5" variant="h5">
-                        {item.title}
-                      </Typography>
-                    }
-                  />
-                  <CardContent className={classes.card__contents}>
-                    <Typography className={classes.card__contentsText} component="h6" variant="h6">
-                      {item.text}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              ))}
-            </Grid>
-          </Grid>
-
-          <Grid className={classes.contents}>
-            <Typography component="h3" variant="h3" className={classes.contents__head}>
-              お問い合わせ
-            </Typography>
-            <Grid container justify="center">
-              <Grid item xs={10}>
-                <ContactMail sendContactMail={this.props.sendContactMail} />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Footer />
+        <img
+          className={classes.mainView}
+          src="../images/love_minus_mainView.png"
+          alt="メイン画像"
+        />
       </Grid>
-    );
-  }
+      <Grid className={classes.contents}>
+        <div className={classes.minText}>使用している画像:わたおきば(https://wataokiba.net/)</div>
+        <Typography component="h3" variant="h3" className={classes.contents__head}>
+          遊び方
+        </Typography>
+        <Grid container justify="center">
+          <Grid item xs={10}>
+            {howToPlay.map((item, i) => (
+              <Card className={classes.card} key={i}>
+                <CardHeader
+                  className={classes.card__head}
+                  avatar={
+                    <Typography component="h5" variant="h5">
+                      {item.title}
+                    </Typography>
+                  }
+                />
+                <div className={classes.card__imageBox}>
+                  <img
+                    src={item.image}
+                    className={classes.card__image}
+                    alt="タイムラインを選んで、トークしたい人を選んでください"
+                  />
+                </div>
+                <CardContent className={classes.card__contents}>
+                  <Typography className={classes.card__contentsText} component="h6" variant="h6">
+                    {item.text}
+                  </Typography>
+                </CardContent>
+              </Card>
+            ))}
+          </Grid>
+        </Grid>
+      </Grid>
+
+      <Grid className={classes.contentsWhite}>
+        <Typography component="h3" variant="h3" className={classes.contents__head}>
+          Q&A
+        </Typography>
+        <Grid container justify="center">
+          <Grid item xs={10}>
+            {QA.map((item, i) => (
+              <Card className={classes.card} key={i}>
+                <CardHeader
+                  className={classes.card__head}
+                  avatar={
+                    <Typography component="h5" variant="h5">
+                      {item.title}
+                    </Typography>
+                  }
+                />
+                <CardContent className={classes.card__contents}>
+                  <Typography className={classes.card__contentsText} component="h6" variant="h6">
+                    {item.text}
+                  </Typography>
+                </CardContent>
+              </Card>
+            ))}
+          </Grid>
+        </Grid>
+
+        <Grid className={classes.contents}>
+          <Typography component="h3" variant="h3" className={classes.contents__head}>
+            お問い合わせ
+          </Typography>
+          <Grid container justify="center">
+            <Grid item xs={10}>
+              <ContactMail sendContactMail={props.sendContactMail} />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Footer />
+    </Grid>
+  );
 }
 
 function mapDispatchToProps(dispatch: Function) {
