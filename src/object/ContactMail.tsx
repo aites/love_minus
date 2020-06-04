@@ -20,6 +20,8 @@ export default function ContactMail(props: Props) {
         onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault();
           props.sendContactMail(mail, message);
+          setMail('');
+          setMessage('');
         }}
       >
         <TextField
