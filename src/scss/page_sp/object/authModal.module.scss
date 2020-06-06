@@ -1,0 +1,62 @@
+.link {
+  flex: none;
+  color: #FFF !important;
+  font-weight: bold !important;
+}
+
+.linkText {
+  margin-left: 4px;
+  font-size: 12px;
+}
+
+.modal {
+  width: 300px;
+  padding: 10px;
+}
+
+.modal__inputText {
+  width: 100%;
+}
+
+.modal__head {
+  font-size: 16px;
+  line-height: 1;
+  margin-bottom: 12px;
+  color: #333;
+  text-align: center;
+}
+
+.modal__infoBox {
+  border-color: #f2c744;
+  background-color: #fcf4da;
+  border-radius: 4px;
+  color: #454245;
+  position: relative;
+  padding: 8px;
+}
+
+.modal__infoText {
+  padding-left: 20px;
+}
+
+.modal__infoIcon {
+  color: #f2c744;
+  position: absolute;
+  top: 7px;
+  left: 4px;
+}
+
+.modal__button {
+  width: 100%;
+  height: 56px;
+  font-size: 16px !important;
+  box-sizing: content-box;
+  margin-top: 12px !important;
+}
+
+.errorMessage {
+  font-size: 16px;
+  color: red;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}

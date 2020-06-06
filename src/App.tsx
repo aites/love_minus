@@ -12,7 +12,7 @@ import FirebaseNotification from './object/FisebaseSnapshot/FirebaseNotification
 import { RootStateProps } from './redux/reducers';
 import { setUserAgentAction } from './redux/actions/deviceAction';
 import MainFooterBar from './page_sp/MainFooterBar';
-import MainHeaderBar from './page_sp/MainHeaderBar';
+import MainHeaderBar from './page_sp/object/MainHeaderBar';
 import TimeLineSP from './page_sp/TimeLineSP';
 import MailBoxSP from './page_sp/MailBoxSP';
 

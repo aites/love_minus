@@ -1,13 +1,10 @@
 import React from 'react';
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
-} from '@material-ui/core';
+import AuthModal from './AuthModal';
+import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { connect } from 'react-redux';
-import { RootStateProps } from '../redux/reducers';
+import { RootStateProps } from '../../redux/reducers';
+import classes from '../../scss/page_sp/mainHeaderBar.module.scss';
 
 class MainHeaderBar extends React.Component {
   render() {
@@ -15,15 +12,10 @@ class MainHeaderBar extends React.Component {
     return (
       <AppBar position="sticky">
         <Toolbar>
-          <Typography variant="h6">Love Minus</Typography>
-          <IconButton
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            color="inherit"
-          >
-            <AccountCircle />
-          </IconButton>
+          <h1>
+            <img className={classes.logo} src="../images/logo.png" alt="LoveMinus" />
+          </h1>
+          <AuthModal />
         </Toolbar>
       </AppBar>
     );
