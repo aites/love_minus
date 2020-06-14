@@ -1,7 +1,6 @@
 import React from 'react';
 import AuthModal from './AuthModal';
-import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import { AppBar, Toolbar } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { RootStateProps } from '../../redux/reducers';
 import classes from '../../scss/page_sp/mainHeaderBar.module.scss';

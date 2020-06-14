@@ -2,8 +2,7 @@ import React from 'react';
 import { RootStateProps } from '../redux/reducers';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
-import { User } from 'firebase';
-import { getTimeLine, Profile } from '../modules/models/Profile';
+import { Profile } from '../modules/models/Profile';
 import { ChatRoom as ChatRoomModel } from '../modules/models/Chatroom';
 import {
   List,

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import firebase, { getCurrentUser } from '../../modules/firebase';
-import { Paper, Button, Popover, TextField, Box, Grid, IconButton } from '@material-ui/core';
+import { Paper, Button, Popover, TextField, Box, Grid } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import classes from '../../scss/page_sp/object/authModal.module.scss';
