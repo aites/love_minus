@@ -3,6 +3,9 @@ import { RootStateProps } from '../redux/reducers';
 import { connect } from 'react-redux';
 import { User } from 'firebase';
 import { getTimeLine, Profile } from '../modules/models/Profile';
+import { Modal, Fade } from '@material-ui/core';
+import ProfileModal from '../page_sp/object/ProfileModalSP';
+
 import {
   List,
   ListItem,
@@ -18,6 +21,7 @@ type TimeLineProps = {
 };
 type TimeLineState = {
   profileList: Profile[];
+  showProfile: Profile | null;
 };
 
 class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
@@ -25,6 +29,7 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
     super(props);
     this.state = {
       profileList: [],
+      showProfile: null,
     };
   }
   componentDidMount() {
@@ -39,6 +44,7 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
 
   render() {
     const theme = createMuiTheme();
+    const showProfile = this.state.showProfile;
 
     let profileList = this.state.profileList.concat(this.state.profileList);
     profileList = profileList.concat(profileList);
@@ -48,7 +54,14 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
           {profileList.map((profile, i) => {
             return (
               <React.Fragment key={i}>
-                <ListItem alignItems="flex-start" divider={true} style={{ paddingLeft: '8px' }}>
+                <ListItem
+                  alignItems="flex-start"
+                  divider={true}
+                  style={{ paddingLeft: '8px' }}
+                  onClick={() => {
+                    this.setState({ showProfile: profile });
+                  }}
+                >
                   <ListItemAvatar style={{ margin: '0' }}>
                     <Avatar
                       alt="alt"
@@ -72,6 +85,17 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
             );
           })}
         </List>
+        <Modal
+          disableAutoFocus
+          open={showProfile != null}
+          onClose={() => {
+            this.setState({ showProfile: null });
+          }}
+        >
+          <Fade in={showProfile != null}>
+            {showProfile ? <ProfileModal profile={showProfile} /> : <div></div>}
+          </Fade>
+        </Modal>
       </>
     );
   }
