@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import { selectRoom } from '../redux/reducers/chatMessageReducer';
+import ChatRoom from './ChatRoomSP';
 
 type Props = {
   roomId?: string;
@@ -41,12 +42,18 @@ class MailBoxSP extends React.Component<Props, State> {
 
     return (
       <>
+        <ChatRoom />
         <List>
           {chatrooms.map((room, i) => {
             const userInfo = room.ownerUid === currentUserUID ? room.playerInfo : room.ownerInfo;
             return (
               <React.Fragment key={i}>
-                <ListItem alignItems="flex-start" divider={true} style={{ paddingLeft: '8px' }}>
+                <ListItem
+                  alignItems="flex-start"
+                  divider={true}
+                  style={{ paddingLeft: '8px' }}
+                  onClick={() => this.props.updateChatRoom(room.docId)}
+                >
                   <ListItemAvatar style={{ margin: '0' }}>
                     <Avatar
                       alt="alt"
