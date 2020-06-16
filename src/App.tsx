@@ -15,6 +15,7 @@ import MainFooterBar from './page_sp/MainFooterBar';
 import MainHeaderBar from './page_sp/object/MainHeaderBar';
 import TimeLineSP from './page_sp/TimeLineSP';
 import MailBoxSP from './page_sp/MailBox/MailBoxSP';
+import MakeCharacterSP from './page_sp/MakeCharacterSP';
 
 type Props = {
   device: string;
@@ -49,7 +50,7 @@ export class App extends React.Component<Props> {
                 <Route exact={true} path="/" component={TimeLineSP} />
                 <Route exact={true} path="/timeline" component={TimeLineSP} />
                 <Route exact={true} path="/mailbox" component={MailBoxSP} />
-                <Route path="/character" component={MakeCharacter} />
+                <Route path="/character" component={MakeCharacterSP} />
               </Switch>
             </div>
             <MainFooterBar />

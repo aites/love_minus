@@ -37,7 +37,7 @@ class MainFooterBar extends React.Component<Props> {
           <BottomNavigationAction
             component={Link}
             to="/character"
-            label="キャラクター作成"
+            label="キャラ作成"
             icon={<PersonIcon />}
           />
         </BottomNavigation>
