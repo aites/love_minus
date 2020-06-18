@@ -58,7 +58,7 @@ class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
           }}
         >
           <Fade in={showProfile != null}>
-            {showProfile ? <ProfileModal profile={showProfile} /> : <div></div>}
+            {showProfile ? <ProfileModal profile={showProfile} loginUserUid={this.props.user?.uid} /> : <div></div>}
           </Fade>
         </Modal>
       </>

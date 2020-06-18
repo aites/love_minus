@@ -6,6 +6,7 @@ import chatroomReducer, { ChatroomStateProps } from './reducers/MailBoxReducer';
 import chatMessageReducer, { ChatMessageProps } from './reducers/chatMessageReducer';
 import contactInfoReducer, { ContactInfoProps } from './reducers/contactInfoReducer';
 import deviceReducer, { DeviceProps } from './reducers/deviceReducer';
+import makeCharacterReducer, { MakeCharacterProps } from './reducers/makeCharacterReducer';
 
 export type RootStateProps = {
   router: RouterState;
@@ -15,6 +16,7 @@ export type RootStateProps = {
   chatmessage: ChatMessageProps;
   contactInfo: ContactInfoProps;
   device: DeviceProps;
+  makeCharacter: MakeCharacterProps;
 };
 
 const createRootReducer = (history: any) =>
@@ -26,5 +28,6 @@ const createRootReducer = (history: any) =>
     chatmessage: chatMessageReducer,
     contactInfo: contactInfoReducer,
     device: deviceReducer,
+    makeCharacter: makeCharacterReducer,
   });
 export default createRootReducer;
