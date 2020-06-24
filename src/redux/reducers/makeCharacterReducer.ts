@@ -51,6 +51,7 @@ const makeCharacterReducer = (
         ...action.payload.data,
       };
     default:
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const _exhaustiveCheck: never = action;
   }
   return state;

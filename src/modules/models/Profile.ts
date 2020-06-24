@@ -29,10 +29,20 @@ export async function createProfile(profile: Profile) {
 
 type TimeLineSearchOption = {
   limit: number;
+  filter?: {
+    userId?: string;
+  };
 };
 export async function getTimeLine(option: TimeLineSearchOption) {
   const db = firebase.firestore();
-  const result = await db.collection('timeline').orderBy('createdAt').limit(option.limit).get();
+  console.log(option);
+  let collectionRef:
+    | firebase.firestore.CollectionReference<firebase.firestore.DocumentData>
+    | firebase.firestore.Query<firebase.firestore.DocumentData> = db.collection('timeline');
+  if (option.filter?.userId) {
+    collectionRef = collectionRef.where('author', '==', option.filter.userId);
+  }
+  const result = await collectionRef.orderBy('createdAt').limit(option.limit).get();
   return result.docs.map((doc) => {
     const data = doc.data();
     return data as Profile;

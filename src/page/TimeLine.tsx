@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Fade } from '@material-ui/core';
+import { Modal, Fade, TextField, Checkbox, FormControlLabel } from '@material-ui/core';
 import ProfileListCard from '../object/ProfileListCard';
 import ProfileModal from '../object/ProfileModal';
 //import classes from '../scss/timeLine.module.scss';
@@ -14,6 +14,7 @@ type TimeLineProps = {
 type TimeLineState = {
   profileList: Profile[];
   showProfile: Profile | null;
+  isMe: boolean;
 };
 
 class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
@@ -22,10 +23,15 @@ class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
     this.state = {
       profileList: [],
       showProfile: null,
+      isMe: false,
     };
   }
-  componentDidMount() {
+
+  setTimeLine() {
     getTimeLine({
+      filter: {
+        userId: this.state.isMe ? this.props.user?.uid : undefined,
+      },
       limit: 30,
     }).then((data) => {
       this.setState({
@@ -33,11 +39,26 @@ class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
       });
     });
   }
+  componentDidMount() {
+    this.setTimeLine();
+  }
 
   render() {
-    const showProfile = this.state.showProfile;
+    const { showProfile, isMe } = this.state;
     return (
       <>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={isMe}
+              onChange={() => {
+                this.setState({ isMe: !isMe }, this.setTimeLine);
+              }}
+            />
+          }
+          label="自分の投稿"
+        />
+        <TextField style={{ width: '100%' }} />
         {this.state.profileList.map((profile, i) => {
           return (
             <div
@@ -58,7 +79,11 @@ class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
           }}
         >
           <Fade in={showProfile != null}>
-            {showProfile ? <ProfileModal profile={showProfile} loginUserUid={this.props.user?.uid} /> : <div></div>}
+            {showProfile ? (
+              <ProfileModal profile={showProfile} loginUserUid={this.props.user?.uid} />
+            ) : (
+              <div></div>
+            )}
           </Fade>
         </Modal>
       </>
