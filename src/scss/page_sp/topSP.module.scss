@@ -1,0 +1,60 @@
+.mainView {
+  width: 100%;
+  margin-bottom: -4px;
+}
+
+.minText {
+  font-size: 12px;
+  text-align: right;
+  color: #888888;
+  margin-right: 8px;
+}
+
+.contents {
+  position: relative;
+  background-color: #F6FCFE;
+  justify-content: center;
+}
+
+.contentsWhite {
+  position: relative;
+  background-color: #FFFFFF;
+  justify-content: center;
+}
+
+.contents__head {
+  color: #65A6FC;
+  text-align: center;
+  padding: 60px 0;
+  font-weight: bold;
+}
+
+.card {
+  margin-bottom: 80px !important;
+}
+
+.card__head {
+  color: #FFFFFF;
+  background-color: #65A6FC;
+}
+
+.card__headText {
+  font-size: 16px;
+}
+
+.card__imageBox {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card__image {
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+}
+
+.card__contentsText {
+  white-space: pre-wrap;
+}

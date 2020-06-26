@@ -13,6 +13,8 @@ import { RootStateProps } from './redux/reducers';
 import { setUserAgentAction } from './redux/actions/deviceAction';
 import MainFooterBar from './page_sp/MainFooterBar';
 import MainHeaderBar from './page_sp/object/MainHeaderBar';
+// SP画面
+import TopSP from './page_sp/TopSP';
 import TimeLineSP from './page_sp/TimeLineSP';
 import MailBoxSP from './page_sp/MailBox/MailBoxSP';
 import MakeCharacterSP from './page_sp/MakeCharacterSP';
@@ -47,7 +49,7 @@ export class App extends React.Component<Props> {
             <MainHeaderBar />
             <div style={{ minHeight: 'calc(100vh - 112px)' }}>
               <Switch>
-                <Route exact={true} path="/" component={TimeLineSP} />
+                <Route exact={true} path="/" component={TopSP} />
                 <Route exact={true} path="/timeline" component={TimeLineSP} />
                 <Route exact={true} path="/mailbox" component={MailBoxSP} />
                 <Route path="/character" component={MakeCharacterSP} />
