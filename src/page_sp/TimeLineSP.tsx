@@ -58,7 +58,7 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
             />
           }
           label="自分の投稿を表示"
-          className={classes.chackBox}
+          className={classes.checkBox}
         />
 
         <div className={classes.search}>
