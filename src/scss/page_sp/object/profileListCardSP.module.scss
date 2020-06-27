@@ -1,0 +1,23 @@
+.root {
+  flex-grow: 1;
+}
+
+.image {
+  width: 100px;
+  height: 100px;
+}
+
+.paper {
+  position: relative;
+  margin: 10px;
+}
+
+.ribbon {
+  font-size: 12px;
+  line-height: 1rem;
+  background-color: #65A6FC;
+  color: #FFF;
+  padding: 2px 8px;
+  border-radius: 8px;
+  margin-left: 8px;
+}

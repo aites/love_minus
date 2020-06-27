@@ -18,6 +18,7 @@ import { getCurrentUser } from '../../modules/firebase';
 
 type ProfileModalProps = {
   profile: Profile;
+  loginUserUid?: string;
 };
 type ProfileModalStates = {
   name: string;
@@ -65,43 +66,45 @@ export default class ProfileModal extends Component<ProfileModalProps, ProfileMo
         <Box className={classes.contents}>
           <p className={classes.name}>{prof.name}</p>
           <p className={classes.profile}>{prof.profile}</p>
-          <Box>
-            <TextField
-              id="name"
-              label="名前"
-              variant="outlined"
-              className={classes.textfield}
-              value={this.state.name}
-              onChange={(e) => {
-                this.setState({ name: e.target.value });
-              }}
-            ></TextField>
-            <FormControl variant="outlined">
-              <InputLabel id="sex">性別</InputLabel>
-              <Select
-                labelId="sex"
-                id="sex"
-                value={this.state.sex}
+          {this.props.loginUserUid !== prof.author ? (
+            <Box>
+              <TextField
+                id="name"
+                label="名前"
+                variant="outlined"
+                className={classes.textfield}
+                value={this.state.name}
                 onChange={(e) => {
-                  this.setState({ sex: e.target.value as 'man' | 'woman' });
+                  this.setState({ name: e.target.value });
                 }}
-                label="性別"
-              >
-                <MenuItem value={'man'}>男</MenuItem>
-                <MenuItem value={'woman'}>女</MenuItem>
-              </Select>
-            </FormControl>
-            <Box mt={2}>
-              <Button color="secondary" variant="outlined" onClick={this.createChatroom}>
-                チャット開始
-              </Button>
+              ></TextField>
+              <FormControl variant="outlined">
+                <InputLabel id="sex">性別</InputLabel>
+                <Select
+                  labelId="sex"
+                  id="sex"
+                  value={this.state.sex}
+                  onChange={(e) => {
+                    this.setState({ sex: e.target.value as 'man' | 'woman' });
+                  }}
+                  label="性別"
+                >
+                  <MenuItem value={'man'}>男</MenuItem>
+                  <MenuItem value={'woman'}>女</MenuItem>
+                </Select>
+              </FormControl>
+              <Box mt={2}>
+                <Button color="secondary" variant="outlined" onClick={this.createChatroom}>
+                  チャット開始
+                </Button>
+              </Box>
+              <Box className={classes.imageWrapper}>
+                <NavigateBefore className={classes.prevIcon} />
+                <img className={classes.image} src={prof.icon} alt="" />
+                <NavigateNext className={classes.nextIcon} />
+              </Box>
             </Box>
-          </Box>
-        </Box>
-        <Box className={classes.imageWrapper}>
-          <NavigateBefore className={classes.prevIcon} />
-          <img className={classes.image} src={prof.icon} alt="" />
-          <NavigateNext className={classes.nextIcon} />
+          ) : null}
         </Box>
       </Paper>
     );

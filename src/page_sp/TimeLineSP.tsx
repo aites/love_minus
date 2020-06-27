@@ -1,20 +1,11 @@
 import React from 'react';
+import ProfileListCardSP from '../page_sp/object/ProfileListCardSP';
 import { RootStateProps } from '../redux/reducers';
 import { connect } from 'react-redux';
 import { User } from 'firebase';
 import { getTimeLine, Profile } from '../modules/models/Profile';
-import { Modal, Fade } from '@material-ui/core';
+import { Modal, Fade, TextField, Checkbox, FormControlLabel } from '@material-ui/core';
 import ProfileModal from '../page_sp/object/ProfileModalSP';
-
-import {
-  List,
-  ListItem,
-  ListItemAvatar,
-  Avatar,
-  ListItemText,
-  Typography,
-} from '@material-ui/core';
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 
 type TimeLineProps = {
   user: User | null;
@@ -22,6 +13,7 @@ type TimeLineProps = {
 type TimeLineState = {
   profileList: Profile[];
   showProfile: Profile | null;
+  isMe: boolean;
 };
 
 class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
@@ -30,10 +22,15 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
     this.state = {
       profileList: [],
       showProfile: null,
+      isMe: false,
     };
   }
-  componentDidMount() {
+
+  setTimeLine() {
     getTimeLine({
+      filter: {
+        userId: this.state.isMe ? this.props.user?.uid : undefined,
+      },
       limit: 30,
     }).then((data) => {
       this.setState({
@@ -41,50 +38,38 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
       });
     });
   }
+  componentDidMount() {
+    this.setTimeLine();
+  }
 
   render() {
-    const theme = createMuiTheme();
-    const showProfile = this.state.showProfile;
-
-    let profileList = this.state.profileList.concat(this.state.profileList);
-    profileList = profileList.concat(profileList);
+    const { showProfile, isMe } = this.state;
     return (
       <>
-        <List>
-          {profileList.map((profile, i) => {
-            return (
-              <React.Fragment key={i}>
-                <ListItem
-                  alignItems="flex-start"
-                  divider={true}
-                  style={{ paddingLeft: '8px' }}
-                  onClick={() => {
-                    this.setState({ showProfile: profile });
-                  }}
-                >
-                  <ListItemAvatar style={{ margin: '0' }}>
-                    <Avatar
-                      alt="alt"
-                      src={profile.miniIcon}
-                      style={{ width: theme.spacing(7), height: theme.spacing(7) }}
-                    />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={profile.name}
-                    secondary={
-                      <React.Fragment>
-                        <Typography component="span" variant="body2" color="textPrimary">
-                          {profile.simpleProf}
-                        </Typography>
-                      </React.Fragment>
-                    }
-                  />
-                </ListItem>
-              </React.Fragment>
-              //{JSON.stringify(profile)}
-            );
-          })}
-        </List>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={isMe}
+              onChange={() => {
+                this.setState({ isMe: !isMe }, this.setTimeLine);
+              }}
+            />
+          }
+          label="自分の投稿"
+        />
+        <TextField style={{ width: '100%' }} />
+        {this.state.profileList.map((profile, i) => {
+          return (
+            <div
+              key={i}
+              onClick={() => {
+                this.setState({ showProfile: profile });
+              }}
+            >
+              <ProfileListCardSP {...profile} loginUserUid={this.props.user?.uid} />
+            </div>
+          );
+        })}
         <Modal
           disableAutoFocus
           open={showProfile != null}
@@ -93,7 +78,11 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
           }}
         >
           <Fade in={showProfile != null}>
-            {showProfile ? <ProfileModal profile={showProfile} /> : <div></div>}
+            {showProfile ? (
+              <ProfileModal profile={showProfile} loginUserUid={this.props.user?.uid} />
+            ) : (
+              <div></div>
+            )}
           </Fade>
         </Modal>
       </>
