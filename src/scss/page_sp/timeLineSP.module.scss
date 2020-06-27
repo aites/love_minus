@@ -1,0 +1,36 @@
+.chackBox {
+  padding-top: 20px;
+  margin-left: 8px !important;
+}
+
+.search {
+  position: relative;
+  width: calc(100% - 16px);
+  margin-right: 8px;
+  margin-left: 8px;
+  border-bottom: 1px solid #CCC;
+
+  &:hover {
+    background-color: #FFF;
+  }
+}
+
+.searchIcon {
+  padding: 0 8px;
+  height: 100%;
+  position: absolute;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 0;
+}
+
+.inputRoot {
+  color: inherit;
+}
+
+.inputInput {
+  padding: 4px 40px 4px 1em;
+  width: 100%;
+}

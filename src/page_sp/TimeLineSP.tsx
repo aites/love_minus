@@ -4,8 +4,10 @@ import { RootStateProps } from '../redux/reducers';
 import { connect } from 'react-redux';
 import { User } from 'firebase';
 import { getTimeLine, Profile } from '../modules/models/Profile';
-import { Modal, Fade, TextField, Checkbox, FormControlLabel } from '@material-ui/core';
+import { Modal, Fade, Checkbox, FormControlLabel, InputBase } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
 import ProfileModal from '../page_sp/object/ProfileModalSP';
+import classes from '../scss/page_sp/timeLineSP.module.scss';
 
 type TimeLineProps = {
   user: User | null;
@@ -55,9 +57,21 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
               }}
             />
           }
-          label="自分の投稿"
+          label="自分の投稿を表示"
+          className={classes.chackBox}
         />
-        <TextField style={{ width: '100%' }} />
+
+        <div className={classes.search}>
+          <div className={classes.searchIcon}>
+            <SearchIcon />
+          </div>
+          <InputBase
+            placeholder="Search…"
+            className={classes.inputInput}
+            inputProps={{ 'aria-label': 'search' }}
+          />
+        </div>
+
         {this.state.profileList.map((profile, i) => {
           return (
             <div
