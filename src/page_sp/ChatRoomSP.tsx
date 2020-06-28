@@ -69,6 +69,7 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
     const chatRoomId = this.props.chatRoomId;
     const message = this.state.message;
     this.props.sendMessage(chatRoomId, message);
+    this.setState({ message: '' });
   };
 
   render() {
