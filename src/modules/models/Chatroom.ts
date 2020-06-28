@@ -91,14 +91,14 @@ export async function getChatMessageSnapShot(
   return chatRoomRef
     .collection('message')
     .limit(option.limit)
-    .orderBy('createdAt', 'asc')
+    .orderBy('createdAt', 'desc')
     .onSnapshot((snapShot) => {
       const list: ChatMessage[] = [];
       snapShot.forEach((doc) => {
         const data = doc.data() as ChatMessage;
         list.push(data);
       });
-      callback({ messages: list, chatRoomInfo });
+      callback({ messages: list.reverse(), chatRoomInfo });
     });
 }
 export async function postChatMessage(chatMessage: ChatMessage) {

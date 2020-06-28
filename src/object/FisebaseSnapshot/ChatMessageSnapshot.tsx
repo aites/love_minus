@@ -51,18 +51,8 @@ const mapDispatchToProps = (dispatch: Function) => {
   return {
     updateChatMessage(messages: ChatMessage[], chatRoomInfo: ChatRoom) {
       dispatch(updateMessage(messages, chatRoomInfo));
-      moveScrollBottom();
     },
   };
-};
-
-const moveScrollBottom = () => {
-  console.log('moveScrollBottom');
-  const $chatContents = document.querySelector('#chatContents');
-  if ($chatContents) {
-    const bottom = $chatContents.scrollHeight - $chatContents.clientHeight;
-    $chatContents.scroll(0, bottom);
-  }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatMessageSnapshot);

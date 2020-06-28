@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Box, Button, TextareaAutosize } from '@material-ui/core';
 import ClassNames from 'classnames';
 import SendIcon from '@material-ui/icons/Send';
@@ -9,6 +10,7 @@ import { connect } from 'react-redux';
 import { RootStateProps } from '../redux/reducers';
 import ChatMessageSnapshot from '../object/FisebaseSnapshot/ChatMessageSnapshot';
 import { sendMessage } from '../redux/actions/chatMessageAction';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 interface MessageInfo {
   user: 'yours' | 'mine';
@@ -53,6 +55,7 @@ type ChatRoomProps = {
 };
 type ChatRoomState = {
   message: string;
+  scrollStopFlag: boolean;
 };
 
 class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
@@ -60,6 +63,7 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
     super(props);
     this.state = {
       message: '',
+      scrollStopFlag: false,
     };
   }
 
@@ -70,6 +74,37 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
     const message = this.state.message;
     this.props.sendMessage(chatRoomId, message);
     this.setState({ message: '' });
+  };
+
+  componentDidMount() {
+    this.moveScrollBottom();
+  }
+
+  componentDidUpdate(prevProps: ChatRoomProps) {
+    if (this.props.messages !== prevProps.messages) {
+      if (this.state.scrollStopFlag === false) {
+        this.moveScrollBottom();
+      }
+    }
+  }
+
+  moveScrollBottom = () => {
+    const $chatContents = document.querySelector('#chatContents');
+    if ($chatContents) {
+      const bottom = $chatContents.scrollHeight - $chatContents.clientHeight;
+      $chatContents.scroll(0, bottom);
+    }
+  };
+
+  watchScroll = (event: React.UIEvent<HTMLElement, UIEvent>) => {
+    const chatContentHeight =
+      event.currentTarget.scrollHeight - event.currentTarget.clientHeight - 30;
+    const currentScroll = event.currentTarget.scrollTop;
+    if (chatContentHeight <= currentScroll) {
+      if (this.state.scrollStopFlag === true) this.setState({ scrollStopFlag: false });
+    } else {
+      if (this.state.scrollStopFlag === false) this.setState({ scrollStopFlag: true });
+    }
   };
 
   render() {
@@ -86,6 +121,9 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
     const otherUserInfo = currentUserUid === playerInfo.author ? ownerInfo : playerInfo;
     return (
       <Box className={classes.chat}>
+        <a className={classes.backIcon}>
+          <ArrowBackIcon />
+        </a>
         <ChatMessageSnapshot />
         <img
           className={classes.chat__character}
@@ -99,7 +137,7 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
           alt=""
         />
         <Box className={classes.chatContentsWrap}>
-          <Box className={classes.chatContents}>
+          <Box className={classes.chatContents} id="chatContents" onScroll={this.watchScroll}>
             {this.props.messages.map((message, i) => {
               const isMine = currentUserUid === message.ownerUid;
               const { user, sex, name } = isMine
