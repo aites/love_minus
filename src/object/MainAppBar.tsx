@@ -16,20 +16,22 @@ class MainAppBar extends Component<MainAppBarProps, MainAppBarStates> {
   constructor(props: MainAppBarProps) {
     super(props);
     this.state = {
-      selectedTab: this.PathnameTabMap[this.props.pathname] ?? -1,
+      selectedTab: this.getTabIndex(this.props.pathname),
     };
   }
-  PathnameTabMap: { [s: string]: number } = {
-    '/timeline': 0,
-    '/mailbox': 1,
-    '/character': 2,
-  };
+
+  private getTabIndex(pathname: string) {
+    if (pathname.indexOf('/timeline') === 0) return 0;
+    if (pathname.indexOf('/mailbox') === 0) return 1;
+    if (pathname.indexOf('/character') === 0) return 2;
+    return -1;
+  }
   componentDidUpdate(prevProps: MainAppBarProps) {
     if (this.props.pathname !== prevProps.pathname) {
       this.props.notifySuccess('ok');
       // Pathnameが変わったらインディケーターを入れ替える
       this.setState({
-        selectedTab: this.PathnameTabMap[this.props.pathname] ?? -1,
+        selectedTab: this.getTabIndex(this.props.pathname),
       });
     }
   }

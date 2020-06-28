@@ -18,17 +18,19 @@ class ChatMessageSnapshot extends Component<Props> {
   }
 
   async setChatMessage() {
-    if (this.props.roomId !== '')
+    if (this.props.roomId !== '') {
+      this.unscribes.getChatMessageSnapShot();
       this.unscribes.getChatMessageSnapShot = await getChatMessageSnapShot(
         { limit: 30, chatroomId: this.props.roomId || '' },
         ({ messages, chatRoomInfo }) => {
-          console.log('asdadsa', messages);
           this.props.updateChatMessage(messages, chatRoomInfo);
         }
       );
+    }
   }
 
   async componentDidUpdate(prevProps: Props) {
+    console.log('componentDidUpdate', prevProps, this.props);
     if (this.props.roomId !== prevProps.roomId) {
       await this.setChatMessage();
     }
@@ -43,6 +45,7 @@ class ChatMessageSnapshot extends Component<Props> {
 }
 
 function mapStateToProps(state: RootStateProps) {
+  console.log('mapStateToProps', state);
   return {
     roomId: state.chatmessage.roomId,
   };

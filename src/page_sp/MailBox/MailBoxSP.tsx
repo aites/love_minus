@@ -74,8 +74,7 @@ function mapStateToProps(state: RootStateProps) {
 const mapDispatchToProps = (dispatch: Function) => {
   return {
     updateChatRoom(roomId: string) {
-      dispatch(selectRoom(roomId || ''));
-      dispatch(push(`/mailbox?r=${roomId}`));
+      dispatch(push(`/mailbox/${roomId}`));
     },
   };
 };

@@ -40,7 +40,7 @@ export class App extends React.Component<Props> {
             <Switch>
               <Route exact={true} path="/" component={Top} />
               <Route exact={true} path="/timeline" component={TimeLine} />
-              <Route path="/mailbox" component={MailBox} />
+              <Route path="/mailbox/:roomId?" component={MailBox} />
               <Route path="/character" component={MakeCharacter} />
             </Switch>
           </>

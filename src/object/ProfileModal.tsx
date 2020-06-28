@@ -19,6 +19,7 @@ import { getCurrentUser } from '../modules/firebase';
 type ProfileModalProps = {
   profile: Profile;
   loginUserUid?: string;
+  onCreateChatroom: (roomId: string) => void;
 };
 type ProfileModalStates = {
   name: string;
@@ -42,7 +43,7 @@ export default class ProfileModal extends Component<ProfileModalProps, ProfileMo
     const playerInfo = await getCurrentUser();
     if (!playerInfo || !ownerUid) throw new Error();
     const playerUid = playerInfo.uid;
-    await createChatRoom({
+    return await createChatRoom({
       joinUsers: [ownerUid, playerUid],
       ownerUid,
       playerUid,
@@ -102,7 +103,10 @@ export default class ProfileModal extends Component<ProfileModalProps, ProfileMo
                 style={{ marginLeft: 'auto' }}
                 color="secondary"
                 variant="outlined"
-                onClick={this.createChatroom}
+                onClick={async () => {
+                  const chatRoom = await this.createChatroom();
+                  this.props.onCreateChatroom(chatRoom);
+                }}
               >
                 チャット開始
               </Button>

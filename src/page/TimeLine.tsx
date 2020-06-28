@@ -7,9 +7,11 @@ import { getTimeLine, Profile } from '../modules/models/Profile';
 import { RootStateProps } from '../redux/reducers';
 import { connect } from 'react-redux';
 import { User } from 'firebase';
+import { push } from 'connected-react-router';
 
 type TimeLineProps = {
   user: User | null;
+  gotoChatroom: (roomId: string) => void;
 };
 type TimeLineState = {
   profileList: Profile[];
@@ -80,7 +82,16 @@ class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
         >
           <Fade in={showProfile != null}>
             {showProfile ? (
-              <ProfileModal profile={showProfile} loginUserUid={this.props.user?.uid} />
+              <ProfileModal
+                profile={showProfile}
+                loginUserUid={this.props.user?.uid}
+                onCreateChatroom={(chatRoomId) => {
+                  console.log('chatRoom', chatRoomId);
+                  if (chatRoomId) {
+                    this.props.gotoChatroom(chatRoomId);
+                  }
+                }}
+              />
             ) : (
               <div></div>
             )}
@@ -97,7 +108,11 @@ function mapStateToProps(state: RootStateProps) {
   };
 }
 const mapDispatchToProps = (dispatch: Function) => {
-  return {};
+  return {
+    gotoChatroom: (roomId: string) => {
+      dispatch(push(`/mailbox/${roomId}`));
+    },
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TimeLine);

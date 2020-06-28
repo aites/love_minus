@@ -12,10 +12,21 @@ export interface MailBoxProps {
   isLoading: boolean;
   chatrooms: ChatRoomModel[];
   currentUserUID: string;
+}
+interface MailBoxInnerProps extends MailBoxProps {
   updateChatRoom: Function;
+  setChatRoomId: (roomId: string) => void;
 }
 
-export class MailBox extends React.Component<MailBoxProps> {
+export class MailBox extends React.Component<MailBoxInnerProps> {
+  componentDidMount() {
+    this.props.setChatRoomId(this.props.roomId || '');
+  }
+  componentWillReceiveProps(nextProps: MailBoxInnerProps) {
+    if (this.props.roomId !== nextProps.roomId) {
+      this.props.setChatRoomId(nextProps.roomId || '');
+    }
+  }
   render() {
     const { isLoading, chatrooms, currentUserUID } = this.props;
     return (

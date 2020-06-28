@@ -102,7 +102,7 @@ const mapDispatchToProps = (dispatch: Function) => {
           action: {
             label: '見る',
             callback: () => {
-              dispatch(push(`/mailbox?r=${room.docId}`));
+              dispatch(push(`/mailbox/${room.docId}`));
             },
           },
         })
@@ -115,7 +115,7 @@ const mapDispatchToProps = (dispatch: Function) => {
           action: {
             label: '見る',
             callback: () => {
-              dispatch(push(`/mailbox?r=${room.docId}`));
+              dispatch(push(`/mailbox/${room.docId}`));
             },
           },
         })
