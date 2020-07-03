@@ -9,16 +9,31 @@ import { connect } from 'react-redux';
 import { selectRoom } from '../../redux/reducers/chatMessageReducer';
 import { push } from 'connected-react-router';
 import { RootStateProps } from '../../redux/reducers';
+import { RouteComponentProps } from 'react-router';
 
-export interface MailBoxSPProps {
+export interface MailBoxSPProps
+  extends RouteComponentProps<{
+    roomId: string;
+  }> {
   roomId?: string;
   isLoading: boolean;
   chatrooms: ChatRoomModel[];
   currentUserUID: string;
+}
+interface MailBoxSPInnerProps extends MailBoxSPProps {
   updateChatRoom: Function;
+  setChatRoomId: (roomId: string) => void;
 }
 
-export class MailBoxSP extends React.Component<MailBoxSPProps> {
+export class MailBoxSP extends React.Component<MailBoxSPInnerProps> {
+  componentDidMount() {
+    this.props.setChatRoomId(this.props.roomId || '');
+  }
+  componentWillReceiveProps(nextProps: MailBoxSPInnerProps) {
+    if (this.props.roomId !== nextProps.roomId) {
+      this.props.setChatRoomId(nextProps.roomId || '');
+    }
+  }
   render() {
     const { isLoading, chatrooms, currentUserUID } = this.props;
     return (
@@ -64,15 +79,19 @@ export class MailBoxSP extends React.Component<MailBoxSPProps> {
   }
 }
 
-function mapStateToProps(state: RootStateProps) {
+function mapStateToProps(state: RootStateProps, props: MailBoxSPProps) {
+  console.log('props.match.params.roomId', props.match.params.roomId);
   return {
-    roomId: state.chatmessage.roomId,
+    roomId: props.match.params.roomId,
     currentUserUID: state.firebase.user?.uid || '',
     ...state.chatroom,
   };
 }
 const mapDispatchToProps = (dispatch: Function) => {
   return {
+    setChatRoomId(roomId: string) {
+      dispatch(selectRoom(roomId));
+    },
     updateChatRoom(roomId: string) {
       dispatch(push(`/mailbox/${roomId}`));
     },

@@ -51,7 +51,7 @@ export class App extends React.Component<Props> {
               <Switch>
                 <Route exact={true} path="/" component={TopSP} />
                 <Route exact={true} path="/timeline" component={TimeLineSP} />
-                <Route exact={true} path="/mailbox" component={MailBoxSP} />
+                <Route exact={true} path="/mailbox/:roomId?" component={MailBoxSP} />
                 <Route path="/character" component={MakeCharacterSP} />
               </Switch>
             </div>
