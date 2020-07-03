@@ -121,9 +121,9 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
     const otherUserInfo = currentUserUid === playerInfo.author ? ownerInfo : playerInfo;
     return (
       <Box className={classes.chat}>
-        <a className={classes.backIcon}>
+        <Link to="/mailbox" className={classes.backIcon}>
           <ArrowBackIcon />
-        </a>
+        </Link>
         <ChatMessageSnapshot />
         <img
           className={classes.chat__character}
