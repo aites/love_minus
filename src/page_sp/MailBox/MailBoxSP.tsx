@@ -80,7 +80,6 @@ export class MailBoxSP extends React.Component<MailBoxSPInnerProps> {
 }
 
 function mapStateToProps(state: RootStateProps, props: MailBoxSPProps) {
-  console.log('props.match.params.roomId', props.match.params.roomId);
   return {
     roomId: props.match.params.roomId,
     currentUserUID: state.firebase.user?.uid || '',

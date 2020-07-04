@@ -17,11 +17,13 @@ export const updateMessage = (messages: ChatMessage[], chatRoomInfo: ChatRoom) =
 
 export type ChatMessageProps = {
   roomId: string;
+  isLoading: boolean;
   messages: ChatMessage[];
   chatRoomInfo?: ChatRoom;
 };
 
 const initialState: ChatMessageProps = {
+  isLoading: true,
   roomId: '',
   messages: [],
 };
@@ -32,10 +34,12 @@ const chatroomReducer = (state: ChatMessageProps = initialState, action: Actions
       return {
         ...state,
         roomId: action.payload.roomId,
+        isLoading: action.payload.roomId !== state.roomId,
       };
     case UPDATE_MESSAGE:
       return {
         ...state,
+        isLoading: false,
         messages: action.payload.messages.concat(),
         chatRoomInfo: action.payload.chatRoomInfo,
       };

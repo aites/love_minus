@@ -17,12 +17,15 @@ function mapStateToProps(state: RootStateProps, props: Props): MailBoxProps {
     ...state.chatroom,
   };
 }
-const mapDispatchToProps = (dispatch: Function) => {
+const mapDispatchToProps = (dispatch: Function, props: Props) => {
   return {
     setChatRoomId(roomId: string) {
+      console.log('props', props);
       dispatch(selectRoom(roomId));
     },
     updateChatRoom(roomId: string) {
+      console.log('props', props);
+      //      dispatch(selectRoom(roomId));
       dispatch(push(`/mailbox/${roomId}`));
     },
   };

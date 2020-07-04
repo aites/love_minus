@@ -29,6 +29,7 @@ export class MailBox extends React.Component<MailBoxInnerProps> {
   }
   render() {
     const { isLoading, chatrooms, currentUserUID } = this.props;
+    console.log('isLoading', isLoading);
     return (
       <Grid container component="main" className={classes.main}>
         <ChatroomListSnapshot />
@@ -67,7 +68,7 @@ export class MailBox extends React.Component<MailBoxInnerProps> {
           )}
         </Grid>
         <Grid item xs={12} sm={8} md={9} className={classes.content}>
-          {!isLoading && !this.props.roomId ? (
+          {!this.props.roomId ? (
             <Box className={classes.warningBox__contents}>
               <HelpOutline className={classes.warningBox__infoIcon}></HelpOutline>
               <span className={classes.warningBox__infoText}>
