@@ -35,45 +35,50 @@ export class MailBoxSP extends React.Component<MailBoxSPInnerProps> {
     }
   }
   render() {
-    const { isLoading, chatrooms, currentUserUID } = this.props;
+    const { isLoading, chatrooms, currentUserUID, roomId } = this.props;
     return (
       <>
         <ChatroomListSnapshot />
         <ChatRoom />
-        <List>
-          {isLoading ? (
-            <CircularProgress variant="determinate" />
-          ) : (
-            chatrooms.map((room: ChatRoomModel) => {
-              const userInfo = room.ownerUid === currentUserUID ? room.playerInfo : room.ownerInfo;
-              return (
-                <>
-                  <Grid
-                    key={room.docId}
-                    container
-                    wrap="nowrap"
-                    className={classes.mailListRow}
-                    onClick={() => this.props.updateChatRoom(room.docId)}
-                  >
-                    <Grid item>
-                      <img className={classes.image} src={userInfo.miniIcon} alt="" />
+        {!roomId ? (
+          <List>
+            {isLoading ? (
+              <CircularProgress variant="determinate" />
+            ) : (
+              chatrooms.map((room: ChatRoomModel) => {
+                const userInfo =
+                  room.ownerUid === currentUserUID ? room.playerInfo : room.ownerInfo;
+                return (
+                  <>
+                    <Grid
+                      key={room.docId}
+                      container
+                      wrap="nowrap"
+                      className={classes.mailListRow}
+                      onClick={() => this.props.updateChatRoom(room.docId)}
+                    >
+                      <Grid item>
+                        <img className={classes.image} src={userInfo.miniIcon} alt="" />
+                      </Grid>
+                      <Grid item>
+                        <Typography>{userInfo.name}</Typography>
+                        <Typography noWrap variant="caption">
+                          {room.lastMessage}
+                        </Typography>
+                        <Typography noWrap variant="caption">
+                          {timestampToString(room.updatedAt)}
+                        </Typography>
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <Typography>{userInfo.name}</Typography>
-                      <Typography noWrap variant="caption">
-                        {room.lastMessage}
-                      </Typography>
-                      <Typography noWrap variant="caption">
-                        {timestampToString(room.updatedAt)}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                  <Divider key={room.docId + 'div'}></Divider>
-                </>
-              );
-            })
-          )}
-        </List>
+                    <Divider key={room.docId + 'div'}></Divider>
+                  </>
+                );
+              })
+            )}
+          </List>
+        ) : (
+          <></>
+        )}
       </>
     );
   }

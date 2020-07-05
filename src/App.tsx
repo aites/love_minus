@@ -47,7 +47,7 @@ export class App extends React.Component<Props> {
         ) : (
           <>
             <MainHeaderBar />
-            <div style={{ minHeight: 'calc(100vh - 112px)' }}>
+            <div style={{ minHeight: 'calc(100vh - 124px)' }}>
               <Switch>
                 <Route exact={true} path="/" component={TopSP} />
                 <Route exact={true} path="/timeline" component={TimeLineSP} />
