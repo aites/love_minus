@@ -31,6 +31,7 @@ type TimeLineSearchOption = {
   limit: number;
   filter?: {
     userId?: string;
+    sex?: 'man' | 'woman' | '';
   };
 };
 export async function getTimeLine(option: TimeLineSearchOption) {
@@ -41,6 +42,9 @@ export async function getTimeLine(option: TimeLineSearchOption) {
     | firebase.firestore.Query<firebase.firestore.DocumentData> = db.collection('timeline');
   if (option.filter?.userId) {
     collectionRef = collectionRef.where('author', '==', option.filter.userId);
+  }
+  if (option.filter?.sex) {
+    collectionRef = collectionRef.where('sex', '==', option.filter.sex);
   }
   const result = await collectionRef.orderBy('createdAt').limit(option.limit).get();
   return result.docs.map((doc) => {
