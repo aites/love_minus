@@ -1,5 +1,16 @@
 import React from 'react';
-import { Modal, Fade, TextField, Checkbox, FormControlLabel } from '@material-ui/core';
+import {
+  Modal,
+  Fade,
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  IconButton,
+} from '@material-ui/core';
 import ProfileListCard from '../object/ProfileListCard';
 import ProfileModal from '../object/ProfileModal';
 //import classes from '../scss/timeLine.module.scss';
@@ -8,15 +19,19 @@ import { RootStateProps } from '../redux/reducers';
 import { connect } from 'react-redux';
 import { User } from 'firebase';
 import { push } from 'connected-react-router';
+import SearchIcon from '@material-ui/icons/Search';
 
 type TimeLineProps = {
   user: User | null;
   gotoChatroom: (roomId: string) => void;
 };
+type SexFilterType = 'man' | 'woman' | '';
 type TimeLineState = {
   profileList: Profile[];
   showProfile: Profile | null;
+  isSearchOpen: boolean;
   isMe: boolean;
+  sex: SexFilterType;
 };
 
 class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
@@ -25,7 +40,9 @@ class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
     this.state = {
       profileList: [],
       showProfile: null,
+      isSearchOpen: false,
       isMe: false,
+      sex: '',
     };
   }
 
@@ -33,6 +50,7 @@ class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
     getTimeLine({
       filter: {
         userId: this.state.isMe ? this.props.user?.uid : undefined,
+        sex: this.state.sex,
       },
       limit: 30,
     }).then((data) => {
@@ -46,21 +64,47 @@ class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
   }
 
   render() {
-    const { showProfile, isMe } = this.state;
+    const { showProfile, isSearchOpen, isMe, sex } = this.state;
     return (
       <>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={isMe}
-              onChange={() => {
-                this.setState({ isMe: !isMe }, this.setTimeLine);
+        <IconButton
+          style={{ left: 0 }}
+          onClick={() => {
+            this.setState({ isSearchOpen: !isSearchOpen });
+          }}
+        >
+          <SearchIcon />
+          検索
+        </IconButton>
+        <div style={{ display: isSearchOpen ? 'none' : '' }}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={isMe}
+                onChange={() => {
+                  this.setState({ isMe: !isMe }, this.setTimeLine);
+                }}
+              />
+            }
+            label="自分の投稿"
+          />
+          <FormControl variant="outlined" style={{ width: 80 }}>
+            <InputLabel id="sex">性別</InputLabel>
+            <Select
+              labelId="sex"
+              id="sex"
+              value={sex}
+              onChange={(e) => {
+                this.setState({ sex: e.target.value as SexFilterType }, this.setTimeLine);
               }}
-            />
-          }
-          label="自分の投稿"
-        />
-        <TextField style={{ width: '100%' }} />
+              label="性別"
+            >
+              <MenuItem value={''}>性別</MenuItem>
+              <MenuItem value={'man'}>男</MenuItem>
+              <MenuItem value={'woman'}>女</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
         {this.state.profileList.map((profile, i) => {
           return (
             <div
