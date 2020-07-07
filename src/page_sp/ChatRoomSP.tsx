@@ -11,6 +11,7 @@ import { RootStateProps } from '../redux/reducers';
 import ChatMessageSnapshot from '../object/FisebaseSnapshot/ChatMessageSnapshot';
 import { sendMessage } from '../redux/actions/chatMessageAction';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import Avatar from '@material-ui/core/Avatar';
 
 interface MessageInfo {
   user: 'yours' | 'mine';
@@ -121,21 +122,25 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
     const otherUserInfo = currentUserUid === playerInfo.author ? ownerInfo : playerInfo;
     return (
       <Box className={classes.chat}>
-        <Link to="/mailbox" className={classes.backIcon}>
-          <ArrowBackIcon />
-        </Link>
+        <Box className={classes.chatHeader}>
+          <Link to="/mailbox">
+            <ArrowBackIcon />
+          </Link>
+
+          <Avatar
+            alt="icon"
+            src={
+              otherUserInfo.miniIcon !== ''
+                ? otherUserInfo.miniIcon
+                : otherUserInfo.sex === 'man'
+                ? '/images/dansei_0_b.png'
+                : '/images/josei_0_b.png'
+            }
+            className={classes.chatHeader__miniIcon}
+          />
+          <span className={classes.chatHeader__name}>{otherUserInfo.name}</span>
+        </Box>
         <ChatMessageSnapshot />
-        <img
-          className={classes.chat__character}
-          src={
-            otherUserInfo.icon !== ''
-              ? otherUserInfo.icon
-              : otherUserInfo.sex === 'man'
-              ? '/images/dansei_0_b.png'
-              : '/images/josei_0_b.png'
-          }
-          alt=""
-        />
         <Box className={classes.chatContentsWrap}>
           <Box className={classes.chatContents} id="chatContents" onScroll={this.watchScroll}>
             {this.props.messages.map((message, i) => {

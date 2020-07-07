@@ -19,7 +19,7 @@
   flex: 1;
   flex-direction: column;
   position: relative;
-  margin: 8px;
+  margin: 56px 8px 8px 8px;
 }
 
 .chatContents {
@@ -175,8 +175,25 @@
   margin-left: 4px;
 }
 
-.backIcon {
+.chatHeader {
   position: absolute;
   top: 8px;
-  left: 8px;
+  display: flex;
+  align-items: center;
+  width: calc(100% - 16px);
+  padding: 0 8px;
+}
+
+
+.chatHeader__miniIcon {
+  background-color: #FFF;
+  margin-left: 12px;
+}
+
+.chatHeader__name {
+  font-size: 18px;
+  margin-left: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
