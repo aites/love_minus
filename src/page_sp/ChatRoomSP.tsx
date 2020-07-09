@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Button, TextareaAutosize } from '@material-ui/core';
+import { Box, Button, TextareaAutosize, Modal, Fade } from '@material-ui/core';
 import ClassNames from 'classnames';
 import SendIcon from '@material-ui/icons/Send';
 import classes from '../scss/page_sp/chatRoomSP.module.scss';
@@ -12,6 +12,8 @@ import ChatMessageSnapshot from '../object/FisebaseSnapshot/ChatMessageSnapshot'
 import { sendMessage } from '../redux/actions/chatMessageAction';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Avatar from '@material-ui/core/Avatar';
+import { Profile } from '../modules/models/Profile';
+import ProfileModal from '../page_sp/object/ProfileModalSP';
 
 interface MessageInfo {
   user: 'yours' | 'mine';
@@ -57,6 +59,7 @@ type ChatRoomProps = {
 type ChatRoomState = {
   message: string;
   scrollStopFlag: boolean;
+  showProfile: Profile | null;
 };
 
 class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
@@ -65,6 +68,7 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
     this.state = {
       message: '',
       scrollStopFlag: false,
+      showProfile: null,
     };
   }
 
@@ -109,6 +113,7 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
   };
 
   render() {
+    const { showProfile } = this.state;
     if (!this.props.chatRoomId || !this.props.currentUser || !this.props.chatRoomInfo)
       return (
         <>
@@ -137,6 +142,9 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
                 : '/images/josei_0_b.png'
             }
             className={classes.chatHeader__miniIcon}
+            onClick={() => {
+              this.setState({ showProfile: otherUserInfo });
+            }}
           />
           <span className={classes.chatHeader__name}>{otherUserInfo.name}</span>
         </Box>
@@ -182,6 +190,21 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
             </Button>
           </Box>
         </Box>
+        <Modal
+          disableAutoFocus
+          open={showProfile != null}
+          onClose={() => {
+            this.setState({ showProfile: null });
+          }}
+        >
+          <Fade in={showProfile != null}>
+            {showProfile ? (
+              <ProfileModal profile={showProfile} loginUserUid={ownerInfo.author} />
+            ) : (
+              <div></div>
+            )}
+          </Fade>
+        </Modal>
       </Box>
     );
   }
