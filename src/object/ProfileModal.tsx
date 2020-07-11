@@ -8,6 +8,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  IconButton,
 } from '@material-ui/core';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import NavigateNext from '@material-ui/icons/NavigateNext';
@@ -15,6 +16,7 @@ import classes from '../scss/object/profileModal.module.scss';
 import { Profile } from '../modules/models/Profile';
 import { createChatRoom } from '../modules/models/Chatroom';
 import { getCurrentUser } from '../modules/firebase';
+import EditIcon from '@material-ui/icons/Edit';
 
 type ProfileModalProps = {
   profile: Profile;
@@ -25,6 +27,8 @@ type ProfileModalStates = {
   name: string;
   sex: 'man' | 'woman';
   profile: Profile;
+
+  viewMode: 'show' | 'edit';
 };
 
 export default class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
@@ -34,6 +38,7 @@ export default class ProfileModal extends Component<ProfileModalProps, ProfileMo
       profile: props.profile,
       sex: 'man',
       name: '',
+      viewMode: 'show',
     };
     this.createChatroom = this.createChatroom.bind(this);
   }
@@ -70,7 +75,17 @@ export default class ProfileModal extends Component<ProfileModalProps, ProfileMo
           <NavigateNext className={classes.nextIcon} />
         </Box>
         <Box className={classes.contents}>
-          <p className={classes.name}>{prof.name}</p>
+          <IconButton
+            style={{ left: '100%', transform: 'translateX(-100%)' }}
+            onClick={() => {
+              this.setState({
+                viewMode: 'edit',
+              });
+            }}
+          >
+            <EditIcon />
+          </IconButton>
+          <p className={classes.name}>{prof.name + this.state.viewMode}</p>
           <p className={classes.profile}>{prof.profile}</p>
           {this.props.loginUserUid !== prof.author ? (
             <Box display="flex">
