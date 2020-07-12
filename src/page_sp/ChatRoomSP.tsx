@@ -18,7 +18,6 @@ import ProfileModal from '../page_sp/object/ProfileModalSP';
 interface MessageInfo {
   user: 'yours' | 'mine';
   sex: 'man' | 'woman';
-  name: string;
   comment: string;
 }
 
@@ -28,7 +27,6 @@ function UserSpeech(props: MessageInfo) {
     return (
       <Box className={classes.chatContents__speechWrap}>
         <Box className={ClassNames(classes.chatContents__speech, classes.speech__mine, sexClass)}>
-          <Box className={classes.chatContents__name}>{props.name}</Box>
           <span className={classes.mineBefore}></span>
           <span className={classes.mineAfter}></span>
           {props.comment}
@@ -39,7 +37,6 @@ function UserSpeech(props: MessageInfo) {
     return (
       <Box className={ClassNames(classes.chatContents__speechWrap, classes.your)}>
         <Box className={ClassNames(classes.chatContents__speech, classes.speech__your, sexClass)}>
-          <Box className={classes.chatContents__name}>{props.name}</Box>
           <span className={classes.yourBefore}></span>
           <span className={classes.yourAfter}></span>
           {props.comment}
@@ -131,7 +128,6 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
           <Link to="/mailbox">
             <ArrowBackIcon />
           </Link>
-
           <Avatar
             alt="icon"
             src={
@@ -153,18 +149,12 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
           <Box className={classes.chatContents} id="chatContents" onScroll={this.watchScroll}>
             {this.props.messages.map((message, i) => {
               const isMine = currentUserUid === message.ownerUid;
-              const { user, sex, name } = isMine
+              const { user, sex } = isMine
                 ? { ...myUserInfo, user: 'mine' as 'mine' | 'yours' }
                 : { ...otherUserInfo, user: 'yours' as 'mine' | 'yours' };
 
               return (
-                <UserSpeech
-                  key={i.toString()}
-                  user={user}
-                  sex={sex}
-                  name={name}
-                  comment={message.message}
-                />
+                <UserSpeech key={i.toString()} user={user} sex={sex} comment={message.message} />
               );
             })}
           </Box>

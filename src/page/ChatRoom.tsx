@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, TextareaAutosize, CircularProgress } from '@material-ui/core';
+import { Box, Button, TextareaAutosize, CircularProgress, Modal, Fade } from '@material-ui/core';
 import ClassNames from 'classnames';
 import SendIcon from '@material-ui/icons/Send';
 import classes from '../scss/page/chatRoom.module.scss';
@@ -9,11 +9,12 @@ import { connect } from 'react-redux';
 import { RootStateProps } from '../redux/reducers';
 import ChatMessageSnapshot from '../object/FisebaseSnapshot/ChatMessageSnapshot';
 import { sendMessage } from '../redux/actions/chatMessageAction';
+import { Profile } from '../modules/models/Profile';
+import ProfileModal from '../object/ProfileModal';
 
 interface MessageInfo {
   user: 'yours' | 'mine';
   sex: 'man' | 'woman';
-  name: string;
   comment: string;
 }
 
@@ -23,7 +24,6 @@ function UserSpeech(props: MessageInfo) {
     return (
       <Box className={classes.chatContents__speechWrap}>
         <Box className={ClassNames(classes.chatContents__speech, classes.speech__mine, sexClass)}>
-          <Box className={classes.chatContents__name}>{props.name}</Box>
           <span className={classes.mineBefore}></span>
           <span className={classes.mineAfter}></span>
           {props.comment}
@@ -34,7 +34,6 @@ function UserSpeech(props: MessageInfo) {
     return (
       <Box className={ClassNames(classes.chatContents__speechWrap, classes.your)}>
         <Box className={ClassNames(classes.chatContents__speech, classes.speech__your, sexClass)}>
-          <Box className={classes.chatContents__name}>{props.name}</Box>
           <span className={classes.yourBefore}></span>
           <span className={classes.yourAfter}></span>
           {props.comment}
@@ -55,6 +54,7 @@ type ChatRoomProps = {
 type ChatRoomState = {
   message: string;
   scrollStopFlag: boolean;
+  showProfile: Profile | null;
 };
 
 class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
@@ -63,6 +63,7 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
     this.state = {
       message: '',
       scrollStopFlag: false,
+      showProfile: null,
     };
   }
 
@@ -107,6 +108,7 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
   };
 
   render() {
+    const { showProfile } = this.state;
     console.log('ChatRoom loading', this.props.isLoading);
     if (!this.props.chatRoomId || !this.props.currentUser || !this.props.chatRoomInfo)
       return (
@@ -137,6 +139,9 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
                 : '/images/josei_0_b.png'
             }
             alt=""
+            onClick={() => {
+              this.setState({ showProfile: otherUserInfo });
+            }}
           />
         )}
         <Box className={classes.chatContentsWrap}>
@@ -145,7 +150,7 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
               ? null
               : this.props.messages.map((message, i) => {
                   const isMine = currentUserUid === message.ownerUid;
-                  const { user, sex, name } = isMine
+                  const { user, sex } = isMine
                     ? { ...myUserInfo, user: 'mine' as 'mine' | 'yours' }
                     : { ...otherUserInfo, user: 'yours' as 'mine' | 'yours' };
 
@@ -154,7 +159,6 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
                       key={i.toString()}
                       user={user}
                       sex={sex}
-                      name={name}
                       comment={message.message}
                     />
                   );
@@ -182,6 +186,27 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
             </Button>
           </Box>
         </Box>
+        <Modal
+          disableAutoFocus
+          open={showProfile != null}
+          onClose={() => {
+            this.setState({ showProfile: null });
+          }}
+        >
+          <Fade in={showProfile != null}>
+            {showProfile ? (
+              <ProfileModal
+                profile={showProfile}
+                loginUserUid={ownerInfo.author}
+                onCreateChatroom={(chatRoomId) => {
+                  console.log('chatRoom', chatRoomId);
+                }}
+              />
+            ) : (
+              <div></div>
+            )}
+          </Fade>
+        </Modal>
       </Box>
     );
   }
