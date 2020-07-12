@@ -1,11 +1,13 @@
 import React from 'react';
-import { Grid, Divider, Typography, CircularProgress, Box } from '@material-ui/core';
+import { Grid, Divider, Typography, CircularProgress, Box, Modal, Fade } from '@material-ui/core';
 import classes from '../../scss/page/mailBox.module.scss';
 import { ChatRoom as ChatRoomModel } from '../../modules/models/Chatroom';
 import { timestampToString } from '../../modules/firebase';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import ChatroomListSnapshot from '../../object/FisebaseSnapshot/ChatroomListSnapshot';
 import ChatRoom from '../ChatRoom';
+import { Profile } from '../../modules/models/Profile';
+import ProfileModal from '../../object/ProfileModal';
 
 export interface MailBoxProps {
   roomId?: string;
@@ -17,8 +19,17 @@ interface MailBoxInnerProps extends MailBoxProps {
   updateChatRoom: Function;
   setChatRoomId: (roomId: string) => void;
 }
+type MailBoxState = {
+  showProfile: Profile | null;
+};
 
-export class MailBox extends React.Component<MailBoxInnerProps> {
+export class MailBox extends React.Component<MailBoxInnerProps, MailBoxState> {
+  constructor(props: MailBoxInnerProps) {
+    super(props);
+    this.state = {
+      showProfile: null,
+    };
+  }
   componentDidMount() {
     this.props.setChatRoomId(this.props.roomId || '');
   }
@@ -29,7 +40,8 @@ export class MailBox extends React.Component<MailBoxInnerProps> {
   }
   render() {
     const { isLoading, chatrooms, currentUserUID } = this.props;
-    console.log('isLoading', isLoading);
+    const { showProfile } = this.state;
+
     return (
       <Grid container component="main" className={classes.main}>
         <ChatroomListSnapshot />
@@ -49,7 +61,14 @@ export class MailBox extends React.Component<MailBoxInnerProps> {
                     onClick={() => this.props.updateChatRoom(room.docId)}
                   >
                     <Grid item>
-                      <img className={classes.image} src={userInfo.miniIcon} alt="" />
+                      <img
+                        className={classes.image}
+                        src={userInfo.miniIcon}
+                        alt=""
+                        onClick={() => {
+                          this.setState({ showProfile: userInfo });
+                        }}
+                      />
                     </Grid>
                     <Grid item>
                       <Typography>{userInfo.name}</Typography>
@@ -79,6 +98,27 @@ export class MailBox extends React.Component<MailBoxInnerProps> {
             <ChatRoom />
           )}
         </Grid>
+        <Modal
+          disableAutoFocus
+          open={showProfile != null}
+          onClose={() => {
+            this.setState({ showProfile: null });
+          }}
+        >
+          <Fade in={showProfile != null}>
+            {showProfile ? (
+              <ProfileModal
+                profile={showProfile}
+                loginUserUid={showProfile.author}
+                onCreateChatroom={(chatRoomId) => {
+                  console.log('chatRoom', chatRoomId);
+                }}
+              />
+            ) : (
+              <div></div>
+            )}
+          </Fade>
+        </Modal>
       </Grid>
     );
   }
