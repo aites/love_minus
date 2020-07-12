@@ -68,17 +68,7 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
 
     // input入力箇所の表示判定
     let inputForm = null;
-    if (this.props.loginUserUid === prof.author && this.props.pathname === '/timeline') {
-      inputForm = (
-        <Box>
-          <Box mt={2}>
-            <Button color="secondary" variant="outlined" onClick={this.createChatroom}>
-              チャット開始
-            </Button>
-          </Box>
-        </Box>
-      );
-    } else if (this.props.pathname === '/timeline') {
+    if (this.props.loginUserUid !== prof.author && this.props.pathname === '/timeline') {
       inputForm = (
         <Box>
           <TextField
