@@ -15,10 +15,13 @@ import classes from '../../scss/page_sp/object/profileModal.module.scss';
 import { Profile } from '../../modules/models/Profile';
 import { createChatRoom } from '../../modules/models/Chatroom';
 import { getCurrentUser } from '../../modules/firebase';
+import { connect } from 'react-redux';
+import { RootStateProps } from '../../redux/reducers';
 
 type ProfileModalProps = {
   profile: Profile;
   loginUserUid?: string;
+  pathname: string;
 };
 type ProfileModalStates = {
   name: string;
@@ -26,7 +29,7 @@ type ProfileModalStates = {
   profile: Profile;
 };
 
-export default class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
+class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
   constructor(props: ProfileModalProps) {
     super(props);
     this.state = {
@@ -59,47 +62,65 @@ export default class ProfileModal extends Component<ProfileModalProps, ProfileMo
       },
     });
   }
+
   render() {
     const prof = this.state.profile;
+
+    // input入力箇所の表示判定
+    let inputForm = null;
+    if (this.props.loginUserUid === prof.author && this.props.pathname === '/timeline') {
+      inputForm = (
+        <Box>
+          <Box mt={2}>
+            <Button color="secondary" variant="outlined" onClick={this.createChatroom}>
+              チャット開始
+            </Button>
+          </Box>
+        </Box>
+      );
+    } else if (this.props.pathname === '/timeline') {
+      inputForm = (
+        <Box>
+          <TextField
+            id="name"
+            label="名前"
+            variant="outlined"
+            className={classes.textfield}
+            value={this.state.name}
+            onChange={(e) => {
+              this.setState({ name: e.target.value });
+            }}
+          ></TextField>
+          <FormControl variant="outlined">
+            <InputLabel id="sex">性別</InputLabel>
+            <Select
+              labelId="sex"
+              id="sex"
+              value={this.state.sex}
+              onChange={(e) => {
+                this.setState({ sex: e.target.value as 'man' | 'woman' });
+              }}
+              label="性別"
+            >
+              <MenuItem value={'man'}>男</MenuItem>
+              <MenuItem value={'woman'}>女</MenuItem>
+            </Select>
+          </FormControl>
+          <Box mt={2}>
+            <Button color="secondary" variant="outlined" onClick={this.createChatroom}>
+              チャット開始
+            </Button>
+          </Box>
+        </Box>
+      );
+    }
+
     return (
       <Paper className={classes.modal}>
         <Box className={classes.contents}>
           <p className={classes.name}>{prof.name}</p>
           <p className={classes.profile}>{prof.profile}</p>
-          {this.props.loginUserUid !== prof.author ? (
-            <Box>
-              <TextField
-                id="name"
-                label="名前"
-                variant="outlined"
-                className={classes.textfield}
-                value={this.state.name}
-                onChange={(e) => {
-                  this.setState({ name: e.target.value });
-                }}
-              ></TextField>
-              <FormControl variant="outlined">
-                <InputLabel id="sex">性別</InputLabel>
-                <Select
-                  labelId="sex"
-                  id="sex"
-                  value={this.state.sex}
-                  onChange={(e) => {
-                    this.setState({ sex: e.target.value as 'man' | 'woman' });
-                  }}
-                  label="性別"
-                >
-                  <MenuItem value={'man'}>男</MenuItem>
-                  <MenuItem value={'woman'}>女</MenuItem>
-                </Select>
-              </FormControl>
-              <Box mt={2}>
-                <Button color="secondary" variant="outlined" onClick={this.createChatroom}>
-                  チャット開始
-                </Button>
-              </Box>
-            </Box>
-          ) : null}
+          {inputForm}
           <Box className={classes.imageWrapper}>
             <NavigateBefore className={classes.prevIcon} />
             <img className={classes.image} src={prof.icon} alt="" />
@@ -110,3 +131,11 @@ export default class ProfileModal extends Component<ProfileModalProps, ProfileMo
     );
   }
 }
+
+const mapStateToProps = (state: RootStateProps) => ({
+  pathname: state.router.location.pathname,
+});
+const mapDispatchToProps = (dispatch: Function) => {
+  return {};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileModal);
