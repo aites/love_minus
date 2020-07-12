@@ -98,13 +98,13 @@ export default class ProfileModal extends Component<ProfileModalProps, ProfileMo
                   チャット開始
                 </Button>
               </Box>
-              <Box className={classes.imageWrapper}>
-                <NavigateBefore className={classes.prevIcon} />
-                <img className={classes.image} src={prof.icon} alt="" />
-                <NavigateNext className={classes.nextIcon} />
-              </Box>
             </Box>
           ) : null}
+          <Box className={classes.imageWrapper}>
+            <NavigateBefore className={classes.prevIcon} />
+            <img className={classes.image} src={prof.icon} alt="" />
+            <NavigateNext className={classes.nextIcon} />
+          </Box>
         </Box>
       </Paper>
     );
