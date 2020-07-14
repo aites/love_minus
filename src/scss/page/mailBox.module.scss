@@ -1,3 +1,12 @@
+.mailBox {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.timeLineLink {
+  text-decoration: none;
+}
+
 .badge {
   top: 12;
 }
@@ -9,7 +18,8 @@
 
 .content {
   height: 100%;
-  overflow: scroll;
+  overflow-y: auto;
+  border-right: 1px solid #bbb;
 }
 
 .mailListRow {
@@ -21,6 +31,7 @@
 .image {
   width: 80px;
   height: 80px;
+  margin-right: 8px;
 }
 
 .warningBox {

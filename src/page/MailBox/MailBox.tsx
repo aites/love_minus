@@ -1,5 +1,15 @@
 import React from 'react';
-import { Grid, Divider, Typography, CircularProgress, Box, Modal, Fade } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import {
+  Grid,
+  Divider,
+  Typography,
+  CircularProgress,
+  Box,
+  Modal,
+  Fade,
+  Button,
+} from '@material-ui/core';
 import classes from '../../scss/page/mailBox.module.scss';
 import { ChatRoom as ChatRoomModel } from '../../modules/models/Chatroom';
 import { timestampToString } from '../../modules/firebase';
@@ -85,6 +95,20 @@ export class MailBox extends React.Component<MailBoxInnerProps, MailBoxState> {
               );
             })
           )}
+          {!chatrooms.length ? (
+            <Box className={classes.mailBox}>
+              <p>
+                トークする人がいないです
+                <br />
+                タイムラインからトークする人を探そう
+              </p>
+              <Link to="/timeline" className={classes.timeLineLink}>
+                <Button variant="outlined" color="primary">
+                  タイムラインから探す
+                </Button>
+              </Link>
+            </Box>
+          ) : null}
         </Grid>
         <Grid item xs={12} sm={8} md={9} className={classes.content}>
           {!this.props.roomId ? (
