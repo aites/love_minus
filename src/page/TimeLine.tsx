@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Modal,
   Fade,
-  TextField,
   Checkbox,
   FormControlLabel,
   FormControl,
