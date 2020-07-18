@@ -8,6 +8,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Grid,
 } from '@material-ui/core';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import NavigateNext from '@material-ui/icons/NavigateNext';
@@ -17,6 +18,7 @@ import { createChatRoom } from '../../modules/models/Chatroom';
 import { getCurrentUser } from '../../modules/firebase';
 import { connect } from 'react-redux';
 import { RootStateProps } from '../../redux/reducers';
+import { characterList } from '../../modules/models/Character';
 
 type ProfileModalProps = {
   profile: Profile;
@@ -27,6 +29,9 @@ type ProfileModalStates = {
   name: string;
   sex: 'man' | 'woman';
   profile: Profile;
+  icon: string;
+  minIcon: string;
+  selected: Array<boolean>;
 };
 
 class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
@@ -36,6 +41,9 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
       profile: props.profile,
       sex: 'man',
       name: '',
+      icon: '',
+      minIcon: '',
+      selected: [],
     };
     this.createChatroom = this.createChatroom.bind(this);
   }
@@ -63,6 +71,12 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
     });
   }
 
+  selectedIcon(i: number) {
+    const selected_copy = Array(characterList.length).fill(false);
+    selected_copy[i] = true;
+    this.setState({ selected: selected_copy });
+  }
+
   render() {
     const prof = this.state.profile;
 
@@ -71,6 +85,35 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
     if (this.props.loginUserUid !== prof.author && this.props.pathname === '/timeline') {
       inputForm = (
         <Box>
+          <p>キャラクターアイコン</p>
+          <Grid
+            container
+            direction="row"
+            justify="center"
+            alignItems="center"
+            className={classes.iconWrapper}
+          >
+            {characterList.map((v, i) => {
+              return (
+                <Grid item xs={2} className={classes.icon_content}>
+                  <Paper
+                    className={classes.image_icon_wrap}
+                    elevation={this.state.selected[i] ? 4 : 1}
+                  >
+                    <img
+                      className={classes.image_icon}
+                      src={v.icon}
+                      alt=""
+                      onClick={() => {
+                        this.setState({ icon: v.image, minIcon: v.icon });
+                        this.selectedIcon(i);
+                      }}
+                    />
+                  </Paper>
+                </Grid>
+              );
+            })}
+          </Grid>
           <TextField
             id="name"
             label="名前"
