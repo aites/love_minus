@@ -10,6 +10,8 @@ import {
   MenuItem,
   Grid,
 } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { RootStateProps } from '../../src/redux/reducers';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import NavigateNext from '@material-ui/icons/NavigateNext';
 import classes from '../scss/object/profileModal.module.scss';
@@ -21,6 +23,7 @@ import { characterList } from '../modules/models/Character';
 type ProfileModalProps = {
   profile: Profile;
   loginUserUid?: string;
+  pathname: string;
   onCreateChatroom: (roomId: string) => void;
 };
 type ProfileModalStates = {
@@ -32,7 +35,7 @@ type ProfileModalStates = {
   selected: Array<Boolean>;
 };
 
-export default class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
+class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
   constructor(props: ProfileModalProps) {
     super(props);
     this.state = {
@@ -87,7 +90,7 @@ export default class ProfileModal extends Component<ProfileModalProps, ProfileMo
         <Box className={classes.contents}>
           <p className={classes.name}>{prof.name}</p>
           <p className={classes.profile}>{prof.profile}</p>
-          {this.props.loginUserUid !== prof.author ? (
+          {this.props.loginUserUid !== prof.author && this.props.pathname === '/timeline' ? (
             <>
               <p>キャラクターアイコン</p>
               <Grid container direction="row" justify="center" alignItems="center">
@@ -157,3 +160,11 @@ export default class ProfileModal extends Component<ProfileModalProps, ProfileMo
     );
   }
 }
+
+const mapStateToProps = (state: RootStateProps) => ({
+  pathname: state.router.location.pathname,
+});
+const mapDispatchToProps = (dispatch: Function) => {
+  return {};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileModal);
