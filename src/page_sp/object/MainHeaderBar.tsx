@@ -7,11 +7,10 @@ import classes from '../../scss/page_sp/mainHeaderBar.module.scss';
 
 class MainHeaderBar extends React.Component {
   render() {
-    console.log(this.props);
     return (
       <AppBar position="sticky">
         <Toolbar>
-          <h1>
+          <h1 className={classes.logoWrapper}>
             <img className={classes.logo} src="../images/logo.png" alt="LoveMinus" />
           </h1>
           <AuthModal />
