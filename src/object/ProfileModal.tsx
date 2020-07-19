@@ -32,7 +32,7 @@ type ProfileModalStates = {
   profile: Profile;
   icon: string;
   minIcon: string;
-  selected: Array<Boolean>;
+  selected: Array<boolean>;
 };
 
 class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
