@@ -189,7 +189,13 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
         >
           <Fade in={showProfile != null}>
             {showProfile ? (
-              <ProfileModal profile={showProfile} loginUserUid={ownerInfo.author} />
+              <ProfileModal
+                profile={showProfile}
+                loginUserUid={ownerInfo.author}
+                onCreateChatroom={(chatRoomId) => {
+                  console.log('chatRoom', chatRoomId);
+                }}
+              />
             ) : (
               <div></div>
             )}

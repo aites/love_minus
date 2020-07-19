@@ -3,6 +3,7 @@ import ProfileListCardSP from '../page_sp/object/ProfileListCardSP';
 import { RootStateProps } from '../redux/reducers';
 import { connect } from 'react-redux';
 import { User } from 'firebase';
+import { push } from 'connected-react-router';
 import { getTimeLine, Profile } from '../modules/models/Profile';
 import { Modal, Fade, Checkbox, FormControlLabel, InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
@@ -11,6 +12,7 @@ import classes from '../scss/page_sp/timeLineSP.module.scss';
 
 type TimeLineProps = {
   user: User | null;
+  gotoChatroom: (roomId: string) => void;
 };
 type TimeLineState = {
   profileList: Profile[];
@@ -93,7 +95,16 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
         >
           <Fade in={showProfile != null}>
             {showProfile ? (
-              <ProfileModal profile={showProfile} loginUserUid={this.props.user?.uid} />
+              <ProfileModal
+                profile={showProfile}
+                loginUserUid={this.props.user?.uid}
+                onCreateChatroom={(chatRoomId) => {
+                  console.log('chatRoom', chatRoomId);
+                  if (chatRoomId) {
+                    this.props.gotoChatroom(chatRoomId);
+                  }
+                }}
+              />
             ) : (
               <div></div>
             )}
@@ -110,7 +121,11 @@ function mapStateToProps(state: RootStateProps) {
   };
 }
 const mapDispatchToProps = (dispatch: Function) => {
-  return {};
+  return {
+    gotoChatroom: (roomId: string) => {
+      dispatch(push(`/mailbox/${roomId}`));
+    },
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TimeLineSP);

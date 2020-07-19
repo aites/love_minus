@@ -10,20 +10,21 @@ import {
   MenuItem,
   Grid,
 } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { RootStateProps } from '../../redux/reducers';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import NavigateNext from '@material-ui/icons/NavigateNext';
 import classes from '../../scss/page_sp/object/profileModal.module.scss';
 import { Profile } from '../../modules/models/Profile';
 import { createChatRoom } from '../../modules/models/Chatroom';
 import { getCurrentUser } from '../../modules/firebase';
-import { connect } from 'react-redux';
-import { RootStateProps } from '../../redux/reducers';
 import { characterList } from '../../modules/models/Character';
 
 type ProfileModalProps = {
   profile: Profile;
   loginUserUid?: string;
   pathname: string;
+  onCreateChatroom: (roomId: string) => void;
 };
 type ProfileModalStates = {
   name: string;
@@ -53,7 +54,7 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
     const playerInfo = await getCurrentUser();
     if (!playerInfo || !ownerUid) throw new Error();
     const playerUid = playerInfo.uid;
-    await createChatRoom({
+    return await createChatRoom({
       joinUsers: [ownerUid, playerUid],
       ownerUid,
       playerUid,
@@ -62,8 +63,8 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
       playerInfo: {
         name: this.state.name,
         sex: this.state.sex,
-        icon: '',
-        miniIcon: '',
+        icon: this.state.icon,
+        miniIcon: this.state.minIcon,
         profile: '',
         simpleProf: '',
         author: playerUid,
@@ -140,7 +141,14 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
             </Select>
           </FormControl>
           <Box mt={2}>
-            <Button color="secondary" variant="outlined" onClick={this.createChatroom}>
+            <Button
+              color="secondary"
+              variant="outlined"
+              onClick={async () => {
+                const chatRoom = await this.createChatroom();
+                this.props.onCreateChatroom(chatRoom);
+              }}
+            >
               チャット開始
             </Button>
           </Box>
