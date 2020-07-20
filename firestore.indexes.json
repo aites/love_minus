@@ -27,6 +27,20 @@
           "order": "DESCENDING"
         }
       ]
+    },
+    {
+      "collectionGroup": "timeline",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "author",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "ASCENDING"
+        }
+      ]
     }
   ],
   "fieldOverrides": []
