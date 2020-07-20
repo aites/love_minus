@@ -12,48 +12,30 @@
   align-items: flex-start;
 }
 
-.imageWrapper {
-  min-width: 30%;
-  flex-basis: 30%;
-  position: relative;
-  padding: 0 24px;
-  overflow: hidden;
-  margin-top: 22px;
-}
-
-.image {
-  width: 100%;
-  position: relative;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  margin: auto;
-}
-
-.prevIcon {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-}
-
-.nextIcon {
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-}
-
 .contents {
   margin-left: 20px;
   flex: 1;
 }
 
+.nameWrapper {
+  position: relative;
+}
+
+.image {
+  width: 48px;
+  height: 48px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+}
+
 .name {
   font-size: 20px;
+  padding-left: 56px;
+  margin: 0;
+  height: 48px;
+  line-height: 48px;
 }
 
 .profile {
@@ -61,12 +43,17 @@
   font-size: 12px;
 }
 
-.iconWrapper {
-  margin-bottom: 12px;
+.inputForm {
+  display: flex;
 }
 
-.textfield {
+.textField {
+  width: 100%;
   margin-right: 4px !important;
+}
+
+.selectBox {
+  min-width: 63px !important;
 }
 
 .image_icon_wrap {
@@ -77,4 +64,25 @@
 
 .image_icon {
   width: 100%;
+}
+
+.selectIcon {
+  border: solid 1px #cccccc;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  margin-left: 4px;
+}
+
+.selectIconImg {
+  width: 48px;
+}
+
+.downIcon {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.selectIconModal {
+  display: flex;
+  align-items: center;
 }
