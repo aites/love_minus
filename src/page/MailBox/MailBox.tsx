@@ -28,6 +28,7 @@ export interface MailBoxProps {
 interface MailBoxInnerProps extends MailBoxProps {
   updateChatRoom: Function;
   setChatRoomId: (roomId: string) => void;
+  leaveChatRoom: (roomId: string) => void;
 }
 type MailBoxState = {
   showProfile: Profile | null;
@@ -69,6 +70,7 @@ export class MailBox extends React.Component<MailBoxInnerProps, MailBoxState> {
                     wrap="nowrap"
                     className={classes.mailListRow}
                     onClick={() => this.props.updateChatRoom(room.docId)}
+                    //onClick={() => this.props.leaveChatRoom(room.docId)}  // 削除ボタンで呼ぶ
                   >
                     <Grid item>
                       <img

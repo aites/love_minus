@@ -27,6 +27,16 @@ export async function createChatRoom(chatRoom: ChatRoom) {
     });
   return docId;
 }
+export async function leaveChatRoom(roomId: string) {
+  const currentUser = await getCurrentUser();
+  if (currentUser === null) return;
+  await db
+    .collection('chatroom')
+    .doc(roomId)
+    .update({
+      joinUsers: firebase.firestore.FieldValue.arrayRemove(currentUser.uid),
+    });
+}
 
 type ChatRoomGetOption = {
   docId: string;

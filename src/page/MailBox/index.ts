@@ -4,6 +4,7 @@ import { push } from 'connected-react-router';
 import { RootStateProps } from '../../redux/reducers';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { selectRoom } from '../../redux/reducers/chatMessageReducer';
+import { leaveRoom } from '../../redux/actions/chatRoomAction';
 
 interface Props
   extends RouteComponentProps<{
@@ -27,6 +28,9 @@ const mapDispatchToProps = (dispatch: Function, props: Props) => {
       console.log('props', props);
       //      dispatch(selectRoom(roomId));
       dispatch(push(`/mailbox/${roomId}`));
+    },
+    leaveChatRoom(roomId: string) {
+      dispatch(leaveRoom(roomId));
     },
   };
 };
