@@ -122,9 +122,7 @@ export class MailBoxSP extends React.Component<MailBoxSPInnerProps, MailBoxState
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
-              <DialogTitle id="alert-dialog-title">
-                このトークルームを非表示にしますか？
-              </DialogTitle>
+              <DialogTitle id="alert-dialog-title">このトークルームから退室しますか？</DialogTitle>
               <DialogActions>
                 <Button
                   onClick={() => {
