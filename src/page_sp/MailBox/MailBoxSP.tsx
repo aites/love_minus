@@ -1,5 +1,15 @@
 import React from 'react';
-import { Grid, Divider, Typography, CircularProgress, List } from '@material-ui/core';
+import {
+  Grid,
+  Divider,
+  Typography,
+  CircularProgress,
+  List,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+} from '@material-ui/core';
 import classes from '../../scss/page_sp/mailBoxSP.module.scss';
 import { ChatRoom as ChatRoomModel } from '../../modules/models/Chatroom';
 import { timestampToString } from '../../modules/firebase';
@@ -7,9 +17,11 @@ import ChatroomListSnapshot from '../../object/FisebaseSnapshot/ChatroomListSnap
 import ChatRoom from '../ChatRoomSP';
 import { connect } from 'react-redux';
 import { selectRoom } from '../../redux/reducers/chatMessageReducer';
+import { leaveRoom } from '../../redux/actions/chatRoomAction';
 import { push } from 'connected-react-router';
 import { RootStateProps } from '../../redux/reducers';
 import { RouteComponentProps } from 'react-router';
+import CloseIcon from '@material-ui/icons/Close';
 
 export interface MailBoxSPProps
   extends RouteComponentProps<{
@@ -22,10 +34,24 @@ export interface MailBoxSPProps
 }
 interface MailBoxSPInnerProps extends MailBoxSPProps {
   updateChatRoom: Function;
+  leaveChatRoom: Function;
   setChatRoomId: (roomId: string) => void;
 }
 
-export class MailBoxSP extends React.Component<MailBoxSPInnerProps> {
+type MailBoxStates = {
+  leaveRoomId?: string;
+  dialog: boolean;
+};
+
+export class MailBoxSP extends React.Component<MailBoxSPInnerProps, MailBoxStates> {
+  constructor(props: MailBoxSPInnerProps) {
+    super(props);
+    this.state = {
+      leaveRoomId: '',
+      dialog: false,
+    };
+  }
+
   componentDidMount() {
     this.props.setChatRoomId(this.props.roomId || '');
   }
@@ -34,8 +60,16 @@ export class MailBoxSP extends React.Component<MailBoxSPInnerProps> {
       this.props.setChatRoomId(nextProps.roomId || '');
     }
   }
+
   render() {
     const { isLoading, chatrooms, currentUserUID, roomId } = this.props;
+    const handleClickOpen = (id?: string) => {
+      this.setState({ dialog: true, leaveRoomId: id });
+    };
+
+    const handleClose = () => {
+      this.setState({ dialog: false });
+    };
     return (
       <>
         <ChatroomListSnapshot />
@@ -62,19 +96,50 @@ export class MailBoxSP extends React.Component<MailBoxSPInnerProps> {
                       </Grid>
                       <Grid item>
                         <Typography>{userInfo.name}</Typography>
-                        <Typography noWrap variant="caption">
+                        <Typography noWrap display="block" variant="caption">
                           {room.lastMessage}
                         </Typography>
-                        <Typography noWrap variant="caption">
+                        <Typography noWrap display="block" variant="caption">
                           {timestampToString(room.updatedAt)}
                         </Typography>
                       </Grid>
+                      <CloseIcon
+                        className={classes.closeIcon}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleClickOpen(room.docId);
+                        }}
+                      />
                     </Grid>
                     <Divider key={room.docId + 'div'}></Divider>
                   </>
                 );
               })
             )}
+            <Dialog
+              open={this.state.dialog}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                このトークルームを非表示にしますか？
+              </DialogTitle>
+              <DialogActions>
+                <Button
+                  onClick={() => {
+                    handleClose();
+                    this.props.leaveChatRoom(this.state.leaveRoomId);
+                  }}
+                  color="primary"
+                >
+                  はい
+                </Button>
+                <Button onClick={handleClose} color="primary" autoFocus>
+                  いいえ
+                </Button>
+              </DialogActions>
+            </Dialog>
           </List>
         ) : (
           <></>
@@ -98,6 +163,9 @@ const mapDispatchToProps = (dispatch: Function) => {
     },
     updateChatRoom(roomId: string) {
       dispatch(push(`/mailbox/${roomId}`));
+    },
+    leaveChatRoom(roomId: string) {
+      dispatch(leaveRoom(roomId));
     },
   };
 };
