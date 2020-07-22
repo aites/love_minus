@@ -82,7 +82,7 @@ export default class MakeCharacterSP extends Component<MakeCharacterProps, MakeC
     const selected = this.state.selected;
     return (
       <Grid>
-        <Grid container item xs={12} sm={6} md={6} className={classes.main}>
+        <Grid container item xs={12} sm={12} md={12} className={classes.main}>
           <Grid item xs={2} className={classes.content}>
             {characterList
               .filter((v) => v.sex === 'man')
