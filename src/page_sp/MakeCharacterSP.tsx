@@ -121,8 +121,8 @@ export default class MakeCharacterSP extends Component<MakeCharacterProps, MakeC
           container
           item
           xs={12}
-          sm={6}
-          md={6}
+          sm={12}
+          md={12}
           alignItems="stretch"
           direction="column"
           style={{ textAlign: 'center' }}
