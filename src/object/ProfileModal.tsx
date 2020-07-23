@@ -32,7 +32,7 @@ type ProfileModalStates = {
   profile: Profile;
   icon: string;
   minIcon: string;
-  selected: Array<boolean>;
+  showIconArea: boolean;
 };
 
 class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
@@ -42,9 +42,9 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
       profile: props.profile,
       sex: 'man',
       name: '',
-      icon: '',
-      minIcon: '',
-      selected: [],
+      icon: characterList[0].image,
+      minIcon: characterList[0].icon,
+      showIconArea: false,
     };
     this.createChatroom = this.createChatroom.bind(this);
   }
@@ -72,12 +72,6 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
     });
   }
 
-  selectedIcon(i: number) {
-    const selected_copy = Array(characterList.length).fill(false);
-    selected_copy[i] = true;
-    this.setState({ selected: selected_copy });
-  }
-
   render() {
     const prof = this.state.profile;
     return (
@@ -92,29 +86,6 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
           <p className={classes.profile}>{prof.profile}</p>
           {this.props.loginUserUid !== prof.author && this.props.pathname === '/timeline' ? (
             <>
-              <p>キャラクターアイコン</p>
-              <Grid container direction="row" justify="center" alignItems="center">
-                {characterList.map((v, i) => {
-                  return (
-                    <Grid item xs={2} className={classes.icon_content}>
-                      <Paper
-                        className={classes.image_icon_wrap}
-                        elevation={this.state.selected[i] ? 4 : 1}
-                      >
-                        <img
-                          className={classes.image_icon}
-                          src={v.icon}
-                          alt=""
-                          onClick={() => {
-                            this.setState({ icon: v.image, minIcon: v.icon });
-                            this.selectedIcon(i);
-                          }}
-                        />
-                      </Paper>
-                    </Grid>
-                  );
-                })}
-              </Grid>
               <Box display="flex" className={classes.inputWrapper}>
                 <TextField
                   id="name"
@@ -153,6 +124,53 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
                   チャット開始
                 </Button>
               </Box>
+
+              <p>アイコンを選ぶ</p>
+              <Grid item xs={2} className={classes.icon_content}>
+                <Paper
+                  className={classes.image_icon_wrap}
+                  elevation={this.state.showIconArea ? 4 : 1}
+                >
+                  <img
+                    className={classes.image_icon}
+                    src={this.state.minIcon}
+                    alt=""
+                    onClick={() => {
+                      this.setState({
+                        showIconArea: !this.state.showIconArea,
+                      });
+                    }}
+                  />
+                </Paper>
+              </Grid>
+
+              {this.state.showIconArea ? (
+                <Grid container direction="row" justify="center" alignItems="center">
+                  {characterList.map((v) => {
+                    return (
+                      <Grid item xs={2} className={classes.icon_content}>
+                        <Paper
+                          className={classes.image_icon_wrap}
+                          elevation={v.icon === this.state.minIcon ? 4 : 1}
+                        >
+                          <img
+                            className={classes.image_icon}
+                            src={v.icon}
+                            alt=""
+                            onClick={() => {
+                              this.setState({
+                                icon: v.image,
+                                minIcon: v.icon,
+                                showIconArea: false,
+                              });
+                            }}
+                          />
+                        </Paper>
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              ) : null}
             </>
           ) : null}
         </Box>
