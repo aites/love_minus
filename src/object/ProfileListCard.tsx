@@ -21,7 +21,7 @@ function ProfileListCard(prof: Profile & { loginUserUid?: string }) {
         </Box>
         <Box>
           <Button style={{ margin: 10 }} color="secondary" variant="outlined">
-            {prof.author === prof.loginUserUid ? '自分の' : 'チャット開始'}
+            {prof.author === prof.loginUserUid ? '自分のチャット' : 'チャット開始'}
           </Button>
         </Box>
       </Box>
