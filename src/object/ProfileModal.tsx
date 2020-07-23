@@ -12,8 +12,6 @@ import {
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { RootStateProps } from '../../src/redux/reducers';
-import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import NavigateNext from '@material-ui/icons/NavigateNext';
 import classes from '../scss/object/profileModal.module.scss';
 import { Profile } from '../modules/models/Profile';
 import { createChatRoom } from '../modules/models/Chatroom';
@@ -77,9 +75,7 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
     return (
       <Paper className={classes.modal}>
         <Box className={classes.imageWrapper}>
-          <NavigateBefore className={classes.prevIcon} />
           <img className={classes.image} src={prof.icon} alt="" />
-          <NavigateNext className={classes.nextIcon} />
         </Box>
         <Box className={classes.contents}>
           <p className={classes.name}>{prof.name}</p>
