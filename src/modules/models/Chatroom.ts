@@ -3,6 +3,7 @@ import { Profile } from './Profile';
 
 export type ChatRoom = {
   docId?: string;
+  profileId?: string;
   joinUsers: string[];
   ownerUid: string; // チャットオーナー(TimeLineに書いた人)
   playerUid: string; // チャットを申し込んだ人
@@ -14,17 +15,27 @@ export type ChatRoom = {
   updatedAt?: firebase.firestore.Timestamp;
 };
 
-export async function createChatRoom(chatRoom: ChatRoom) {
+type createChatRoomProps = ChatRoom & {
+  profileId: string;
+};
+export async function createChatRoom(chatRoom: createChatRoomProps) {
+  const currentUser = await getCurrentUser();
+  if (currentUser === null) throw new Error();
+
   const db = firebase.firestore();
+  const batch = db.batch();
   const docId = db.collection('chatroom').doc().id;
-  await db
-    .collection('chatroom')
-    .doc(docId)
-    .set({
-      ...chatRoom,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-    });
+  const chatRoomRef = db.collection('chatroom').doc(docId);
+  const timelineRef = db.collection('timeline').doc(chatRoom.profileId);
+  batch.set(chatRoomRef, {
+    ...chatRoom,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+  batch.update(timelineRef, {
+    joinUsers: firebase.firestore.FieldValue.arrayUnion(currentUser),
+  });
+  await batch.commit();
   return docId;
 }
 export async function leaveChatRoom(roomId: string) {

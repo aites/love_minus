@@ -52,9 +52,11 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
   async createChatroom() {
     const ownerUid = this.state.profile.author;
     const playerInfo = await getCurrentUser();
-    if (!playerInfo || !ownerUid) throw new Error();
+    const profileId = this.state.profile.profileId;
+    if (!playerInfo || !ownerUid || !profileId) throw new Error();
     const playerUid = playerInfo.uid;
     return await createChatRoom({
+      profileId: profileId,
       joinUsers: [ownerUid, playerUid],
       ownerUid,
       playerUid,

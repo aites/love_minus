@@ -1,6 +1,7 @@
 import firebase, { getCurrentUser } from '../firebase';
 
 export type Profile = {
+  profileId?: string;
   name: string;
   sex: 'man' | 'woman';
   icon: string;
@@ -16,11 +17,13 @@ export async function createProfile(profile: Profile) {
   const docId = db.collection('timeline').doc().id;
   const currentUser = await getCurrentUser();
   if (currentUser === null) throw new Error();
+
   await db
     .collection('timeline')
     .doc(docId)
     .set({
       ...profile,
+      joinUsers: [],
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       author: currentUser.uid,
     });
@@ -49,6 +52,6 @@ export async function getTimeLine(option: TimeLineSearchOption) {
   const result = await collectionRef.orderBy('createdAt').limit(option.limit).get();
   return result.docs.map((doc) => {
     const data = doc.data();
-    return data as Profile;
+    return { profileId: doc.id, ...data } as Profile;
   });
 }
