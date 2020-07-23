@@ -1,7 +1,6 @@
 .chat {
   position: relative;
   width: 100%;
-  height: calc(100vh - 64px - 56px);
   background-image: url('../../image/chat_background.svg');
   background-size: cover;
   background-repeat: no-repeat;
@@ -137,6 +136,8 @@
   right: 0;
   left: 0;
   bottom: 0;
+  // height: 39px;
+  // overflow: hidden;
 }
 
 .chatSendMessage__button {
@@ -163,7 +164,7 @@
   box-sizing: border-box;
   bottom: 0;
   z-index: 10;
-  max-height: 50vh;
+  max-height: 50%;
   resize: none;
 }
 

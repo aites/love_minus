@@ -14,6 +14,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Avatar from '@material-ui/core/Avatar';
 import { Profile } from '../modules/models/Profile';
 import ProfileModal from '../page_sp/object/ProfileModalSP';
+const displayHeight = window.innerHeight;
 
 interface MessageInfo {
   user: 'yours' | 'mine';
@@ -123,7 +124,12 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
     const myUserInfo = currentUserUid === ownerInfo.author ? ownerInfo : playerInfo;
     const otherUserInfo = currentUserUid === playerInfo.author ? ownerInfo : playerInfo;
     return (
-      <Box className={classes.chat}>
+      <Box
+        className={classes.chat}
+        style={{
+          minHeight: `calc(${displayHeight}px - 112px)`,
+        }}
+      >
         <Box className={classes.chatHeader}>
           <Link to="/mailbox">
             <ArrowBackIcon />
@@ -163,8 +169,8 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
               className={classes.chatSendMessage__textArea}
               aria-label="empty textarea"
               placeholder=""
-              rowsMin={1}
-              rowsMax={5}
+              rowsMin={3}
+              rowsMax={3}
               value={this.state.message}
               onKeyDown={(e) => {
                 if (((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) && e.keyCode === 13) {

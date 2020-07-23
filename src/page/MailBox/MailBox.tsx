@@ -9,6 +9,9 @@ import {
   Modal,
   Fade,
   Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
 } from '@material-ui/core';
 import classes from '../../scss/page/mailBox.module.scss';
 import { ChatRoom as ChatRoomModel } from '../../modules/models/Chatroom';
@@ -18,6 +21,7 @@ import ChatroomListSnapshot from '../../object/FisebaseSnapshot/ChatroomListSnap
 import ChatRoom from '../ChatRoom';
 import { Profile } from '../../modules/models/Profile';
 import ProfileModal from '../../object/ProfileModal';
+import CloseIcon from '@material-ui/icons/Close';
 
 export interface MailBoxProps {
   roomId?: string;
@@ -32,6 +36,8 @@ interface MailBoxInnerProps extends MailBoxProps {
 }
 type MailBoxState = {
   showProfile: Profile | null;
+  leaveRoomId: string;
+  dialog: boolean;
 };
 
 export class MailBox extends React.Component<MailBoxInnerProps, MailBoxState> {
@@ -39,6 +45,8 @@ export class MailBox extends React.Component<MailBoxInnerProps, MailBoxState> {
     super(props);
     this.state = {
       showProfile: null,
+      leaveRoomId: '',
+      dialog: false,
     };
   }
   componentDidMount() {
@@ -52,6 +60,13 @@ export class MailBox extends React.Component<MailBoxInnerProps, MailBoxState> {
   render() {
     const { isLoading, chatrooms, currentUserUID } = this.props;
     const { showProfile } = this.state;
+    const handleClickOpen = (id: string) => {
+      this.setState({ dialog: true, leaveRoomId: id });
+    };
+
+    const handleClose = () => {
+      this.setState({ dialog: false });
+    };
 
     return (
       <Grid container component="main" className={classes.main}>
@@ -70,7 +85,6 @@ export class MailBox extends React.Component<MailBoxInnerProps, MailBoxState> {
                     wrap="nowrap"
                     className={classes.mailListRow}
                     onClick={() => this.props.updateChatRoom(room.docId)}
-                    //onClick={() => this.props.leaveChatRoom(room.docId)}  // 削除ボタンで呼ぶ
                   >
                     <Grid item>
                       <img
@@ -91,6 +105,13 @@ export class MailBox extends React.Component<MailBoxInnerProps, MailBoxState> {
                         {timestampToString(room.updatedAt)}
                       </Typography>
                     </Grid>
+                    <CloseIcon
+                      className={classes.closeIcon}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleClickOpen(room.docId ? room.docId : '');
+                      }}
+                    />
                   </Grid>
                   <Divider key={room.docId + 'div'}></Divider>
                 </>
@@ -145,6 +166,28 @@ export class MailBox extends React.Component<MailBoxInnerProps, MailBoxState> {
             )}
           </Fade>
         </Modal>
+        <Dialog
+          open={this.state.dialog}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">このトークルームから退室しますか？</DialogTitle>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                handleClose();
+                this.props.leaveChatRoom(this.state.leaveRoomId);
+              }}
+              color="primary"
+            >
+              はい
+            </Button>
+            <Button onClick={handleClose} color="primary" autoFocus>
+              いいえ
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Grid>
     );
   }
