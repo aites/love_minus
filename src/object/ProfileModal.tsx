@@ -54,7 +54,7 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
     if (!playerInfo || !ownerUid || !profileId) throw new Error();
     const playerUid = playerInfo.uid;
     return await createChatRoom({
-      profileId: profileId,
+      timelineId: profileId,
       joinUsers: [ownerUid, playerUid],
       ownerUid,
       playerUid,
