@@ -3,7 +3,7 @@ import { Profile } from './Profile';
 
 export type ChatRoom = {
   docId?: string;
-  profileId?: string;
+  timelineId?: string;
   joinUsers: string[];
   ownerUid: string; // チャットオーナー(TimeLineに書いた人)
   playerUid: string; // チャットを申し込んだ人
@@ -16,26 +16,24 @@ export type ChatRoom = {
 };
 
 type createChatRoomProps = ChatRoom & {
-  profileId: string;
+  timelineId: string;
 };
 export async function createChatRoom(chatRoom: createChatRoomProps) {
   const currentUser = await getCurrentUser();
-  if (currentUser === null) throw new Error();
+  if (!currentUser) throw new Error();
 
   const db = firebase.firestore();
-  const batch = db.batch();
   const docId = db.collection('chatroom').doc().id;
   const chatRoomRef = db.collection('chatroom').doc(docId);
-  const timelineRef = db.collection('timeline').doc(chatRoom.profileId);
-  batch.set(chatRoomRef, {
+  const timelineRef = db.collection('timeline').doc(chatRoom.timelineId);
+  chatRoomRef.set({
     ...chatRoom,
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
   });
-  batch.update(timelineRef, {
-    joinUsers: firebase.firestore.FieldValue.arrayUnion(currentUser),
+  timelineRef.update({
+    joinUsers: firebase.firestore.FieldValue.arrayUnion(currentUser.uid),
   });
-  await batch.commit();
   return docId;
 }
 export async function leaveChatRoom(roomId: string) {
