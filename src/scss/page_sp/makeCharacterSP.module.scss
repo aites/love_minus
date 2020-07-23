@@ -12,12 +12,17 @@
 }
 
 .textfield {
-  margin: 10px !important;
-  width: calc(100% - 20px);
+  margin: 2px !important;
+  width: calc(100% - 6px);
 
   & textarea {
     resize: vertical !important;
   }
+}
+
+.inputSelect {
+  margin-top: 2px !important;
+  margin-right: 6px !important;
 }
 
 .image {
@@ -34,4 +39,25 @@
 
 .image_icon {
   width: 100%;
+}
+
+.selectIcon {
+  border: solid 1px #cccccc;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  margin: 2px !important;
+}
+
+.selectIconImg {
+  width: 52px;
+}
+
+.downIcon {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.selectIconModal {
+  display: flex;
+  align-items: center;
 }

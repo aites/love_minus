@@ -8,9 +8,13 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Modal,
+  Box,
+  Backdrop,
 } from '@material-ui/core';
 import classes from '../scss/page_sp/makeCharacterSP.module.scss';
 import { createProfile } from '../modules/models/Profile';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 interface Character {
   sex: 'man' | 'woman';
@@ -58,6 +62,8 @@ type MakeCharacterStates = {
   sex: 'man' | 'woman';
   simpleProfile: string;
   profile: string;
+  minIcon: string;
+  iconModal: boolean;
 };
 
 export default class MakeCharacterSP extends Component<MakeCharacterProps, MakeCharacterStates> {
@@ -69,6 +75,8 @@ export default class MakeCharacterSP extends Component<MakeCharacterProps, MakeC
       sex: characterList[0].sex,
       simpleProfile: '',
       profile: '',
+      minIcon: characterList[0].icon,
+      iconModal: false,
     };
   }
   setIcon(character: Character) {
@@ -79,44 +87,14 @@ export default class MakeCharacterSP extends Component<MakeCharacterProps, MakeC
   }
 
   render() {
-    const selected = this.state.selected;
+    const handleOpen = () => {
+      this.setState({ iconModal: true });
+    };
+    const handleClose = () => {
+      this.setState({ iconModal: false });
+    };
     return (
-      <Grid>
-        <Grid container item xs={12} sm={12} md={12} className={classes.main}>
-          <Grid item xs={2} className={classes.content}>
-            {characterList
-              .filter((v) => v.sex === 'man')
-              .map((v) => {
-                return (
-                  <Paper
-                    className={classes.image_icon_wrap}
-                    onClick={() => this.setIcon(v)}
-                    elevation={v === selected ? 4 : 1}
-                  >
-                    <img className={classes.image_icon} src={v.icon} alt="" />
-                  </Paper>
-                );
-              })}
-          </Grid>
-          <Grid item xs={8} style={{ textAlign: 'center' }} className={classes.image}>
-            <img className={classes.image} src={selected.image} alt="" />
-          </Grid>
-          <Grid item xs={2} className={classes.content}>
-            {characterList
-              .filter((v) => v.sex === 'woman')
-              .map((v) => {
-                return (
-                  <Paper
-                    className={classes.image_icon_wrap}
-                    onClick={() => this.setIcon(v)}
-                    elevation={v === selected ? 4 : 1}
-                  >
-                    <img className={classes.image_icon} src={v.icon} alt="" />
-                  </Paper>
-                );
-              })}
-          </Grid>
-        </Grid>
+      <>
         <Grid
           container
           item
@@ -144,7 +122,7 @@ export default class MakeCharacterSP extends Component<MakeCharacterProps, MakeC
               />
             </Grid>
             <Grid item>
-              <FormControl variant="outlined" className={classes.textfield}>
+              <FormControl variant="outlined" className={classes.inputSelect}>
                 <InputLabel id="sex">性別</InputLabel>
                 <Select
                   labelId="sex"
@@ -159,6 +137,17 @@ export default class MakeCharacterSP extends Component<MakeCharacterProps, MakeC
                   <MenuItem value={'woman'}>女</MenuItem>
                 </Select>
               </FormControl>
+            </Grid>
+            <Grid item>
+              <Box className={classes.selectIcon}>
+                <img
+                  src={this.state.minIcon}
+                  alt="アイコン"
+                  className={classes.selectIconImg}
+                  onClick={handleOpen}
+                />
+                <ArrowDropDownIcon className={classes.downIcon} />
+              </Box>
             </Grid>
           </Grid>
           <Grid item>
@@ -209,7 +198,38 @@ export default class MakeCharacterSP extends Component<MakeCharacterProps, MakeC
             </Button>
           </Grid>
         </Grid>
-      </Grid>
+        <Modal
+          className={classes.selectIconModal}
+          open={this.state.iconModal}
+          onClose={handleClose}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Grid container direction="row" justify="center" alignItems="center">
+            {characterList.map((v, i) => {
+              return (
+                <Grid item xs={2} className={classes.icon_content}>
+                  <Paper className={classes.image_icon_wrap}>
+                    <img
+                      className={classes.image_icon}
+                      src={v.icon}
+                      alt=""
+                      onClick={() => {
+                        this.setIcon(v);
+                        this.setState({ minIcon: v.icon });
+                        handleClose();
+                      }}
+                    />
+                  </Paper>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Modal>
+      </>
     );
   }
 }
