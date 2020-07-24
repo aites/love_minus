@@ -169,7 +169,7 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
               className={classes.chatSendMessage__textArea}
               aria-label="empty textarea"
               placeholder=""
-              rowsMin={1}
+              rowsMin={3}
               rowsMax={5}
               value={this.state.message}
               onKeyDown={(e) => {

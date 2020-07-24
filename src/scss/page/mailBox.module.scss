@@ -12,12 +12,12 @@
 }
 
 .main {
-  height: calc(100% - 64px);
+  height: calc(100vh - 64px);
   position: relative;
 }
 
 .content {
-  height: 100%;
+  height: calc(100vh - 64px);
   overflow-y: auto;
   border-right: 1px solid #bbb;
 }
@@ -41,7 +41,6 @@
   left: 0;
   right: 0;
   margin: auto !important;
-  width: 80vw;
 }
 
 .warningBox__contents {
@@ -53,7 +52,6 @@
   color: #454245;
   position: relative;
   padding: 16px;
-  width: 80vw;
   margin-top: 20px;
 }
 
