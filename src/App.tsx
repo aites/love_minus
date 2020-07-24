@@ -36,7 +36,11 @@ export class App extends React.Component<Props> {
         <FirebaseNotification />
         <Notification />
         {this.props.device === 'pc' ? (
-          <>
+          <div
+            style={{
+              minWidth: '1000px',
+            }}
+          >
             <MainAppBar></MainAppBar>
             <Switch>
               <Route exact={true} path="/" component={Top} />
@@ -44,7 +48,7 @@ export class App extends React.Component<Props> {
               <Route path="/mailbox/:roomId?" component={MailBox} />
               <Route path="/character" component={MakeCharacter} />
             </Switch>
-          </>
+          </div>
         ) : (
           <>
             <MainHeaderBar />

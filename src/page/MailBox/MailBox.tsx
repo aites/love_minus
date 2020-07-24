@@ -71,7 +71,7 @@ export class MailBox extends React.Component<MailBoxInnerProps, MailBoxState> {
     return (
       <Grid container component="main" className={classes.main}>
         <ChatroomListSnapshot />
-        <Grid item xs={12} sm={4} md={3} className={classes.content}>
+        <Grid item xs={3} sm={3} md={3} className={classes.content}>
           {isLoading ? (
             <CircularProgress variant="determinate" />
           ) : (
@@ -133,7 +133,7 @@ export class MailBox extends React.Component<MailBoxInnerProps, MailBoxState> {
             </Box>
           ) : null}
         </Grid>
-        <Grid item xs={12} sm={8} md={9} className={classes.content}>
+        <Grid item xs={9} sm={9} md={9} className={classes.content}>
           {!this.props.roomId ? (
             <Box className={classes.warningBox__contents}>
               <HelpOutline className={classes.warningBox__infoIcon}></HelpOutline>
