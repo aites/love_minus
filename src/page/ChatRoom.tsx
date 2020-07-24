@@ -169,8 +169,8 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
               className={classes.chatSendMessage__textArea}
               aria-label="empty textarea"
               placeholder=""
-              rowsMin={3}
-              rowsMax={5}
+              rowsMin={1}
+              rowsMax={10}
               value={this.state.message}
               onKeyDown={(e) => {
                 if (((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) && e.keyCode === 13) {
