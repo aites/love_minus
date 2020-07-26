@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import AuthModal from './AuthModal';
 import { AppBar, Toolbar } from '@material-ui/core';
 import { connect } from 'react-redux';
@@ -11,7 +12,9 @@ class MainHeaderBar extends React.Component {
       <AppBar position="sticky">
         <Toolbar>
           <h1 className={classes.logoWrapper}>
-            <img className={classes.logo} src="../images/logo.png" alt="LoveMinus" />
+            <Link to="/" onClick={(e) => this.setState({ selectedTab: -1 })}>
+              <img className={classes.logo} src="../images/logo.png" alt="LoveMinus" />
+            </Link>
           </h1>
           <AuthModal />
         </Toolbar>
