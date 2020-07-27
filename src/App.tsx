@@ -18,6 +18,7 @@ import TopSP from './page_sp/TopSP';
 import TimeLineSP from './page_sp/TimeLineSP';
 import MailBoxSP from './page_sp/MailBox/MailBoxSP';
 import MakeCharacterSP from './page_sp/MakeCharacterSP';
+const displayHeight = window.innerHeight;
 
 type Props = {
   device: string;
@@ -30,7 +31,6 @@ export class App extends React.Component<Props> {
   }
 
   render() {
-    const displayHeight = window.innerHeight;
     return (
       <>
         <FirebaseNotification />
@@ -54,7 +54,7 @@ export class App extends React.Component<Props> {
             <MainHeaderBar />
             <div
               style={{
-                minHeight: `calc(${displayHeight}px - 112px)`,
+                minHeight: `calc(${displayHeight}px - 114px)`,
               }}
             >
               <Switch>

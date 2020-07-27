@@ -127,7 +127,7 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
       <Box
         className={classes.chat}
         style={{
-          minHeight: `calc(${displayHeight}px - 112px)`,
+          minHeight: `calc(${displayHeight}px - 114px)`,
         }}
       >
         <Box className={classes.chatHeader}>
