@@ -12,17 +12,17 @@ type TopProps = {
 const howToPlay = [
   {
     title: 'トークの相手を探そう',
-    image: '../images/explanation_01.png',
+    image: '../images/explanationSP_01.png',
     text: `タイムラインにトークを待っている人がいるよ\n気になる人を見つけてチャットを開始しよう`,
   },
   {
     title: 'トークの相手を募集しよう',
-    image: '../images/explanation_02.png',
+    image: '../images/explanationSP_02.png',
     text: `キャラクター作成から自分のプロフィールを作成してタイムラインに載せることができるよ\nタイムラインに気になる人がいなかったら試してみてね`,
   },
   {
     title: 'トークルームで会話を楽しもう',
-    image: '../images/explanation_03.png',
+    image: '../images/explanationSP_03.png',
     text: `チャットを開始するとトークルームに相手の名前が出てくるよ`,
   },
 ];
