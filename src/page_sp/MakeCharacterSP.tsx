@@ -108,13 +108,13 @@ export default class MakeCharacterSP extends Component<MakeCharacterProps, MakeC
           <Grid item container>
             <h2 className={classes.title}>キャラクター情報</h2>
           </Grid>
-          <Grid item container>
+          <Grid item container className={classes.nameContents}>
             <Grid item>
               <TextField
                 id="name"
                 label="名前"
                 variant="outlined"
-                className={classes.textfield}
+                className={classes.nameText}
                 value={this.state.name}
                 onChange={(e) => {
                   this.setState({ name: e.target.value });
