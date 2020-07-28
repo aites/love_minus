@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Grid,
   Divider,
@@ -9,6 +10,7 @@ import {
   Dialog,
   DialogActions,
   DialogTitle,
+  Box,
 } from '@material-ui/core';
 import classes from '../../scss/page_sp/mailBoxSP.module.scss';
 import { ChatRoom as ChatRoomModel } from '../../modules/models/Chatroom';
@@ -22,6 +24,7 @@ import { push } from 'connected-react-router';
 import { RootStateProps } from '../../redux/reducers';
 import { RouteComponentProps } from 'react-router';
 import CloseIcon from '@material-ui/icons/Close';
+import HelpOutline from '@material-ui/icons/HelpOutline';
 
 export interface MailBoxSPProps
   extends RouteComponentProps<{
@@ -116,6 +119,21 @@ export class MailBoxSP extends React.Component<MailBoxSPInnerProps, MailBoxState
                 );
               })
             )}
+            {chatrooms.length === 0 ? (
+              <Box className={classes.warningBox__contents}>
+                <HelpOutline className={classes.warningBox__infoIcon}></HelpOutline>
+                <span className={classes.warningBox__infoText}>
+                  タイムラインからトークしたい人を選んでください。
+                </span>
+                <Box display="flex" justifyContent="center" mt={2}>
+                  <Link to="/timeline" className={classes.timeLineLink}>
+                    <Button variant="outlined" color="primary">
+                      タイムラインから探す
+                    </Button>
+                  </Link>
+                </Box>
+              </Box>
+            ) : null}
             <Dialog
               open={this.state.dialog}
               onClose={handleClose}

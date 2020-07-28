@@ -26,16 +26,12 @@
 }
 
 .warningBox {
-  position: absolute;
-  top: 20px;
-  left: 0;
-  right: 0;
-  margin: auto !important;
-  width: 80vw;
+  width: 100%;
 }
 
 .warningBox__contents {
   display: inline-block;
+  width: calc(100% - 32px);
   border-color: #f2c744;
   background-color: #fcf4da;
   border-radius: 4px;
@@ -43,11 +39,10 @@
   color: #454245;
   position: relative;
   padding: 16px;
-  width: 80vw;
-  margin-top: 20px;
 }
 
 .warningBox__infoText {
+  display: block;
   padding-left: 20px;
 }
 
@@ -62,4 +57,12 @@
   position: absolute;
   top: 4px;
   right: 4px;
+}
+
+.timeLineLink {
+  text-decoration: none;
+}
+
+.timeLineButton {
+  margin-top: 8px;
 }
