@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { User } from 'firebase';
 import { push } from 'connected-react-router';
 import { getTimeLine, Profile } from '../modules/models/Profile';
-import { Modal, Fade, Checkbox, FormControlLabel, InputBase } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
+import { Modal, Fade, Checkbox, FormControlLabel } from '@material-ui/core';
+// import SearchIcon from '@material-ui/icons/Search';
 import ProfileModal from '../page_sp/object/ProfileModalSP';
 import classes from '../scss/page_sp/timeLineSP.module.scss';
 
