@@ -63,7 +63,8 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
           className={classes.checkBox}
         />
 
-        <div className={classes.search}>
+        {/* 検索ボックスをコメントアウト */}
+        {/* <div className={classes.search}>
           <div className={classes.searchIcon}>
             <SearchIcon />
           </div>
@@ -72,7 +73,7 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
             className={classes.inputInput}
             inputProps={{ 'aria-label': 'search' }}
           />
-        </div>
+        </div> */}
 
         {this.state.profileList.map((profile, i) => {
           return (
