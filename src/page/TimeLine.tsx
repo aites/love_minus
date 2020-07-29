@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import ProfileListCard from '../object/ProfileListCard';
 import ProfileModal from '../object/ProfileModal';
-//import classes from '../scss/timeLine.module.scss';
+import classes from '../scss/page/timeLine.module.scss';
 import { getTimeLine, Profile } from '../modules/models/Profile';
 import { RootStateProps } from '../redux/reducers';
 import { connect } from 'react-redux';
@@ -76,33 +76,39 @@ class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
           検索
         </IconButton>
         <div style={{ display: isSearchOpen ? 'none' : '' }}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={isMe}
-                onChange={() => {
-                  this.setState({ isMe: !isMe }, this.setTimeLine);
+          <div>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={isMe}
+                  onChange={() => {
+                    this.setState({ isMe: !isMe }, this.setTimeLine);
+                  }}
+                />
+              }
+              label="自分の投稿を表示"
+              className={classes.checkBox}
+            />
+          </div>
+          <div>
+            <FormControl variant="outlined" className={classes.selectBox}>
+              <InputLabel id="sex">性別</InputLabel>
+              <Select
+                labelId="sex"
+                id="sex"
+                value={sex}
+                displayEmpty
+                onChange={(e) => {
+                  this.setState({ sex: e.target.value as SexFilterType }, this.setTimeLine);
                 }}
-              />
-            }
-            label="自分の投稿"
-          />
-          <FormControl variant="outlined" style={{ width: 80 }}>
-            <InputLabel id="sex">性別</InputLabel>
-            <Select
-              labelId="sex"
-              id="sex"
-              value={sex}
-              onChange={(e) => {
-                this.setState({ sex: e.target.value as SexFilterType }, this.setTimeLine);
-              }}
-              label="性別"
-            >
-              <MenuItem value={''}>性別</MenuItem>
-              <MenuItem value={'man'}>男</MenuItem>
-              <MenuItem value={'woman'}>女</MenuItem>
-            </Select>
-          </FormControl>
+                label="性別"
+              >
+                <MenuItem value={''}>性別</MenuItem>
+                <MenuItem value={'man'}>男</MenuItem>
+                <MenuItem value={'woman'}>女</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
         </div>
         {this.state.profileList.map((profile, i) => {
           return (
