@@ -1,4 +1,4 @@
-import firebase, { getCurrentUser } from '../firebase';
+import firebase, { getCurrentUser, db } from '../firebase';
 
 export type Profile = {
   profileId?: string;
@@ -12,8 +12,11 @@ export type Profile = {
   createdAt?: firebase.firestore.Timestamp;
 };
 
+type TimelineLog = {
+  joinUsers: string[];
+};
+
 export async function createProfile(profile: Profile) {
-  const db = firebase.firestore();
   const docId = db.collection('timeline').doc().id;
   const currentUser = await getCurrentUser();
   if (currentUser === null) throw new Error();
@@ -27,6 +30,12 @@ export async function createProfile(profile: Profile) {
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       author: currentUser.uid,
     });
+  await db
+    .collection('timelinelog')
+    .doc(docId)
+    .set({
+      joinUsers: [],
+    } as TimelineLog);
   return profile;
 }
 
@@ -38,8 +47,6 @@ type TimeLineSearchOption = {
   };
 };
 export async function getTimeLine(option: TimeLineSearchOption) {
-  const db = firebase.firestore();
-  console.log(option);
   let collectionRef:
     | firebase.firestore.CollectionReference<firebase.firestore.DocumentData>
     | firebase.firestore.Query<firebase.firestore.DocumentData> = db.collection('timeline');
@@ -54,4 +61,11 @@ export async function getTimeLine(option: TimeLineSearchOption) {
     const data = doc.data();
     return { profileId: doc.id, ...data } as Profile;
   });
+}
+
+export async function getProfile(profileId: string) {
+  const timelineDoc = await db.collection('timeline').doc(profileId).get();
+  if (!timelineDoc.exists) return null;
+  const data = timelineDoc.data();
+  return { profileId: timelineDoc.id, ...data } as Profile;
 }

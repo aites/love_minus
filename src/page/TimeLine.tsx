@@ -19,10 +19,13 @@ import { connect } from 'react-redux';
 import { User } from 'firebase';
 import { push } from 'connected-react-router';
 import SearchIcon from '@material-ui/icons/Search';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 type TimeLineProps = {
   user: User | null;
+  profileId?: string;
   gotoChatroom: (roomId: string) => void;
+  showProfileModal: (profileId: string) => void;
 };
 type SexFilterType = 'man' | 'woman' | '';
 type TimeLineState = {
@@ -63,7 +66,9 @@ class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
   }
 
   render() {
+    const { profileId } = this.props;
     const { showProfile, isSearchOpen, isMe, sex } = this.state;
+    const isOpenModal = !!profileId || !!showProfile;
     return (
       <>
         <IconButton
@@ -103,9 +108,9 @@ class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
                 }}
                 label="性別"
               >
-                <MenuItem value={''}>性別</MenuItem>
-                <MenuItem value={'man'}>男</MenuItem>
-                <MenuItem value={'woman'}>女</MenuItem>
+                <MenuItem value="">性別</MenuItem>
+                <MenuItem value="man">男</MenuItem>
+                <MenuItem value="woman">女</MenuItem>
               </Select>
             </FormControl>
           </div>
@@ -115,7 +120,10 @@ class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
             <div
               key={i}
               onClick={() => {
-                this.setState({ showProfile: profile });
+                if (profile.profileId) {
+                  this.props.showProfileModal(profile.profileId);
+                }
+                //                this.setState({ showProfile: profile });
               }}
             >
               <ProfileListCard {...profile} loginUserUid={this.props.user?.uid} />
@@ -124,14 +132,15 @@ class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
         })}
         <Modal
           disableAutoFocus
-          open={showProfile != null}
+          open={isOpenModal}
           onClose={() => {
-            this.setState({ showProfile: null });
+            this.props.showProfileModal('');
           }}
         >
-          <Fade in={showProfile != null}>
-            {showProfile ? (
+          <Fade in={isOpenModal}>
+            {isOpenModal ? (
               <ProfileModal
+                profileId={profileId}
                 profile={showProfile}
                 loginUserUid={this.props.user?.uid}
                 onCreateChatroom={(chatRoomId) => {
@@ -151,8 +160,14 @@ class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
   }
 }
 
-function mapStateToProps(state: RootStateProps) {
+interface Props
+  extends RouteComponentProps<{
+    profileId: string;
+  }> {}
+
+function mapStateToProps(state: RootStateProps, props: Props) {
   return {
+    profileId: props.match.params.profileId,
     user: state.firebase.user,
   };
 }
@@ -161,7 +176,10 @@ const mapDispatchToProps = (dispatch: Function) => {
     gotoChatroom: (roomId: string) => {
       dispatch(push(`/mailbox/${roomId}`));
     },
+    showProfileModal: (profileId: string) => {
+      dispatch(push(`/timeline/${profileId}`));
+    },
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TimeLine);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TimeLine));

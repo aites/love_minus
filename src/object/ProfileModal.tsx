@@ -13,13 +13,14 @@ import {
 import { connect } from 'react-redux';
 import { RootStateProps } from '../../src/redux/reducers';
 import classes from '../scss/object/profileModal.module.scss';
-import { Profile } from '../modules/models/Profile';
+import { Profile, getProfile } from '../modules/models/Profile';
 import { createChatRoom } from '../modules/models/Chatroom';
 import { getCurrentUser } from '../modules/firebase';
 import { characterList } from '../modules/models/Character';
 
 type ProfileModalProps = {
-  profile: Profile;
+  profileId?: string;
+  profile: Profile | null;
   loginUserUid?: string;
   pathname: string;
   onCreateChatroom: (roomId: string) => void;
@@ -27,7 +28,7 @@ type ProfileModalProps = {
 type ProfileModalStates = {
   name: string;
   sex: 'man' | 'woman';
-  profile: Profile;
+  profile: Profile | null;
   icon: string;
   minIcon: string;
   showIconArea: boolean;
@@ -45,9 +46,28 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
       showIconArea: false,
     };
     this.createChatroom = this.createChatroom.bind(this);
+    this.setProfileInfo = this.setProfileInfo.bind(this);
+
+    if (this.props.profileId) {
+      this.setProfileInfo(this.props.profileId);
+    }
+  }
+  private setProfileInfo(profileId: string) {
+    getProfile(profileId).then((profile) => {
+      this.setState({
+        profile: profile,
+      });
+    });
+  }
+  componentDidUpdate(prevProps: ProfileModalProps) {
+    const profileId = this.props.profileId;
+    if (profileId && prevProps.profileId !== profileId) {
+      this.setProfileInfo(profileId);
+    }
   }
 
   async createChatroom() {
+    if (!this.state.profile) return;
     const ownerUid = this.state.profile.author;
     const playerInfo = await getCurrentUser();
     const profileId = this.state.profile.profileId;
@@ -77,12 +97,14 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
     return (
       <Paper className={classes.modal}>
         <Box className={classes.imageWrapper}>
-          <img className={classes.image} src={prof.icon} alt="" />
+          <img className={classes.image} src={prof?.icon} alt="" />
         </Box>
         <Box className={classes.contents}>
-          <p className={classes.name}>{prof.name}</p>
-          <p className={classes.profile}>{prof.profile}</p>
-          {this.props.loginUserUid !== prof.author && this.props.pathname === '/timeline' ? (
+          <p className={classes.name}>{prof?.name}</p>
+          <p className={classes.profile}>{prof?.profile}</p>
+          {prof &&
+          this.props.loginUserUid !== prof.author &&
+          this.props.pathname.startsWith('/timeline') ? (
             <>
               <Box display="flex" className={classes.inputWrapper}>
                 <TextField
@@ -116,7 +138,9 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
                   variant="outlined"
                   onClick={async () => {
                     const chatRoom = await this.createChatroom();
-                    this.props.onCreateChatroom(chatRoom);
+                    if (chatRoom) {
+                      this.props.onCreateChatroom(chatRoom);
+                    }
                   }}
                 >
                   チャット開始

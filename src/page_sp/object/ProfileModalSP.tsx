@@ -15,14 +15,15 @@ import {
 import { connect } from 'react-redux';
 import { RootStateProps } from '../../redux/reducers';
 import classes from '../../scss/page_sp/object/profileModal.module.scss';
-import { Profile } from '../../modules/models/Profile';
+import { Profile, getProfile } from '../../modules/models/Profile';
 import { createChatRoom } from '../../modules/models/Chatroom';
 import { getCurrentUser } from '../../modules/firebase';
 import { characterList } from '../../modules/models/Character';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 type ProfileModalProps = {
-  profile: Profile;
+  profileId?: string;
+  profile?: Profile;
   loginUserUid?: string;
   pathname: string;
   onCreateChatroom: (roomId: string) => void;
@@ -30,7 +31,7 @@ type ProfileModalProps = {
 type ProfileModalStates = {
   name: string;
   sex: 'man' | 'woman';
-  profile: Profile;
+  profile?: Profile;
   icon: string;
   minIcon: string;
   iconModal: boolean;
@@ -48,9 +49,31 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
       iconModal: false,
     };
     this.createChatroom = this.createChatroom.bind(this);
+    this.setProfileInfo = this.setProfileInfo.bind(this);
+    console.log('this.props.profileId', this.props.profileId);
+    if (this.props.profileId) {
+      this.setProfileInfo(this.props.profileId);
+    }
+  }
+
+  private setProfileInfo(profileId: string) {
+    getProfile(profileId).then((profile) => {
+      if (profile) {
+        this.setState({
+          profile: profile,
+        });
+      }
+    });
+  }
+  componentDidUpdate(prevProps: ProfileModalProps) {
+    const profileId = this.props.profileId;
+    if (profileId && prevProps.profileId !== profileId) {
+      this.setProfileInfo(profileId);
+    }
   }
 
   async createChatroom() {
+    if (!this.state.profile) return null;
     const ownerUid = this.state.profile.author;
     const playerInfo = await getCurrentUser();
     const profileId = this.state.profile.profileId;
@@ -86,7 +109,11 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
 
     // input入力箇所の表示判定
     let inputForm = null;
-    if (this.props.loginUserUid !== prof.author && this.props.pathname === '/timeline') {
+    if (
+      prof &&
+      this.props.loginUserUid !== prof.author &&
+      this.props.pathname.startsWith('/timeline')
+    ) {
       inputForm = (
         <>
           <Box className={classes.inputForm}>
@@ -132,7 +159,7 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
               variant="outlined"
               onClick={async () => {
                 const chatRoom = await this.createChatroom();
-                this.props.onCreateChatroom(chatRoom);
+                if (chatRoom) this.props.onCreateChatroom(chatRoom);
               }}
             >
               チャット開始
@@ -176,10 +203,10 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
       <Paper className={classes.modal}>
         <Box className={classes.contents}>
           <Box className={classes.nameWrapper}>
-            <img className={classes.image} src={prof.miniIcon} alt="" />
-            <p className={classes.name}>{prof.name}</p>
+            <img className={classes.image} src={prof?.miniIcon} alt="" />
+            <p className={classes.name}>{prof?.name}</p>
           </Box>
-          <p className={classes.profile}>{prof.profile}</p>
+          <p className={classes.profile}>{prof?.profile}</p>
           {inputForm}
         </Box>
       </Paper>

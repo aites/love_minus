@@ -44,7 +44,7 @@ export class App extends React.Component<Props> {
             <MainAppBar></MainAppBar>
             <Switch>
               <Route exact={true} path="/" component={Top} />
-              <Route exact={true} path="/timeline" component={TimeLine} />
+              <Route exact={true} path="/timeline/:profileId?" component={TimeLine} />
               <Route path="/mailbox/:roomId?" component={MailBox} />
               <Route path="/character" component={MakeCharacter} />
             </Switch>
@@ -59,7 +59,7 @@ export class App extends React.Component<Props> {
             >
               <Switch>
                 <Route exact={true} path="/" component={TopSP} />
-                <Route exact={true} path="/timeline" component={TimeLineSP} />
+                <Route exact={true} path="/timeline/:profileId?" component={TimeLineSP} />
                 <Route exact={true} path="/mailbox/:roomId?" component={MailBoxSP} />
                 <Route path="/character" component={MakeCharacterSP} />
               </Switch>

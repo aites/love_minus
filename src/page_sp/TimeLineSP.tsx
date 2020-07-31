@@ -9,10 +9,13 @@ import { Modal, Fade, Checkbox, FormControlLabel } from '@material-ui/core';
 // import SearchIcon from '@material-ui/icons/Search';
 import ProfileModal from '../page_sp/object/ProfileModalSP';
 import classes from '../scss/page_sp/timeLineSP.module.scss';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 type TimeLineProps = {
   user: User | null;
+  profileId?: string;
   gotoChatroom: (roomId: string) => void;
+  showProfileModal: (profileId: string) => void;
 };
 type TimeLineState = {
   profileList: Profile[];
@@ -47,7 +50,9 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
   }
 
   render() {
+    const { profileId } = this.props;
     const { showProfile, isMe } = this.state;
+    const isOpenModal = !!profileId || !!showProfile;
     return (
       <>
         <FormControlLabel
@@ -80,7 +85,9 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
             <div
               key={i}
               onClick={() => {
-                this.setState({ showProfile: profile });
+                if (profile.profileId) {
+                  this.props.showProfileModal(profile.profileId);
+                }
               }}
             >
               <ProfileListCardSP {...profile} loginUserUid={this.props.user?.uid} />
@@ -89,15 +96,15 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
         })}
         <Modal
           disableAutoFocus
-          open={showProfile != null}
+          open={isOpenModal}
           onClose={() => {
-            this.setState({ showProfile: null });
+            this.props.showProfileModal('');
           }}
         >
-          <Fade in={showProfile != null}>
-            {showProfile ? (
+          <Fade in={isOpenModal}>
+            {isOpenModal ? (
               <ProfileModal
-                profile={showProfile}
+                profileId={profileId}
                 loginUserUid={this.props.user?.uid}
                 onCreateChatroom={(chatRoomId) => {
                   console.log('chatRoom', chatRoomId);
@@ -116,8 +123,14 @@ class TimeLineSP extends React.Component<TimeLineProps, TimeLineState> {
   }
 }
 
-function mapStateToProps(state: RootStateProps) {
+interface Props
+  extends RouteComponentProps<{
+    profileId: string;
+  }> {}
+
+function mapStateToProps(state: RootStateProps, props: Props) {
   return {
+    profileId: props.match.params.profileId,
     user: state.firebase.user,
   };
 }
@@ -126,7 +139,10 @@ const mapDispatchToProps = (dispatch: Function) => {
     gotoChatroom: (roomId: string) => {
       dispatch(push(`/mailbox/${roomId}`));
     },
+    showProfileModal: (profileId: string) => {
+      dispatch(push(`/timeline/${profileId}`));
+    },
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TimeLineSP);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TimeLineSP));
