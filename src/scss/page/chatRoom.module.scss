@@ -43,8 +43,6 @@
   }
 }
 
-
-
 .chatContents__speech {
   border: 1px solid #6b6969;
   border-radius: 8px;
@@ -54,6 +52,7 @@
   line-height: 1.5;
   padding: 8px;
   margin: 8px 0;
+  white-space: pre-wrap;
 }
 
 .speech__your {
