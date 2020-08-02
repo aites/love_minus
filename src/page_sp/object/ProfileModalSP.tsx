@@ -176,7 +176,13 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
               timeout: 500,
             }}
           >
-            <Grid container direction="row" justify="center" alignItems="center">
+            <Grid
+              container
+              direction="row"
+              justify="center"
+              alignItems="center"
+              className={classes.selectIconModalContent}
+            >
               {characterList.map((v, i) => {
                 return (
                   <Grid item xs={2} className={classes.icon_content}>
