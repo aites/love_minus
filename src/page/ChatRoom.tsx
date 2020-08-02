@@ -85,6 +85,7 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
       if (this.state.scrollStopFlag === false) {
         this.moveScrollBottom();
       }
+      this.setState({ message: '' });
     }
   }
 
