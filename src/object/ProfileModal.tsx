@@ -136,6 +136,7 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
                   style={{ marginLeft: 'auto' }}
                   color="secondary"
                   variant="outlined"
+                  disabled={this.state.name.length === 0}
                   onClick={async () => {
                     const chatRoom = await this.createChatroom();
                     if (chatRoom) {
