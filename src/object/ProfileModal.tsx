@@ -17,6 +17,7 @@ import { Profile, getProfile } from '../modules/models/Profile';
 import { createChatRoom } from '../modules/models/Chatroom';
 import { getCurrentUser } from '../modules/firebase';
 import { characterList } from '../modules/models/Character';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 type ProfileModalProps = {
   profileId?: string;
@@ -149,11 +150,8 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
               </Box>
 
               <p>アイコンを選ぶ</p>
-              <Grid item xs={2} className={classes.icon_content}>
-                <Paper
-                  className={classes.image_icon_wrap}
-                  elevation={this.state.showIconArea ? 4 : 1}
-                >
+              <Grid item xs={3}>
+                <Grid item xs={10} className={classes.image_selectIcon}>
                   <img
                     className={classes.image_icon}
                     src={this.state.minIcon}
@@ -164,7 +162,8 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
                       });
                     }}
                   />
-                </Paper>
+                  <ArrowDropDownIcon className={classes.downIcon} />
+                </Grid>
               </Grid>
 
               {this.state.showIconArea ? (

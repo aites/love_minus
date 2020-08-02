@@ -1,7 +1,6 @@
 .modal {
   display: flex;
-  width: 80%;
-  max-width: 800px;
+  width: 800px;
   padding: 16px;
   overflow: auto;
   position: fixed;
@@ -10,6 +9,12 @@
   transform: translate(-50%, -50%);
   max-height: calc(100% - 120px);
   align-items: flex-start;
+
+  @media screen and (max-width:1000px) {
+    top: 50%;
+    left: 500px;
+    transform: translate(-50%, -50%);
+  }
 }
 
 .imageWrapper {
@@ -74,6 +79,20 @@
   margin-top: 10px;
   margin-left: 5px;
   margin-right: 5px;
+}
+
+
+.image_selectIcon {
+  display: flex;
+  border: solid 1px #cccccc;
+  border-radius: 4px;
+  align-items: center;
+  margin-left: 4px;
+  padding-right: 28px;
+}
+
+.downIcon {
+  color: rgba(0, 0, 0, 0.54);
 }
 
 .image_icon {
