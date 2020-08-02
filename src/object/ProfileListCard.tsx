@@ -20,7 +20,7 @@ function ProfileListCard(prof: Profile & { loginUserUid?: string }) {
           </Typography>
         </Box>
         <Box>
-          <Button style={{ margin: 10 }} color="secondary" variant="outlined">
+          <Button color="secondary" variant="outlined" className={classes.button}>
             {prof.author === prof.loginUserUid ? '自分のチャット' : 'チャット開始'}
           </Button>
         </Box>
