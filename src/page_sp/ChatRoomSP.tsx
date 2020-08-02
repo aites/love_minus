@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Button, TextareaAutosize, Modal, Fade } from '@material-ui/core';
+import { Box, Button, TextareaAutosize, Modal, Fade, CircularProgress } from '@material-ui/core';
 import ClassNames from 'classnames';
 import SendIcon from '@material-ui/icons/Send';
 import classes from '../scss/page_sp/chatRoomSP.module.scss';
@@ -51,6 +51,7 @@ type ChatRoomProps = {
   messages: ChatMessage[];
   chatRoomInfo?: ChatRoomModel;
   currentUser?: UserInfo | null;
+  isLoading: boolean;
   sendMessage: (chatRoomId: string, message: string) => void;
 };
 type ChatRoomState = {
@@ -136,35 +137,50 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
           <Link to="/mailbox">
             <ArrowBackIcon />
           </Link>
-          <Avatar
-            alt="icon"
-            src={
-              otherUserInfo.miniIcon !== ''
-                ? otherUserInfo.miniIcon
-                : otherUserInfo.sex === 'man'
-                ? '/images/dansei_0_b.png'
-                : '/images/josei_0_b.png'
-            }
-            className={classes.chatHeader__miniIcon}
-            onClick={() => {
-              this.setState({ showProfile: otherUserInfo });
-            }}
-          />
-          <span className={classes.chatHeader__name}>{otherUserInfo.name}</span>
+          {this.props.isLoading ? (
+            <div className={classes.chat__character}>
+              <CircularProgress style={{ margin: '0 auto' }} />
+            </div>
+          ) : (
+            <>
+              <Avatar
+                alt="icon"
+                src={
+                  otherUserInfo.miniIcon !== ''
+                    ? otherUserInfo.miniIcon
+                    : otherUserInfo.sex === 'man'
+                    ? '/images/dansei_0_b.png'
+                    : '/images/josei_0_b.png'
+                }
+                className={classes.chatHeader__miniIcon}
+                onClick={() => {
+                  this.setState({ showProfile: otherUserInfo });
+                }}
+              />
+              <span className={classes.chatHeader__name}>{otherUserInfo.name}</span>
+            </>
+          )}
         </Box>
         <ChatMessageSnapshot />
         <Box className={classes.chatContentsWrap}>
           <Box className={classes.chatContents} id="chatContents" onScroll={this.watchScroll}>
-            {this.props.messages.map((message, i) => {
-              const isMine = currentUserUid === message.ownerUid;
-              const { user, sex } = isMine
-                ? { ...myUserInfo, user: 'mine' as 'mine' | 'yours' }
-                : { ...otherUserInfo, user: 'yours' as 'mine' | 'yours' };
+            {this.props.isLoading
+              ? null
+              : this.props.messages.map((message, i) => {
+                  const isMine = currentUserUid === message.ownerUid;
+                  const { user, sex } = isMine
+                    ? { ...myUserInfo, user: 'mine' as 'mine' | 'yours' }
+                    : { ...otherUserInfo, user: 'yours' as 'mine' | 'yours' };
 
-              return (
-                <UserSpeech key={i.toString()} user={user} sex={sex} comment={message.message} />
-              );
-            })}
+                  return (
+                    <UserSpeech
+                      key={i.toString()}
+                      user={user}
+                      sex={sex}
+                      comment={message.message}
+                    />
+                  );
+                })}
           </Box>
           <Box className={classes.chatSendMessage}>
             <TextareaAutosize
@@ -219,6 +235,7 @@ function mapStateToProps(state: RootStateProps) {
     chatRoomId: state.chatmessage.roomId,
     messages: state.chatmessage.messages,
     chatRoomInfo: state.chatmessage.chatRoomInfo,
+    isLoading: state.chatmessage.isLoading,
     currentUser: state.firebase.user,
   };
 }
