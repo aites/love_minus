@@ -96,12 +96,12 @@ export class MailBox extends React.Component<MailBoxInnerProps, MailBoxState> {
                         }}
                       />
                     </Grid>
-                    <Grid item>
-                      <Typography>{userInfo.name}</Typography>
-                      <Typography noWrap variant="caption">
+                    <Grid item xs zeroMinWidth>
+                      <Typography noWrap>{userInfo.name}</Typography>
+                      <Typography noWrap variant="caption" display="block">
                         {room.lastMessage}
                       </Typography>
-                      <Typography noWrap variant="caption">
+                      <Typography noWrap variant="caption" display="block">
                         {timestampToString(room.updatedAt)}
                       </Typography>
                     </Grid>

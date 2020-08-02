@@ -24,8 +24,7 @@
 
 .mailListRow {
   height: 100px;
-  padding-left: 10px;
-  padding-top: 10px;
+  padding: 10px 12px 0 8px;
   position: relative;
 }
 
@@ -70,4 +69,10 @@
   position: absolute;
   top: 4px;
   right: 4px;
+}
+
+.threePointReader {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

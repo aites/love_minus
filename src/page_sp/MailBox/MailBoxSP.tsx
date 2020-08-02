@@ -97,7 +97,7 @@ export class MailBoxSP extends React.Component<MailBoxSPInnerProps, MailBoxState
                       <Grid item>
                         <img className={classes.image} src={userInfo.miniIcon} alt="" />
                       </Grid>
-                      <Grid item>
+                      <Grid item xs zeroMinWidth>
                         <Typography>{userInfo.name}</Typography>
                         <Typography noWrap display="block" variant="caption">
                           {room.lastMessage}

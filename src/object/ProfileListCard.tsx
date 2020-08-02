@@ -16,11 +16,11 @@ function ProfileListCard(prof: Profile & { loginUserUid?: string }) {
             {prof.name}({timestampToString(prof.createdAt)})
           </Typography>
           <Typography gutterBottom variant="subtitle1">
-            <p>{prof.simpleProf}</p>
+            <p className={classes.threePointReader}>{prof.simpleProf}</p>
           </Typography>
         </Box>
         <Box>
-          <Button style={{ margin: 10 }} color="secondary" variant="outlined">
+          <Button color="secondary" variant="outlined" className={classes.button}>
             {prof.author === prof.loginUserUid ? '自分のチャット' : 'チャット開始'}
           </Button>
         </Box>

@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { RootStateProps } from '../../redux/reducers';
-import classes from '../../scss/page_sp/object/profileModal.module.scss';
+import classes from '../../scss/page_sp/object/profileModalSP.module.scss';
 import { Profile, getProfile } from '../../modules/models/Profile';
 import { createChatRoom } from '../../modules/models/Chatroom';
 import { getCurrentUser } from '../../modules/firebase';
@@ -157,6 +157,7 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
             <Button
               color="secondary"
               variant="outlined"
+              disabled={this.state.name.length === 0}
               onClick={async () => {
                 const chatRoom = await this.createChatroom();
                 if (chatRoom) this.props.onCreateChatroom(chatRoom);
