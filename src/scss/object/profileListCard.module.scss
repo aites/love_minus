@@ -17,3 +17,10 @@
   margin: 10px !important;
   word-break: keep-all;
 }
+
+.threePointReader {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}

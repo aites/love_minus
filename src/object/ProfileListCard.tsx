@@ -16,7 +16,7 @@ function ProfileListCard(prof: Profile & { loginUserUid?: string }) {
             {prof.name}({timestampToString(prof.createdAt)})
           </Typography>
           <Typography gutterBottom variant="subtitle1">
-            <p>{prof.simpleProf}</p>
+            <p className={classes.threePointReader}>{prof.simpleProf}</p>
           </Typography>
         </Box>
         <Box>
