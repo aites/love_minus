@@ -14,7 +14,6 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Avatar from '@material-ui/core/Avatar';
 import { Profile } from '../modules/models/Profile';
 import ProfileModal from '../page_sp/object/ProfileModalSP';
-const displayHeight = window.innerHeight;
 
 interface MessageInfo {
   user: 'yours' | 'mine';
@@ -79,8 +78,10 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
     this.setState({ message: '' });
   };
 
+  private displayHeight: number = 0;
   componentDidMount() {
     this.moveScrollBottom();
+    this.displayHeight = window.innerHeight;
   }
 
   componentDidUpdate(prevProps: ChatRoomProps) {
@@ -127,7 +128,7 @@ class ChatRoom extends React.Component<ChatRoomProps, ChatRoomState> {
       <Box
         className={classes.chat}
         style={{
-          minHeight: `calc(${displayHeight}px - 114px)`,
+          minHeight: `calc(${this.displayHeight}px)`,
         }}
       >
         <Box className={classes.chatHeader}>

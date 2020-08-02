@@ -10,6 +10,7 @@ import { RootStateProps } from '../redux/reducers';
 
 type Props = {
   pathname: string;
+  showFooterBar: boolean;
 };
 class MainFooterBar extends React.Component<Props> {
   PathnameToMap: { [s: string]: number } = {
@@ -18,6 +19,7 @@ class MainFooterBar extends React.Component<Props> {
     '/character': 2,
   };
   render() {
+    if (!this.props.showFooterBar) return null;
     const pageValue = this.PathnameToMap[this.props.pathname];
     return (
       <div className={classes.mainFooterBar}>
@@ -46,9 +48,13 @@ class MainFooterBar extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = (state: RootStateProps) => ({
-  pathname: state.router.location.pathname,
-});
+const mapStateToProps = (state: RootStateProps) => {
+  const pathname = state.router.location.pathname;
+  return {
+    pathname: pathname,
+    showFooterBar: !pathname.startsWith('/mailbox/'),
+  };
+};
 const mapDispatchToProps = (dispatch: Function) => {
   return {};
 };

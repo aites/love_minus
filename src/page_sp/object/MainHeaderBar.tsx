@@ -6,8 +6,12 @@ import { connect } from 'react-redux';
 import { RootStateProps } from '../../redux/reducers';
 import classes from '../../scss/page_sp/mainHeaderBar.module.scss';
 
-class MainHeaderBar extends React.Component {
+type Props = {
+  showAppBar: boolean;
+};
+class MainHeaderBar extends React.Component<Props> {
   render() {
+    if (!this.props.showAppBar) return null;
     return (
       <AppBar position="sticky">
         <Toolbar>
@@ -22,7 +26,11 @@ class MainHeaderBar extends React.Component {
     );
   }
 }
-const mapStateToProps = (state: RootStateProps) => ({});
+const mapStateToProps = (state: RootStateProps) => {
+  return {
+    showAppBar: !state.router.location.pathname.startsWith('/mailbox/'),
+  };
+};
 const mapDispatchToProps = (dispatch: Function) => {
   return {};
 };
