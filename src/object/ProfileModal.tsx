@@ -151,17 +151,17 @@ class ProfileModal extends Component<ProfileModalProps, ProfileModalStates> {
 
               <p>アイコンを選ぶ</p>
               <Grid item xs={3}>
-                <Grid item xs={10} className={classes.image_selectIcon}>
-                  <img
-                    className={classes.image_icon}
-                    src={this.state.minIcon}
-                    alt=""
-                    onClick={() => {
-                      this.setState({
-                        showIconArea: !this.state.showIconArea,
-                      });
-                    }}
-                  />
+                <Grid
+                  item
+                  xs={10}
+                  className={classes.image_selectIcon}
+                  onClick={() => {
+                    this.setState({
+                      showIconArea: !this.state.showIconArea,
+                    });
+                  }}
+                >
+                  <img className={classes.image_icon} src={this.state.minIcon} alt="選択アイコン" />
                   <ArrowDropDownIcon className={classes.downIcon} />
                 </Grid>
               </Grid>
