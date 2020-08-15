@@ -31,7 +31,6 @@ type SexFilterType = 'man' | 'woman' | '';
 type TimeLineState = {
   profileList: Profile[];
   showProfile: Profile | null;
-  isSearchOpen: boolean;
   isMe: boolean;
   sex: SexFilterType;
 };
@@ -42,7 +41,6 @@ class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
     this.state = {
       profileList: [],
       showProfile: null,
-      isSearchOpen: false,
       isMe: false,
       sex: '',
     };
@@ -67,20 +65,11 @@ class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
 
   render() {
     const { profileId } = this.props;
-    const { showProfile, isSearchOpen, isMe, sex } = this.state;
+    const { showProfile, isMe, sex } = this.state;
     const isOpenModal = !!profileId || !!showProfile;
     return (
       <>
-        <IconButton
-          style={{ left: 0 }}
-          onClick={() => {
-            this.setState({ isSearchOpen: !isSearchOpen });
-          }}
-        >
-          <SearchIcon />
-          検索
-        </IconButton>
-        <div style={{ display: isSearchOpen ? 'none' : '' }}>
+        <div style={{ display: 'flex', marginTop: 10, marginLeft: 10 }}>
           <div>
             <FormControlLabel
               control={
@@ -91,7 +80,7 @@ class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
                   }}
                 />
               }
-              label="自分の投稿を表示"
+              label="自分の投稿"
               className={classes.checkBox}
             />
           </div>
@@ -120,6 +109,7 @@ class TimeLine extends React.Component<TimeLineProps, TimeLineState> {
             <div
               key={i}
               onClick={() => {
+                console.log('clicked', profile);
                 if (profile.profileId) {
                   this.props.showProfileModal(profile.profileId);
                 }
